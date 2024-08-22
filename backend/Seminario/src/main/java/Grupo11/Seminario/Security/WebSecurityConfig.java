@@ -15,7 +15,8 @@ public class WebSecurityConfig {
         http
             .authorizeHttpRequests(authorizeRequests -> 
                 authorizeRequests
-                    .anyRequest().authenticated()
+                .requestMatchers("/public/**").permitAll() // Permite acceso sin autenticación a "/public/**"
+                .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> 
                 oauth2.jwt(Customizer.withDefaults())
