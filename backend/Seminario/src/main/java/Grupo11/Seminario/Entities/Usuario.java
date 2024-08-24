@@ -38,6 +38,6 @@ public class Usuario {
     private String email;
 
     @OneToMany
-    private List<Telefono> productos = new ArrayList<>();
+    private List<Telefono> telefonos = new ArrayList<>();
 
 }
