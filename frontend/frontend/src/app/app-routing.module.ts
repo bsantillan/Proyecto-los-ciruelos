@@ -1,18 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MercadopagoComponent } from './components/mercadopago/mercadopago.component';
-import { LoginComponent } from './components/login/login.component';
 
+export const routes: Routes = [
+    { path: '', 
+      loadComponent: () => import('./home/home.component')},
+    
+    { path: 'components',
+        children: [
+            { path: 'login', 
+              loadComponent: () => import('./components/login/login.component')},
+            { path: 'register',
+              loadComponent: () => import('./components/register/register.component')},
+        ],
+    },
 
-const routes: Routes = [
-  { path: '', redirectTo: 'mercadopago', pathMatch: 'full' },
-  { path: 'mercadopago', component: MercadopagoComponent },
-  // Agrega otras rutas aquí si es necesario
+    { path: 'mercadopago', component: MercadopagoComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
-
 export class AppRoutingModule { }

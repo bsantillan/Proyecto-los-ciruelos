@@ -1,2 +1,41 @@
-<p>login works!</p>
+<div class="form">
+  <div class="form__container">
+    <h1>Log in</h1>
+    <form>
+      <div>
+        <mat-form-field appearance="fill" class="custom-field">
+          <mat-label>Email</mat-label>
+          <input matInput />
+          <mat-error class="error-text"></mat-error>
+        </mat-form-field>
+      </div>
 
+      <div>
+        <mat-form-field appearance="fill" class="custom-field">
+          <mat-label>Enter your password</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+            class="password-toggle-button"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <button mat-flat-button color="accent" type="submit">Login</button>
+      </div>
+    </form>
+    <hr />
+    <span class="small-text providers">Have Google or GitHub?</span>
+    <span>
+      Don’t have an account yet?
+      <a routerLink="/components/register" class="link-style">Register</a>
+    </span>
+  </div>
+</div>
