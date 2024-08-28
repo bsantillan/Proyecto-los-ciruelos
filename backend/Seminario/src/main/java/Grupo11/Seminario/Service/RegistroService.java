@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import Grupo11.Seminario.Entities.Jugador;
 import Grupo11.Seminario.Entities.Enum.Categoria;
-import Grupo11.Seminario.Repository.IUsuarioRepository;
+import Grupo11.Seminario.Repository.IJugadorRepository;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -13,7 +13,12 @@ import jakarta.transaction.Transactional;
 public class RegistroService {
 
     @Autowired
-    IUsuarioRepository i_usuario_repository;
+    IJugadorRepository i_jugador_repository;
+
+    // Se guarda el jugador en la BD
+    public void guardar_jugador(Jugador jugador){
+        i_jugador_repository.save(jugador);
+    }
 
     
 }
