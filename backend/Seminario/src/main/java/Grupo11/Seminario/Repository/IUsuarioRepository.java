@@ -8,5 +8,6 @@ import Grupo11.Seminario.Entities.Usuario;
 @Repository
 public interface IUsuarioRepository extends CrudRepository<Usuario,Integer>{
 
-    
+    // Funcion que nos devuelve si encontro o no a un Usuario con ese Email
+    Boolean findByEmail(String email);
 }
