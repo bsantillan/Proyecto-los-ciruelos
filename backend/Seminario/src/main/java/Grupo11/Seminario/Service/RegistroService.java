@@ -26,4 +26,13 @@ public class RegistroService {
     public Boolean verificar_email(String email){
         return i_usuario_repository.findByEmail(email);
     }
+
+    public Categoria verificar_categoria(String categoria_jugador){
+        for (Categoria categoria : Categoria.values()){
+            if (categoria.name().equalsIgnoreCase(categoria_jugador)){
+                return categoria;
+            }
+        }
+        return null;
+    }
 }
