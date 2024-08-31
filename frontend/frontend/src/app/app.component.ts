@@ -11,5 +11,5 @@ import { RouterOutlet } from '@angular/router';
   imports: [CommonModule, RouterOutlet] // Importa módulos necesarios aquí
 })
 export class AppComponent {
-  title = 'frontend';
+  title = 'Los ciruelos';
 }

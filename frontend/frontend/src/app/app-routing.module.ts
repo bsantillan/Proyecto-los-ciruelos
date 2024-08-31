@@ -3,8 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { MercadopagoComponent } from './components/mercadopago/mercadopago.component';
 
 export const routes: Routes = [
-    { path: '', 
-      loadComponent: () => import('./home/home.component')},
+  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirige a /home por defecto
+  { path: 'home',
+    loadComponent: () => import('./home/home.component') },
     
       { path: 'components',
         children: [

@@ -7,12 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
-
+import { ButtonProviders } from './Cambiar-Contrasenia/button-providers/button-providers.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router'; // Importa Router y RouterModule
 
 interface LoginForm {
   email: FormControl<string>;
@@ -29,6 +29,7 @@ interface LoginForm {
     MatButtonModule,
     ReactiveFormsModule,
     RouterModule,
+    ButtonProviders
   ],
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -38,6 +39,7 @@ interface LoginForm {
 export default class LoginComponent {
   hide = true;
   formBuilder = inject(FormBuilder);
+  router = inject(Router); // Inyecta Router
 
   form: FormGroup<LoginForm> = this.formBuilder.group({
     email: this.formBuilder.control('', {
@@ -62,11 +64,14 @@ export default class LoginComponent {
 
     if (isInvalid) {
       return control.hasError('required')
-        ? 'This field is required'
-        : 'Enter a valid email';
+        ? 'Este campo es obligatorio'
+        : 'Ingresa una dirección de correo electrónico válida';
     }
 
     return false;
   }
 
+  goHome(): void {
+    this.router.navigate(['/home']); // Redirige a la página de inicio
+  }
 }

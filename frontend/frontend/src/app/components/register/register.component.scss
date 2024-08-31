@@ -1,0 +1,175 @@
+/* Global styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: var(--text);
+  background: var(--background);
+}
+
+:root {
+  --background: #060b10;
+  --green: #45d8b4;
+  --dark-text: rgba(12, 42, 42);
+  --text: #fff;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin-top: 44px; /* Ajusta este valor para alejar el formulario del borde superior */
+}
+
+.form h1 {
+  margin-bottom: 20px; /* Reducido para hacer el título más pequeño */
+  color: var(--text);
+}
+
+.form__container {
+  width: 100%;
+  max-width: 400px; /* Reduce el ancho máximo del contenedor del formulario */
+  background: #fff; /* Fondo blanco para el contenedor del formulario */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  padding: 15px; /* Reduce el espacio interno del contenedor */
+}
+
+.form hr {
+  margin: 20px 0; /* Reduce el espacio alrededor de la línea horizontal */
+}
+
+.form mat-form-field {
+  width: 100%;
+  margin-bottom: 15px; /* Reduce el espacio entre los campos del formulario */
+  color: var(--text); /* Asegura que el texto del label y errores sea blanco */
+}
+
+.form mat-form-field input,
+.form mat-form-field textarea {
+  color: var(--text); /* Establece el color del texto al escribir */
+}
+
+.form mat-form-field .mat-input-element::placeholder {
+  color: var(--text); /* Asegura que el placeholder sea blanco */
+}
+
+.form mat-form-field .mat-icon {
+  color: var(--text); /* Asegura que los íconos sean blancos */
+}
+
+/* Estilo específico para el botón de mostrar/ocultar contraseña */
+.password-toggle-button {
+  background-color: #fff; /* Fondo blanco del botón */
+  color: #000; /* Color negro para el ícono */
+  border-radius: 50%; /* Opcional: para hacer el botón redondo */
+  border: none; /* Elimina el borde predeterminado del botón */
+  height: 40px; /* Ajusta la altura del botón */
+  width: 40px; /* Ajusta el ancho del botón */
+  padding: 0; /* Elimina el padding para ajustar el tamaño */
+  display: flex; /* Centra el ícono dentro del botón */
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  cursor: pointer; /* Cursor de puntero */
+  font-size: 20px; /* Tamaño de fuente adecuado para el ícono */
+}
+
+.password-toggle-button .mat-icon {
+  color: #000; /* Asegura que el ícono sea negro */
+}
+
+.password-toggle-button:hover {
+  background-color: #f0f0f0; /* Color más claro al pasar el cursor */
+}
+
+/* Estilo para los enlaces */
+.link-style {
+  color: var(--green); /* Color verde agua para los enlaces */
+  text-decoration: underline; /* Subrayado */
+  cursor: pointer; /* Cursor de puntero */
+}
+
+/* Ubicación del enlace "Olvidé mi contraseña" */
+.forgot-password {
+  margin-top: 10px; /* Ajusta este valor según el espacio deseado */
+  text-align: left; /* Alinea el texto a la izquierda */
+}
+
+/* Estilo de los botones en el formulario */
+.button-container {
+  display: flex;
+  justify-content: center; /* Centra el botón */
+  margin-top: 20px; /* Reduce el espacio superior */
+}
+
+.button-container button {
+  width: 100%;
+  background: var(--green); /* Fondo verde agua para los botones */
+  color: var(--text); /* Texto en blanco */
+  border: 2px solid #000; /* Borde negro para los botones */
+  border-radius: 4px; /* Bordes redondeados para los botones */
+  padding: 10px; /* Reduce el espacio interno del botón */
+  cursor: pointer; /* Cursor pointer */
+  font-weight: bold; /* Texto en negrita */
+  font-size: 16px; /* Reduce el tamaño de fuente */
+  transition: background-color 0.3s ease, border-color 0.3s ease; /* Transición suave */
+}
+
+.button-container button:hover {
+  background-color: #34bfa3; /* Tono más oscuro del verde pasto */
+  border-color: #000; /* Mantiene el borde negro */
+}
+
+/* Estilo específico para el botón de volver atrás */
+/* Estilo para el botón de volver */
+.go-back-button {
+  position: absolute; /* Permite posicionar el botón en un lugar específico */
+  top: 16px; /* Ajusta la distancia desde el borde superior */
+  left: 16px; /* Ajusta la distancia desde el borde izquierdo */
+  background-color: #fff; /* Fondo blanco del botón */
+  color: #000; /* Color negro para el ícono */
+  border-radius: 50%; /* Hace que el botón sea redondo */
+  border: none; /* Elimina el borde predeterminado */
+  width: 40px; /* Ancho del botón */
+  height: 40px; /* Altura del botón */
+  padding: 0; /* Elimina el padding para ajustar el tamaño */
+  display: flex; /* Centra el ícono dentro del botón */
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  cursor: pointer; /* Cursor de puntero */
+  font-size: 24px; /* Tamaño del ícono */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombra ligera */
+  transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+}
+
+.go-back-button:hover {
+  background-color: #f0f0f0; /* Color más claro al pasar el cursor */
+}
+
+.go-back-button .mat-icon {
+  color: #000; /* Asegura que el ícono sea negro */
+}
+
+
+/* Ajustes generales para los textos pequeños */
+.small-text {
+  font-size: 12px; /* Reduce el tamaño del texto pequeño */
+  display: block;
+  text-align: center;
+  color: var(--text);
+}
+
+.small-text.providers {
+  margin-bottom: 20px; /* Reduce el margen inferior para los textos pequeños */
+}
+
+.small-text.log-in-redirect {
+  margin-top: 20px; /* Reduce el margen superior para los textos pequeños */
+}
+
+.small-text.log-in-redirect a {
+  color: var(--green);
+  text-decoration: underline;
+  cursor: pointer;
+}

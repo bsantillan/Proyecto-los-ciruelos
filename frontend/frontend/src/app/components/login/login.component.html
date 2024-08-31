@@ -1,61 +1,67 @@
+<!-- Botón de Volver -->
+<button mat-icon-button class="go-back-button" (click)="goHome()">
+  <mat-icon>arrow_back</mat-icon> <!-- Usa el ícono de flecha hacia atrás -->
+</button>
+
+<!-- El resto de tu formulario -->
 <div class="form">
   <div class="form__container">
-    <h1>Log in</h1>
+    <h1>Iniciar Sesión</h1>
+
+    <!-- Aquí se agrega el componente ButtonProviders -->
+    <div class="button-providers">
+      <app-button-providers [isLogin]="true"></app-button-providers>
+    </div>
+    <hr class="divider" />
     <form [formGroup]="form" (ngSubmit)="Login()">
       <div>
         <mat-form-field appearance="fill" class="custom-field">
-          <mat-label>Email</mat-label>
+          <mat-label>Correo electrónico</mat-label>
           <input matInput formControlName="email" />
           <mat-error class="error-text" *ngIf="form.get('email')?.hasError('required')">
-            This field is required
+            Este campo es obligatorio
           </mat-error>
           <mat-error class="error-text" *ngIf="form.get('email')?.hasError('email')">
-            Enter a valid email address
+            Ingresa una dirección de correo electrónico válida
           </mat-error>
         </mat-form-field>
       </div>
 
-      <div>
+      <div class="password-field-container">
         <mat-form-field appearance="fill" class="custom-field">
-          <mat-label>Enter your password</mat-label>
+          <mat-label>Ingresa tu contraseña</mat-label>
           <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" />
           <button
             mat-icon-button
             matSuffix
             (click)="hide = !hide"
-            [attr.aria-label]="hide ? 'Show password' : 'Hide password'"
+            [attr.aria-label]="hide ? 'Mostrar contraseña' : 'Ocultar contraseña'"
             [attr.aria-pressed]="!hide"
             class="password-toggle-button"
           >
             <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
           <mat-error class="error-text" *ngIf="form.get('password')?.hasError('required')">
-            This field is required
+            Este campo es obligatorio
           </mat-error>
         </mat-form-field>
-      </div>
 
-      <div class="forgot-password">
-        <a routerLink="/components/cambiar-contrasenia" class="link-style">I forgot my password</a>
+        <!-- Enlace "Forgot password" aquí -->
+        <div class="forgot-password">
+          <a routerLink="/components/cambiar-contrasenia" class="link-style">Olvidé mi contraseña</a>
+        </div>
       </div>
-      
-      
 
       <div class="button-container">
-        <button mat-flat-button color="primary" type="submit">Login</button>
+        <button mat-flat-button color="primary" type="submit">Iniciar Sesión</button>
       </div>
     </form>
 
     <hr class="divider" />
 
     <div class="text-center">
-      <span class="small-text providers">Have Google or GitHub?</span>
-    </div>
-
-    <div class="text-center">
-      <hr class="divider" />
-      Don’t have an account yet?
-      <a routerLink="/components/register" class="link-style">Register</a>
+      ¿No tienes una cuenta aún?
+      <a routerLink="/components/register" class="link-style">Regístrate</a>
     </div>
   </div>
 </div>

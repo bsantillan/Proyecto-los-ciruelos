@@ -2,6 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import {
   Auth,
   UserCredential,
+  GoogleAuthProvider,
+  signInWithPopup,
   authState,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -37,6 +39,18 @@ export class AuthService {
       credential.email,
       credential.password
     );
+  }
+
+  async signInWithGoogleProvider(): Promise<any> {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(this.auth, provider);
+      // Aquí puedes manejar el resultado o realizar cualquier acción adicional
+      return result;
+    } catch (error) {
+      console.error('Error during sign-in with Google:', error);
+      throw error;
+    }
   }
 
   async getToken(): Promise<string> {

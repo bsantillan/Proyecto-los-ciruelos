@@ -1,12 +1,24 @@
+<!-- src/app/register/register.component.html -->
 <div class="form">
+  <!-- Botón para volver atrás -->
+  <button mat-icon-button class="go-back-button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon> <!-- Usa el ícono de flecha hacia atrás -->
+  </button>
+
   <div class="form__container">
-    <h1>Sign up</h1>
+    <h1>Registrarse</h1>
+
+    <div class="button-providers">
+      <app-button-providers [isLogin]="false"></app-button-providers>
+    </div>
+    <hr class="divider" />
+
     <form [formGroup]="form" (ngSubmit)="signUp()">
       <div>
         <mat-form-field appearance="fill" class="custom-field">
           <mat-label>Nombres</mat-label>
           <input matInput formControlName="names" />
-          <mat-error class="error-text">This field is required</mat-error>
+          <mat-error class="error-text">Este campo es obligatorio</mat-error>
         </mat-form-field>
       </div>
 
@@ -14,20 +26,21 @@
         <mat-form-field appearance="fill" class="custom-field">
           <mat-label>Apellidos</mat-label>
           <input matInput formControlName="lastName" />
-          <mat-error class="error-text">This field is required</mat-error>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field appearance="fill" class="custom-field">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" />
-          <mat-error class="error-text" *ngIf="isEmailValid as messsage">{{ messsage }}</mat-error>
+          <mat-error class="error-text">Este campo es obligatorio</mat-error>
         </mat-form-field>
       </div>
 
       <div>
         <mat-form-field appearance="fill" class="custom-field">
-          <mat-label>Enter your password</mat-label>
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput formControlName="email" />
+          <mat-error class="error-text" *ngIf="isEmailValid as message">{{ message }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field appearance="fill" class="custom-field">
+          <mat-label>Ingresa tu contraseña</mat-label>
           <input
             matInput
             [type]="hide ? 'password' : 'text'"
@@ -37,23 +50,23 @@
             mat-icon-button
             matSuffix
             (click)="hide = !hide"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide"
+            [attr.aria-label]="hide ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+            [attr.aria-pressed]="!hide"
+            class="password-toggle-button"
           >
-            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
-          <mat-error class="error-text">This field is required</mat-error>
+          <mat-error class="error-text">Este campo es obligatorio</mat-error>
         </mat-form-field>
       </div>
 
       <div>
-        <button mat-flat-button color="accent" type="submit">Sign up</button>
+        <button mat-flat-button color="accent" type="submit">Registrarse</button>
       </div>
     </form>
     <hr />
-    <span class="small-text providers">Have Google or GitHub?</span>
-    <span class="small-text log-in-redirect"
-      >Already have an account? <a routerLink="/components/login">Log in</a></span
-    >
+    <span class="small-text log-in-redirect">
+      ¿Ya tienes una cuenta? <a routerLink="/components/login" class="link-style">Inicia sesión</a>
+    </span>
   </div>
 </div>

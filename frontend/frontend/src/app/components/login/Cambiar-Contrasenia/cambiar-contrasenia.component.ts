@@ -9,18 +9,21 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-cambiar-contrasenia',
   templateUrl: './cambiar-contrasenia.component.html',
-  styleUrls: ['./cambiar-contrasenia.component.css'],
+  styleUrls: ['./cambiar-contrasenia.component.scss'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    RouterModule
+
   ]
 })
 export default class CambiarContraseniaComponent {

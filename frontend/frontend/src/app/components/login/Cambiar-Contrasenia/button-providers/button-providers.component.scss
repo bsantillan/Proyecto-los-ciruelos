@@ -1,0 +1,34 @@
+.button-providers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  button {
+    background: transparent; /* Fondo transparente */
+    font-family: inherit;
+    border: 2px solid black; /* Borde negro */
+    width: 100%;
+    max-width: 250px;
+    color: var(--text); /* Color del texto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    min-height: 48px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: border-color ease-in 0.25s; /* Solo transición en borde */
+
+    /* Eliminar el efecto de hover para mantener el mismo color */
+    &:hover {
+      background: transparent; /* Mantener fondo transparente */
+      color: var(--text); /* Mantener color de texto */
+      border-color: black; /* Mantener borde negro */
+    }
+
+    svg {
+      margin-right: 20px;
+    }
+  }
+}

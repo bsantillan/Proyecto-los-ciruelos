@@ -1,29 +1,28 @@
+// src/app/home/home.component.ts
 import { Component } from '@angular/core';
-import { Router } from '@angular/router'; // Importa Router
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { Router, RouterModule } from '@angular/router'; // Importa Router para la navegación
+import { MatIconModule } from '@angular/material/icon';
+import { ButtonProviders } from '../components/login/Cambiar-Contrasenia/button-providers/button-providers.component';
 
 @Component({
-  standalone: true,
-  imports: [MatToolbarModule, MatButtonModule],
   selector: 'app-home',
-  template: `
-    <mat-toolbar color="accent">
-      <span>Home</span>
-      <button mat-flat-button (click)="navigateToLogin()">Login</button>
-    </mat-toolbar>
-  `,
-  styles: [
-    `mat-toolbar { 
-      display: flex;
-      justify-content: space-between;
-    }`,
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatIconModule, 
+    RouterModule,
+    ButtonProviders,
+    MatButtonModule
   ],
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
 })
 export default class HomeComponent {
-  constructor(private router: Router) {} // Inyecta Router
+  constructor(private router: Router) {}
 
   navigateToLogin(): void {
-    this.router.navigate(['/components/login']); // Redirige a la página de login
+    this.router.navigate(['/components/login']);
   }
 }

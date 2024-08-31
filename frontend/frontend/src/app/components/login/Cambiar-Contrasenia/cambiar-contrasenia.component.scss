@@ -82,3 +82,26 @@ html, body {
   color: var(--text);
   margin-top: 20px; /* Espacio superior */
 }
+
+/* Estilo para el contenedor del enlace de inicio de sesión */
+.login-redirect {
+  margin-top: 20px; /* Espacio superior del contenedor */
+}
+
+/* Estilo para el texto del enlace de inicio de sesión */
+.login-redirect .small-text {
+  font-size: 14px; /* Tamaño del texto */
+  color: var(--text); /* Color del texto */
+}
+
+/* Estilo para el enlace */
+.login-redirect .link-style {
+  color: var(--green); /* Color del enlace */
+  font-weight: 500; /* Peso del texto del enlace */
+  text-decoration: none; /* Elimina subrayado */
+}
+
+.login-redirect .link-style:hover {
+  text-decoration: underline; /* Subrayado al pasar el mouse */
+}
+
