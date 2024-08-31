@@ -33,6 +33,7 @@ interface LoginForm {
   selector: 'app-login',
   templateUrl: './login.component.html',
   providers: [],
+  styleUrls: ['./login.component.scss'],
 })
 export default class LoginComponent {
   hide = true;
@@ -53,4 +54,19 @@ export default class LoginComponent {
     if (this.form.invalid) return;
     console.log(this.form.value);
   }
+
+  get isEmailValid(): string | boolean {
+    const control = this.form.get('email');
+
+    const isInvalid = control?.invalid && control.touched;
+
+    if (isInvalid) {
+      return control.hasError('required')
+        ? 'This field is required'
+        : 'Enter a valid email';
+    }
+
+    return false;
+  }
+
 }

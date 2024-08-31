@@ -3,9 +3,12 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { AppModule } from './app/app.module';
 import { appConfig } from './app/app.config';
 import  {AppComponent} from './app/app.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
-bootstrapApplication(AppModule);
+bootstrapApplication(AppModule, {
+  providers: [provideAnimationsAsync()]
+});
 platformBrowserDynamic().bootstrapModule(AppModule, {
   ngZoneEventCoalescing: true
 })

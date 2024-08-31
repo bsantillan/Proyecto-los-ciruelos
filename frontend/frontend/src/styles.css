@@ -58,28 +58,6 @@ html, body {
     width: 100%;
 }
 
-/* Estilo específico para el botón de mostrar/ocultar contraseña */
-.password-toggle-button {
-    background-color: #fff; /* Fondo blanco del botón */
-    color: #000; /* Color negro para el ícono */
-    border-radius: 50%; /* Opcional: para hacer el botón redondo */
-    border: none; /* Elimina el borde predeterminado del botón */
-    height: 40px; /* Ajusta la altura del botón */
-    width: 40px; /* Ajusta el ancho del botón */
-    padding: 0; /* Elimina el padding para ajustar el tamaño */
-    display: flex; /* Centra el ícono dentro del botón */
-    align-items: center; /* Centra verticalmente */
-    justify-content: center; /* Centra horizontalmente */
-}
-
-.password-toggle-button .mat-icon {
-    color: #000; /* Asegura que el ícono sea negro */
-}
-
-.password-toggle-button:hover {
-    background-color: #f0f0f0; /* Color más claro al pasar el cursor */
-}
-
 .small-text {
     font-size: 14px;
     display: block;

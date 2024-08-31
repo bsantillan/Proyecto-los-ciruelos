@@ -6,12 +6,14 @@ export const routes: Routes = [
     { path: '', 
       loadComponent: () => import('./home/home.component')},
     
-    { path: 'components',
+      { path: 'components',
         children: [
             { path: 'login', 
-              loadComponent: () => import('./components/login/login.component')},
+              loadComponent: () => import('./components/login/login.component') },
+            { path: 'cambiar-contrasenia', 
+                loadComponent: () => import('./components/login/Cambiar-Contrasenia/cambiar-contrasenia.component')},
             { path: 'register',
-              loadComponent: () => import('./components/register/register.component')},
+              loadComponent: () => import('./components/register/register.component') },
         ],
     },
 

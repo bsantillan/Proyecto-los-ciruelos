@@ -1,41 +1,61 @@
 <div class="form">
   <div class="form__container">
     <h1>Log in</h1>
-    <form>
+    <form [formGroup]="form" (ngSubmit)="Login()">
       <div>
         <mat-form-field appearance="fill" class="custom-field">
           <mat-label>Email</mat-label>
-          <input matInput />
-          <mat-error class="error-text"></mat-error>
+          <input matInput formControlName="email" />
+          <mat-error class="error-text" *ngIf="form.get('email')?.hasError('required')">
+            This field is required
+          </mat-error>
+          <mat-error class="error-text" *ngIf="form.get('email')?.hasError('email')">
+            Enter a valid email address
+          </mat-error>
         </mat-form-field>
       </div>
 
       <div>
         <mat-form-field appearance="fill" class="custom-field">
           <mat-label>Enter your password</mat-label>
-          <input matInput [type]="hide ? 'password' : 'text'" />
+          <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" />
           <button
             mat-icon-button
             matSuffix
             (click)="hide = !hide"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide"
+            [attr.aria-label]="hide ? 'Show password' : 'Hide password'"
+            [attr.aria-pressed]="!hide"
             class="password-toggle-button"
           >
-            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
+          <mat-error class="error-text" *ngIf="form.get('password')?.hasError('required')">
+            This field is required
+          </mat-error>
         </mat-form-field>
       </div>
 
-      <div>
-        <button mat-flat-button color="accent" type="submit">Login</button>
+      <div class="forgot-password">
+        <a routerLink="/components/cambiar-contrasenia" class="link-style">I forgot my password</a>
+      </div>
+      
+      
+
+      <div class="button-container">
+        <button mat-flat-button color="primary" type="submit">Login</button>
       </div>
     </form>
-    <hr />
-    <span class="small-text providers">Have Google or GitHub?</span>
-    <span>
+
+    <hr class="divider" />
+
+    <div class="text-center">
+      <span class="small-text providers">Have Google or GitHub?</span>
+    </div>
+
+    <div class="text-center">
+      <hr class="divider" />
       Don’t have an account yet?
       <a routerLink="/components/register" class="link-style">Register</a>
-    </span>
+    </div>
   </div>
 </div>

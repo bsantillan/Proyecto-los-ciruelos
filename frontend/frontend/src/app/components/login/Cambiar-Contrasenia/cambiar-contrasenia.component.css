@@ -1,0 +1,84 @@
+/* Estilo global */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: var(--text);
+  background: var(--background);
+}
+
+:root {
+  --background: #060b10;
+  --green: #45d8b4;
+  --dark-text: rgba(12, 42, 42);
+  --text: #fff;
+}
+
+/* Contenedor del formulario */
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center; /* Asegura que todo el texto esté centrado */
+}
+
+.form__container {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Estilo del título */
+.form h1 {
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+/* Estilo de la descripción */
+.description-text {
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 10px; /* Reducido el margen inferior para acercar el botón */
+}
+
+/* Estilo del formulario */
+.form mat-form-field {
+  width: 100%;
+  margin-bottom: 10px; /* Reducido el margen inferior para acercar el botón */
+  color: var(--text); /* Asegura que el texto del label y errores sea blanco */
+}
+
+/* Estilo del campo de entrada */
+.form mat-form-field input,
+.form mat-form-field textarea {
+  color: var(--text); /* Establece el color del texto al escribir */
+}
+
+/* Estilo del placeholder */
+.form mat-form-field .mat-input-element::placeholder {
+  color: var(--text); /* Asegura que el placeholder sea blanco */
+}
+
+/* Estilo del ícono */
+.form mat-form-field .mat-icon {
+  color: var(--text); /* Asegura que los íconos sean blancos */
+}
+
+/* Estilo de los mensajes de error */
+.error-text {
+  color: red !important; /* Color del mensaje de error */
+}
+
+/* Estilo para los botones */
+.button-container {
+  display: flex;
+  justify-content: center; /* Centra el botón */
+  margin-top: 10px; /* Reducido el margen superior para acercar el botón */
+}
+
+/* Estilo para los textos informativos */
+.info-text {
+  font-size: 14px;
+  color: var(--text);
+  margin-top: 20px; /* Espacio superior */
+}
