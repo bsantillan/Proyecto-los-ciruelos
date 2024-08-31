@@ -5,12 +5,12 @@
   gap: 20px;
 
   button {
-    background: transparent; /* Fondo transparente */
+    background: transparent; 
     font-family: inherit;
-    border: 2px solid black; /* Borde negro */
+    border: 2px solid black; 
     width: 100%;
     max-width: 250px;
-    color: var(--text); /* Color del texto */
+    color: var(--text); 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -18,13 +18,13 @@
     min-height: 48px;
     cursor: pointer;
     font-weight: bold;
-    transition: border-color ease-in 0.25s; /* Solo transición en borde */
+    transition: border-color ease-in 0.25s; 
 
-    /* Eliminar el efecto de hover para mantener el mismo color */
+
     &:hover {
-      background: transparent; /* Mantener fondo transparente */
-      color: var(--text); /* Mantener color de texto */
-      border-color: black; /* Mantener borde negro */
+      background: transparent; 
+      color: var(--text); 
+      border-color: black; 
     }
 
     svg {

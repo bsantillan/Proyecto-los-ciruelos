@@ -1,4 +1,4 @@
-/* Estilos globales */
+
 html, body {
     height: 100%;
     margin: 0;
@@ -8,14 +8,14 @@ html, body {
 }
 
 :root {
-    --green: #28a745; /* Color verde principal */
-    --background: #f8f9fa; /* Color de fondo claro */
-    --dark-text: #333; /* Color de texto oscuro */
-    --text: #000; /* Color de texto principal */
+    --green: #28a745; 
+    --background: #f8f9fa; 
+    --dark-text: #333; 
+    --text: #000; 
 }
 
 
-/* Barra de navegación */
+
 .navbar {
     background: var(--green);
     color: #fff;
@@ -53,16 +53,15 @@ html, body {
     transform: scale(1.05);
 }
 
-/* Estilo de la página de inicio */
 .home {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 80px 20px 20px; /* Ajuste para la barra de navegación fija */
+    padding: 80px 20px 20px; 
     min-height: 100vh;
 }
 
-/* Estilo del encabezado */
+
 .home__header {
     text-align: center;
     padding: 40px;
@@ -92,7 +91,7 @@ html, body {
     margin-top: 15px;
 }
 
-/* Animación para el título */
+
 @keyframes slideIn {
     from {
         transform: translateY(-20px);
@@ -104,7 +103,7 @@ html, body {
     }
 }
 
-/* Estilo de las características */
+
 .home__features {
     display: flex;
     flex-wrap: wrap;

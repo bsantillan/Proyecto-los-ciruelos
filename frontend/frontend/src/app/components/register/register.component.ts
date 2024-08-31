@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Router, RouterModule } from '@angular/router'; // Importa Router para la navegación
+import { Router, RouterModule } from '@angular/router'; 
 
 interface RegisterForm {
   names: FormControl<string>;
@@ -40,7 +40,7 @@ interface RegisterForm {
 export default class RegisterComponent {
   hide = true;
   formBuilder = inject(FormBuilder);
-  router = inject(Router); // Inyecta Router
+  router = inject(Router); 
 
   form: FormGroup<RegisterForm> = this.formBuilder.group({
     names: this.formBuilder.control('', {
@@ -64,7 +64,6 @@ export default class RegisterComponent {
   signUp(): void {
     if (this.form.invalid) return;
     console.log(this.form.value);
-    // Aquí puedes añadir lógica para el registro de usuario.
   }
 
   get isEmailValid(): string | boolean {
@@ -81,6 +80,6 @@ export default class RegisterComponent {
   }
 
   goBack(): void {
-    this.router.navigate(['/components/login']); // Navega hacia atrás en la ruta
+    this.router.navigate(['/components/login']); 
   }
 }

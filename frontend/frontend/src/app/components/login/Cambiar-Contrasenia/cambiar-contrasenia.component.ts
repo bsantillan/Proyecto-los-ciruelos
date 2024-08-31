@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { Router, RouterModule } from '@angular/router'; // Importa Router y RouterModule
+import { Router, RouterModule } from '@angular/router'; 
 import { MatIconModule } from '@angular/material/icon';
 
 
@@ -33,7 +33,7 @@ import { MatIconModule } from '@angular/material/icon';
 export default class CambiarContraseniaComponent {
   passwordResetForm: FormGroup;
   
-  router = inject(Router); // Inyecta Router
+  router = inject(Router); 
 
   constructor(private fb: FormBuilder) {
     this.passwordResetForm = this.fb.group({
@@ -57,7 +57,7 @@ export default class CambiarContraseniaComponent {
   }
 
   goBack(): void {
-    this.router.navigate(['/components/login']); // Navega hacia atrás en la ruta
+    this.router.navigate(['/components/login']); 
   }
 }
 

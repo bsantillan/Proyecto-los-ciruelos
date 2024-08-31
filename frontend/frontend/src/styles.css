@@ -1,26 +1,24 @@
-/* Importar la tipografía desde Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@700&display=swap');
 
-/* Global styles */
 html, body {
     height: 100%;
     margin: 0;
-    font-family: 'Poppins', sans-serif; /* Nueva tipografía aplicada */
+    font-family: 'Poppins', sans-serif;
     color: var(--text);
     background: var(--background);
-    font-size: 14px; /* Tamaño de fuente base reducido */
+    font-size: 14px;
 }
 
 :root {
-    --background: #a3d9a5; /* Fondo verde pasto más oscuro */
-    --green: #4caf50; /* Verde pasto */
-    --dark-text: #0c2a2a; /* Color oscuro para el texto */
-    --text: #060b10; /* Texto en color oscuro para buen contraste */
-    --button-color: #388e3c; /* Color de botón alternativo */
-    --button-hover-color: #2c6b2a; /* Color de botón al pasar el ratón */
-    --title-shadow: rgba(0, 0, 0, 0.2); /* Sombra del título */
-    --title-gradient: linear-gradient(135deg, #4caf50, #a3d9a5); /* Gradiente del título */
-    --title-border-color: #4caf50; /* Color del borde del título */
+    --background: #a3d9a5;
+    --green: #4caf50;
+    --dark-text: #0c2a2a;
+    --text: #060b10;
+    --button-color: #388e3c;
+    --button-hover-color: #2c6b2a;
+    --title-shadow: rgba(0, 0, 0, 0.2);
+    --title-gradient: linear-gradient(135deg, #4caf50, #a3d9a5);
+    --title-border-color: #4caf50;
 }
 
 .form {
@@ -28,121 +26,119 @@ html, body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 1rem; /* Espacio interno reducido */
-    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    padding: 1rem;
+    box-sizing: border-box;
 }
 
-/* Gradiente de texto con compatibilidad básica */
 .form h1 {
-    margin-bottom: 1.5rem; /* Ajuste del margen */
-    font-size: 2rem; /* Tamaño de fuente ajustado para mayor impacto */
-    font-weight: 700; /* Fuente más gruesa */
-    font-family: 'Playfair Display', serif; /* Tipografía elegante para los títulos */
-    background: linear-gradient(135deg, #4caf50, #a3d9a5); /* Gradiente en el fondo */
-    -webkit-background-clip: text; /* Clipa el gradiente al texto para navegadores WebKit */
-    -webkit-text-fill-color: transparent; /* Hace el texto transparente para que el gradiente sea visible */
-    border-bottom: 2px solid var(--title-border-color); /* Línea inferior para resaltar */
-    padding-bottom: 0.5rem; /* Espacio debajo del texto */
-    text-align: center; /* Alinear al centro */
-    background-clip: text; /* Alternativa para otros navegadores */
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    background: linear-gradient(135deg, #4caf50, #a3d9a5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border-bottom: 2px solid var(--title-border-color);
+    padding-bottom: 0.5rem;
+    text-align: center;
+    background-clip: text;
 }
 
 .form__container {
     width: 100%;
-    max-width: 340px; /* Ancho máximo reducido */
-    background: #fff; /* Fondo blanco para el contenedor del formulario */
-    border-radius: 8px; /* Bordes más redondeados */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra más ligera */
-    padding: 1.5rem; /* Espacio interno aumentado */
-    border: 1px solid var(--green); /* Borde verde pasto */
-    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    max-width: 340px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    border: 1px solid var(--green);
+    box-sizing: border-box;
 }
 
 .form hr {
-    margin: 1.5rem 0; /* Ajuste del margen */
+    margin: 1.5rem 0;
     border: 0;
-    border-top: 1px solid var(--green); /* Línea divisoria verde pasto */
+    border-top: 1px solid var(--green);
 }
 
 .form mat-form-field {
     width: 100%;
-    margin-bottom: 1rem; /* Ajuste del margen */
+    margin-bottom: 1rem;
 }
 
 .form mat-form-field input,
 .form mat-form-field textarea {
-    color: var(--text); /* Color del texto al escribir */
-    background-color: #f9f9f9; /* Fondo ligeramente gris para los campos */
-    border-radius: 6px; /* Bordes redondeados para los campos */
-    padding: 0.75rem; /* Padding aumentado */
-    border: 1px solid #ddd; /* Borde ligero para los campos */
+    color: var(--text);
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
 }
 
 .form mat-form-field .mat-input-element::placeholder {
-    color: var(--dark-text); /* Placeholder en color más oscuro */
+    color: var(--dark-text);
 }
 
 .form mat-form-field .mat-icon {
-    color: var(--dark-text); /* Color de los íconos */
+    color: var(--dark-text);
 }
 
 .form button {
     width: 100%;
-    background: var(--button-color); /* Fondo del botón */
-    color: #fff; /* Texto del botón en blanco */
+    background: var(--button-color);
+    color: #fff;
     border: none;
-    border-radius: 8px; /* Bordes más redondeados para los botones */
-    padding: 0.75rem; /* Espacio interno del botón reducido */
-    cursor: pointer; /* Cursor pointer */
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
     font-weight: bold;
-    font-size: 0.875rem; /* Tamaño de fuente ajustado */
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Transición suave */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra ligera para el botón */
-    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    font-size: 0.875rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
 }
 
 .form button:hover {
-    background-color: var(--button-hover-color); /* Tono más oscuro del color del botón */
-    transform: translateY(-1px); /* Efecto de elevación al pasar el ratón */
+    background-color: var(--button-hover-color);
+    transform: translateY(-1px);
 }
 
 .small-text {
-    font-size: 0.75rem; /* Tamaño de fuente reducido */
+    font-size: 0.75rem;
     display: block;
     text-align: center;
-    color: var(--dark-text); /* Color del texto más oscuro para mejor visibilidad */
-    margin: 1rem 0; /* Espaciado vertical ajustado */
+    color: var(--dark-text);
+    margin: 1rem 0;
 }
 
 .small-text.providers {
-    margin-bottom: 1.5rem; /* Ajuste del margen */
+    margin-bottom: 1.5rem;
 }
 
 .small-text.log-in-redirect {
-    margin-top: 1.5rem; /* Ajuste del margen */
+    margin-top: 1.5rem;
 }
 
 .small-text.log-in-redirect a {
-    color: var(--green); /* Enlaces en verde pasto */
+    color: var(--green);
     text-decoration: underline;
     cursor: pointer;
-    font-weight: bold; /* Texto en negrita para destacar el enlace */
+    font-weight: bold;
 }
 
-/* Media Queries para ajustar diseño en pantallas más pequeñas */
 @media (max-width: 600px) {
     .form {
-        padding: 0.5rem; /* Espacio interno reducido en pantallas pequeñas */
+        padding: 0.5rem;
     }
     .form__container {
-        max-width: 100%; /* Contenedor ocupa todo el ancho en pantallas pequeñas */
-        padding: 0.5rem; /* Espacio interno reducido */
+        max-width: 100%;
+        padding: 0.5rem;
     }
     .form h1 {
-        font-size: 1.5rem; /* Tamaño de fuente ajustado */
+        font-size: 1.5rem;
     }
     .form button {
-        padding: 0.5rem; /* Espacio interno del botón reducido */
-        font-size: 0.75rem; /* Tamaño de fuente reducido */
+        padding: 0.5rem;
+        font-size: 0.75rem;
     }
 }

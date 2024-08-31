@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { Router, RouterModule } from '@angular/router'; // Importa Router para la navegación
+import { Router, RouterModule } from '@angular/router'; 
 import { MatIconModule } from '@angular/material/icon';
 import { ButtonProviders } from '../components/login/Cambiar-Contrasenia/button-providers/button-providers.component';
 

@@ -22,7 +22,6 @@ export class ButtonProviders {
     if (provider === 'google') {
       this.signUpWithGoogle();
     }
-    // Puedes añadir más condiciones aquí para otros proveedores como 'github'
   }
 
   async signUpWithGoogle(): Promise<void> {

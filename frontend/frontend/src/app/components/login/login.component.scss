@@ -99,32 +99,32 @@ html, body {
 /* Estilo de los botones en el formulario */
 .button-container {
     display: flex;
-    justify-content: center; /* Centra el botón */
-    margin-top: 20px; /* Espacio superior */
+    justify-content: center; 
+    margin-top: 20px; 
 }
 
 .go-back-button {
-    position: absolute; /* Permite posicionar el botón en un lugar específico */
-    top: 16px; /* Ajusta la distancia desde el borde superior */
-    left: 16px; /* Ajusta la distancia desde el borde izquierdo */
-    background-color: #fff; /* Fondo blanco del botón */
-    color: #000; /* Color negro para el ícono */
-    border-radius: 50%; /* Hace que el botón sea redondo */
-    border: none; /* Elimina el borde predeterminado */
-    width: 40px; /* Ancho del botón */
-    height: 40px; /* Altura del botón */
-    padding: 0; /* Elimina el padding para ajustar el tamaño */
-    display: flex; /* Centra el ícono dentro del botón */
-    align-items: center; /* Centra verticalmente */
-    justify-content: center; /* Centra horizontalmente */
-    cursor: pointer; /* Cursor de puntero */
-    font-size: 24px; /* Tamaño del ícono */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombra ligera */
-    transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+    position: absolute; 
+    top: 16px; 
+    left: 16px; 
+    background-color: #fff; 
+    color: #000; 
+    border-radius: 50%; 
+    border: none; 
+    width: 40px;
+    height: 40px;
+    padding: 0; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    cursor: pointer; 
+    font-size: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
+    transition: background-color 0.3s ease; 
   }
   
   .go-back-button:hover {
-    background-color: #f0f0f0; /* Color más claro al pasar el cursor */
+    background-color: #f0f0f0; 
   }
 
 /* Ajustes generales para los textos pequeños */
@@ -152,5 +152,5 @@ html, body {
 /* Asegura que el div con clase text-center esté centrado */
 .text-center {
     text-align: center;
-    margin-top: 20px; /* Añadido margen superior */
+    margin-top: 20px; 
 }

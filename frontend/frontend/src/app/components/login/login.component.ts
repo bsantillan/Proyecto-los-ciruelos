@@ -72,6 +72,6 @@ export default class LoginComponent {
   }
 
   goHome(): void {
-    this.router.navigate(['/home']); // Redirige a la página de inicio
+    this.router.navigate(['/home']); 
   }
 }

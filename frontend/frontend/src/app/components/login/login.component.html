@@ -1,14 +1,13 @@
-<!-- Botón de Volver -->
+
 <button mat-icon-button class="go-back-button" (click)="goHome()">
-  <mat-icon>arrow_back</mat-icon> <!-- Usa el ícono de flecha hacia atrás -->
+  <mat-icon>arrow_back</mat-icon> 
 </button>
 
-<!-- El resto de tu formulario -->
 <div class="form">
   <div class="form__container">
     <h1>Iniciar Sesión</h1>
 
-    <!-- Aquí se agrega el componente ButtonProviders -->
+
     <div class="button-providers">
       <app-button-providers [isLogin]="true"></app-button-providers>
     </div>
@@ -46,7 +45,6 @@
           </mat-error>
         </mat-form-field>
 
-        <!-- Enlace "Forgot password" aquí -->
         <div class="forgot-password">
           <a routerLink="/components/cambiar-contrasenia" class="link-style">Olvidé mi contraseña</a>
         </div>
