@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,7 +9,10 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router'; // Importa Router y RouterModule
+import { MatIconModule } from '@angular/material/icon';
+
+
 
 @Component({
   standalone: true,
@@ -19,6 +22,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    MatIconModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -28,6 +32,8 @@ import { RouterModule } from '@angular/router';
 })
 export default class CambiarContraseniaComponent {
   passwordResetForm: FormGroup;
+  
+  router = inject(Router); // Inyecta Router
 
   constructor(private fb: FormBuilder) {
     this.passwordResetForm = this.fb.group({
@@ -49,4 +55,10 @@ export default class CambiarContraseniaComponent {
       alert('Por favor, ingrese un correo electrónico válido.');
     }
   }
+
+  goBack(): void {
+    this.router.navigate(['/components/login']); // Navega hacia atrás en la ruta
+  }
 }
+
+
