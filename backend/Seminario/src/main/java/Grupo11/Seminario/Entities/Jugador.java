@@ -20,10 +20,10 @@ import lombok.NoArgsConstructor;
 public class Jugador extends Usuario{
     
     @Column(nullable = false, name = "socio")
-    private Boolean socio;
+    private Boolean socio=false;
 
     @Column(nullable = false, name = "profesor")
-    private Boolean profesor;
+    private Boolean profesor=false;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "categoria")
