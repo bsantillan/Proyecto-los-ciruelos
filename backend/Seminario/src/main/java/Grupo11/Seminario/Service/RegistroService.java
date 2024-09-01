@@ -1,9 +1,13 @@
 package Grupo11.Seminario.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import Grupo11.Seminario.Entities.Jugador;
+import Grupo11.Seminario.Entities.Telefono;
 import Grupo11.Seminario.Entities.Enum.Categoria;
 import Grupo11.Seminario.Repository.IJugadorRepository;
 import Grupo11.Seminario.Repository.IUsuarioRepository;
@@ -37,5 +41,18 @@ public class RegistroService {
             }
         }
         return null;
+    }
+
+    public List<Telefono> establecer_telefonos(List<Telefono> telefonosDTO){
+        // Crea y establece la lista de teléfonos
+            return telefonosDTO.stream().map(telefonoDTO->
+            {
+                Telefono telefono = new Telefono();
+                telefono.setCodigo(telefonoDTO.getCodigo());
+                telefono.setNumero(telefonoDTO.getNumero());
+                return telefono;
+            }
+            ).collect(Collectors.toList());
+
     }
 }
