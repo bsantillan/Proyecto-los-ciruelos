@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import Grupo11.Seminario.Entities.Jugador;
 import Grupo11.Seminario.Entities.Telefono;
 import Grupo11.Seminario.Entities.Enum.Categoria;
+import Grupo11.Seminario.Repository.IEmpleadoRepository;
 import Grupo11.Seminario.Repository.IJugadorRepository;
 import Grupo11.Seminario.Repository.IUsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -21,10 +22,17 @@ public class RegistroService {
     IJugadorRepository i_jugador_repository;
     @Autowired
     IUsuarioRepository i_usuario_repository;
+    @Autowired
+    IEmpleadoRepository i_empleado_repository;
 
     // Se guarda el jugador en la BD
     public void guardar_jugador(Jugador jugador){
         i_jugador_repository.save(jugador);
+    }
+
+
+    public Boolean verificar_duenio(Integer id_empleado){
+        return i_empleado_repository.findById(id_empleado).get().getDuenio();
     }
 
     public Boolean verificar_email(String email){
