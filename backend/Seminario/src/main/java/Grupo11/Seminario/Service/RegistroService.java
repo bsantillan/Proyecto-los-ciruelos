@@ -30,6 +30,12 @@ public class RegistroService {
         i_jugador_repository.save(jugador);
     }
 
+    public Boolean existe_duenio(Integer id_empleado){
+        if (i_empleado_repository.findById(id_empleado).isEmpty()){
+            return false;
+        }
+        return true;
+    }
 
     public Boolean verificar_duenio(Integer id_empleado){
         return i_empleado_repository.findById(id_empleado).get().getDuenio();
