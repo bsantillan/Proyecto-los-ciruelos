@@ -23,7 +23,7 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(authorizeRequests -> 
                 authorizeRequests
                 .requestMatchers("/public/**").permitAll() // Permite acceso sin autenticación a "/public/**"
-                .requestMatchers("/privado/**").authenticated()
+                .requestMatchers("/private/**").authenticated()
             )
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita CORS
             .csrf(csrf->csrf.disable()); // Opcional: desactiva CSRF si no es necesario
