@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import Grupo11.Seminario.Entities.Empleado;
 import Grupo11.Seminario.Entities.Jugador;
 import Grupo11.Seminario.Entities.Telefono;
 import Grupo11.Seminario.Entities.Enum.Categoria;
@@ -28,6 +29,10 @@ public class RegistroService {
     // Se guarda el jugador en la BD
     public void guardar_jugador(Jugador jugador){
         i_jugador_repository.save(jugador);
+    }
+
+    public void guardar_empleado(Empleado empleado){
+        i_empleado_repository.save(empleado);
     }
 
     public Boolean existe_duenio(Integer id_empleado){
