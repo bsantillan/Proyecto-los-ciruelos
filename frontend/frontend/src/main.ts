@@ -7,7 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 
 bootstrapApplication(AppModule, {
-  providers: [provideAnimationsAsync()]
+  providers: [provideAnimationsAsync(), provideAnimationsAsync()]
 });
 platformBrowserDynamic().bootstrapModule(AppModule, {
   ngZoneEventCoalescing: true

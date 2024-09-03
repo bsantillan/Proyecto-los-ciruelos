@@ -66,4 +66,19 @@ export class AuthService {
       throw new Error('No user is logged in');
     }
   }
+
+  getRoleBasedOnEmail(): string {
+    const user = this.auth.currentUser;
+    if (user && user.email) {
+      if (user.email.endsWith('@jugador.com.ar')) {
+        return 'jugador';
+      } else if (user.email.endsWith('@empleado.com')) {
+        return 'empleado';
+      } else {
+        return 'desconocido';
+      }
+    }
+    return 'desconocido';
+  }
+
 }

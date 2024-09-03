@@ -13,12 +13,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router'; 
+import { MatSelectModule } from '@angular/material/select';
 
 interface RegisterForm {
   names: FormControl<string>;
   lastName: FormControl<string>;
   email: FormControl<string>;
   password: FormControl<string>;
+  phone: FormControl<string>;
+  playerCategory: FormControl<string>;
 }
 
 @Component({
@@ -31,7 +34,8 @@ interface RegisterForm {
     MatButtonModule,
     ReactiveFormsModule,
     RouterModule,
-    ButtonProviders
+    MatSelectModule,
+    ButtonProviders,
   ],
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -59,6 +63,14 @@ export default class RegisterComponent {
       validators: Validators.required,
       nonNullable: true,
     }),
+    phone: this.formBuilder.control('', {
+      validators: [Validators.required, Validators.pattern(/^\d{10}$/)],
+      nonNullable: true,
+    }),
+    playerCategory: this.formBuilder.control('', {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
   });
 
   signUp(): void {
@@ -68,14 +80,11 @@ export default class RegisterComponent {
 
   get isEmailValid(): string | boolean {
     const control = this.form.get('email');
-    const isInvalid = control?.invalid && control.touched;
-
-    if (isInvalid) {
+    if (control?.invalid && control.touched) {
       return control.hasError('required')
         ? 'Este campo es obligatorio'
         : 'Ingresa un correo electrónico válido';
     }
-
     return false;
   }
 
