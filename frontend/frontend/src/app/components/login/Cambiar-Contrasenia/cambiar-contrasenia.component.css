@@ -23,9 +23,14 @@ html, body {
   text-align: center; 
 }
 
+/* Contenedor del formulario específico */
 .form__container {
   width: 100%;
   max-width: 400px;
+  padding: 20px; /* Asegura que haya espacio interno */
+  background: #fff; /* Fondo blanco para el contenedor del formulario */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
 }
 
 /* Estilo del título */
@@ -128,4 +133,3 @@ html, body {
 .login-redirect .link-style:hover {
   text-decoration: underline; 
 }
-

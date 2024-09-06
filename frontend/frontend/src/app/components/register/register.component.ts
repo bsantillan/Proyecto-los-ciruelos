@@ -1,81 +1,39 @@
-import { Component, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { ButtonProviders } from '../login/Cambiar-Contrasenia/button-providers/button-providers.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { Router, RouterModule } from '@angular/router'; 
-import { MatSelectModule } from '@angular/material/select';
-
-interface RegisterForm {
-  names: FormControl<string>;
-  lastName: FormControl<string>;
-  email: FormControl<string>;
-  password: FormControl<string>;
-  phone: FormControl<string>;
-  playerCategory: FormControl<string>;
-}
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    RouterModule,
-    MatSelectModule,
-    ButtonProviders,
-  ],
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export default class RegisterComponent {
+export class RegisterComponent {
+  form: FormGroup;
   hide = true;
-  formBuilder = inject(FormBuilder);
-  router = inject(Router); 
+  
 
-  form: FormGroup<RegisterForm> = this.formBuilder.group({
-    names: this.formBuilder.control('', {
-      validators: Validators.required,
-      nonNullable: true,
-    }),
-    lastName: this.formBuilder.control('', {
-      validators: Validators.required,
-      nonNullable: true,
-    }),
-    email: this.formBuilder.control('', {
-      validators: [Validators.required, Validators.email],
-      nonNullable: true,
-    }),
-    password: this.formBuilder.control('', {
-      validators: Validators.required,
-      nonNullable: true,
-    }),
-    phone: this.formBuilder.control('', {
-      validators: [Validators.required, Validators.pattern(/^\d{10}$/)],
-      nonNullable: true,
-    }),
-    playerCategory: this.formBuilder.control('', {
-      validators: Validators.required,
-      nonNullable: true,
-    }),
-  });
+  constructor(private formBuilder: FormBuilder, private router: Router) {
+    this.form = this.formBuilder.group({
+      names: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+      phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      playerCategory: ['', [Validators.required]],
+    });
+  }
+
+  ngOnInit(): void {
+    // Cualquier inicialización adicional
+  }
 
   signUp(): void {
-    if (this.form.invalid) return;
-    console.log(this.form.value);
+    if (this.form.valid) {
+      console.log('Registro exitoso:', this.form.value);
+      this.router.navigate(['/home']);
+    } else {
+      console.log('Formulario inválido');
+    }
   }
 
   get isEmailValid(): string | boolean {
@@ -89,6 +47,6 @@ export default class RegisterComponent {
   }
 
   goBack(): void {
-    this.router.navigate(['/components/login']); 
+    this.router.navigate(['/login']);
   }
 }

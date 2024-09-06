@@ -1,14 +1,14 @@
-
-<button mat-icon-button class="go-back-button" (click)="goBack()">
-  <mat-icon>arrow_back</mat-icon> 
-</button>
-
 <div class="form">
   <div class="form__container">
+    <button mat-icon-button class="go-back-button" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+
     <h1>Recuperación de Contraseña</h1>
     <p class="description-text">
       Se le enviará un correo electrónico de confirmación para recuperar su contraseña.
     </p>
+    
     <form [formGroup]="passwordResetForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="fill" class="custom-field">
         <mat-label>Correo Electrónico</mat-label>
@@ -27,6 +27,5 @@
         <button mat-flat-button color="primary" type="submit">Enviar</button>
       </div>
     </form>
-
   </div>
 </div>

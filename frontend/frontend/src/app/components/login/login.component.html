@@ -1,18 +1,12 @@
-
 <button mat-icon-button class="go-back-button" (click)="goHome()">
-  <mat-icon>arrow_back</mat-icon> 
+  <mat-icon>arrow_back</mat-icon>
 </button>
 
 <div class="form">
   <div class="form__container">
     <h1>Iniciar Sesión</h1>
 
-
-    <div class="button-providers">
-      <app-button-providers [isLogin]="true"></app-button-providers>
-    </div>
-    <hr class="divider" />
-    <form [formGroup]="form" (ngSubmit)="Login()">
+    <form [formGroup]="form" (ngSubmit)="login()">
       <div>
         <mat-form-field appearance="fill" class="custom-field">
           <mat-label>Correo electrónico</mat-label>
@@ -28,7 +22,7 @@
 
       <div class="password-field-container">
         <mat-form-field appearance="fill" class="custom-field">
-          <mat-label>Ingresa tu contraseña</mat-label>
+          <mat-label>Contraseña</mat-label>
           <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" />
           <button
             mat-icon-button
@@ -46,7 +40,9 @@
         </mat-form-field>
 
         <div class="forgot-password">
-          <a routerLink="/components/cambiar-contrasenia" class="link-style">Olvidé mi contraseña</a>
+          <a routerLink="/cambiar-contrasenia" class="forgot-password-link">
+            Olvidé mi contraseña
+          </a>
         </div>
       </div>
 
@@ -58,8 +54,9 @@
     <hr class="divider" />
 
     <div class="text-center">
-      ¿No tienes una cuenta aún?
-      <a routerLink="/components/register" class="link-style">Regístrate</a>
-    </div>
+      ¿Aun no tienes una cuenta? 
+      <div class="register">
+        <a routerLink="/register">registrarse </a>
+      </div>
   </div>
 </div>

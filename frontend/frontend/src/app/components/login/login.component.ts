@@ -1,74 +1,38 @@
-import { Component, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { CommonModule } from '@angular/common'; // Importa CommonModule
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ButtonProviders } from './Cambiar-Contrasenia/button-providers/button-providers.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { Router, RouterModule } from '@angular/router'; // Importa Router y RouterModule
 
-interface LoginForm {
-  email: FormControl<string>;
-  password: FormControl<string>;
-}
 
 @Component({
-  standalone: true,
-  imports: [
-    CommonModule, // Asegúrate de incluir CommonModule aquí
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    RouterModule,
-    ButtonProviders
-  ],
   selector: 'app-login',
   templateUrl: './login.component.html',
-  providers: [],
   styleUrls: ['./login.component.scss'],
 })
-export default class LoginComponent {
-  hide = true;
-  formBuilder = inject(FormBuilder);
-  router = inject(Router); // Inyecta Router
-
-  form: FormGroup<LoginForm> = this.formBuilder.group({
-    email: this.formBuilder.control('', {
-      validators: [Validators.required, Validators.email],
-      nonNullable: true,
-    }),
-    password: this.formBuilder.control('', {
-      validators: Validators.required,
-      nonNullable: true,
-    }),
-  });
-
-  Login(): void {
-    if (this.form.invalid) return;
-    console.log(this.form.value);
+export class LoginComponent {
+  form: FormGroup;
+  hide= true;
+  constructor(private fb: FormBuilder, private router: Router) {
+    // Inicializamos el formulario
+    this.form = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
   }
 
-  get isEmailValid(): string | boolean {
-    const control = this.form.get('email');
+  ngOnInit(): void {
+    // Cualquier inicialización adicional
+  }
 
-    const isInvalid = control?.invalid && control.touched;
-
-    if (isInvalid) {
-      return control.hasError('required')
-        ? 'Este campo es obligatorio'
-        : 'Ingresa una dirección de correo electrónico válida';
+  login(): void {
+    // Verificar si el formulario es válido
+    if (this.form.valid) {
+      console.log('Login exitoso:', this.form.value);
+      // Navegar al home después de login exitoso
+      this.router.navigate(['/home']);
+    } else {
+      console.log('Formulario inválido');
     }
-
-    return false;
   }
 
   goHome(): void {

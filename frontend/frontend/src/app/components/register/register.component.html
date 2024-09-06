@@ -1,46 +1,38 @@
 <div class="form">
-  <button mat-icon-button class="go-back-button" (click)="goBack()">
-    <mat-icon>arrow_back</mat-icon> 
-  </button>
-
   <div class="form__container">
-    <h1>Registrarse</h1>
+    <!-- Botón para volver a la página de login -->
+    <button mat-icon-button class="go-back-button" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
 
-    <div class="button-providers">
-      <app-button-providers [isLogin]="false"></app-button-providers>
-    </div>
-    <hr class="divider" />
+    <h1>Registrarse</h1>
 
     <form [formGroup]="form" (ngSubmit)="signUp()">
       <mat-form-field appearance="fill" class="custom-field">
-        <mat-label>Nombres</mat-label>
+        <mat-label>Nombre</mat-label>
         <input matInput formControlName="names" />
-        <mat-error class="error-text" *ngIf="form.get('names')?.invalid && form.get('names')?.touched">
-          Este campo es obligatorio
+        <mat-error class="error-text" *ngIf="form.controls['names'].hasError('required')">
+          Nombre es obligatorio
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="custom-field">
-        <mat-label>Apellidos</mat-label>
+        <mat-label>Apellido</mat-label>
         <input matInput formControlName="lastName" />
-        <mat-error class="error-text" *ngIf="form.get('lastName')?.invalid && form.get('lastName')?.touched">
-          Este campo es obligatorio
+        <mat-error class="error-text" *ngIf="form.controls['lastName'].hasError('required')">
+          Apellido es obligatorio
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="custom-field">
         <mat-label>Correo electrónico</mat-label>
         <input matInput formControlName="email" />
-        <mat-error class="error-text" *ngIf="isEmailValid as message">{{ message }}</mat-error>
+        <mat-error class="error-text" *ngIf="isEmailValid">{{ isEmailValid }}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="custom-field">
-        <mat-label>Ingresa tu contraseña</mat-label>
-        <input
-          matInput
-          [type]="hide ? 'password' : 'text'"
-          formControlName="password"
-        />
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" />
         <button
           mat-icon-button
           matSuffix
@@ -51,44 +43,40 @@
         >
           <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
-        <mat-error class="error-text" *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
-          Este campo es obligatorio
+        <mat-error class="error-text" *ngIf="form.controls['password'].hasError('required')">
+          Contraseña es obligatoria
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="custom-field">
-        <mat-label>Número de Teléfono</mat-label>
+        <mat-label>Teléfono</mat-label>
         <input matInput formControlName="phone" />
-        <mat-error class="error-text" *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">
-          Este campo es obligatorio
+        <mat-error class="error-text" *ngIf="form.controls['phone'].hasError('pattern')">
+          Número de teléfono inválido
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="custom-field">
         <mat-label>Categoría de Jugador</mat-label>
-        <mat-select formControlName="playerCategory">
-          <mat-option value="Primera">Primera</mat-option>
-          <mat-option value="Segunda">Segunda</mat-option>
-          <mat-option value="Tercera">Tercera</mat-option>
-          <mat-option value="Cuarta">Cuarta</mat-option>
-          <mat-option value="Quinta">Quinta</mat-option>
-          <mat-option value="Sexta">Sexta</mat-option>
-          <mat-option value="Séptima">Séptima</mat-option>
-          <mat-option value="Principiante">Principiante</mat-option>
-        </mat-select>
-        <mat-error class="error-text" *ngIf="form.get('playerCategory')?.invalid && form.get('playerCategory')?.touched">
-          Este campo es obligatorio
+        <input matInput formControlName="playerCategory" />
+        <mat-error class="error-text" *ngIf="form.controls['playerCategory'].hasError('required')">
+          Categoría de jugador es obligatoria
         </mat-error>
       </mat-form-field>
 
-      <div>
-        <button mat-flat-button color="accent" type="submit">Registrarse</button>
+      <div class="button-container">
+        <button mat-flat-button color="primary" type="submit">Registrarse</button>
       </div>
     </form>
 
-    <hr />
-    <span class="small-text log-in-redirect">
-      ¿Ya tienes una cuenta? <a routerLink="/components/login" class="link-style">Inicia sesión</a>
-    </span>
+    <hr class="divider" />
+
+    <div class="text-center">
+      ¿Ya tienes una cuenta? 
+      <div class="iniciar sesion">
+        <a routerLink="/login">iniciar sesion </a>
+      </div>
+
+    </div>
   </div>
 </div>
