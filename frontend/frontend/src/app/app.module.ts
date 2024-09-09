@@ -30,7 +30,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CalendarioReservaComponent } from './components/shared/calendario_reserva/calendario_reserva.component';
-import { NavbarComponent } from './components/shared/navbar/navbar.component';
+
 
 
 @NgModule({
@@ -43,7 +43,7 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
     ButtonProviders,
     HomeComponent,
     CalendarioReservaComponent,
-    NavbarComponent,
+
   ],
   imports: [
     BrowserModule,
