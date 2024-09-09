@@ -1,4 +1,4 @@
-
+/* Estilos generales */
 html, body {
     height: 100%;
     margin: 0;
@@ -7,18 +7,10 @@ html, body {
     background: var(--background);
 }
 
-:root {
-    --green: #28a745; 
-    --background: #f8f9fa; 
-    --dark-text: #333; 
-    --text: #000; 
-}
-
-
-
+/* Navbar */
 .navbar {
-    background: var(--green);
-    color: #fff;
+    background: var(--button-color-primary); /* Usa la variable para el color de fondo */
+    color: var(--white-text); /* Usa la variable para el color del texto */
     padding: 10px 0;
     position: fixed;
     width: 100%;
@@ -34,8 +26,9 @@ html, body {
     gap: 20px;
 }
 
+/* Estilo de los enlaces en la navbar */
 .link-style {
-    color: #fff;
+    color: var(--white-text);
     text-decoration: none;
     font-size: 1rem;
     padding: 10px 20px;
@@ -47,12 +40,13 @@ html, body {
 }
 
 .link-style:hover {
-    background: #34b16a;
-    color: #fff;
+    background: var(--button-hover-color); /* Usa la variable para el color de fondo en hover */
+    color: var(--white-text);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transform: scale(1.05);
 }
 
+/* Estilos para la página principal */
 .home {
     display: flex;
     flex-direction: column;
@@ -61,12 +55,11 @@ html, body {
     min-height: 100vh;
 }
 
-
 .home__header {
     text-align: center;
     padding: 40px;
-    background: var(--green);
-    color: #fff;
+    background: var(--button-color-primary); /* Usa la variable para el color de fondo */
+    color: var(--white-text); /* Usa la variable para el color del texto */
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     max-width: 1000px;
@@ -91,7 +84,7 @@ html, body {
     margin-top: 15px;
 }
 
-
+/* Animación para el encabezado */
 @keyframes slideIn {
     from {
         transform: translateY(-20px);
@@ -103,7 +96,7 @@ html, body {
     }
 }
 
-
+/* Sección de características */
 .home__features {
     display: flex;
     flex-wrap: wrap;
@@ -113,43 +106,43 @@ html, body {
 }
 
 .feature {
-    background: #fff;
+    background: var(--background-accent); /* Usa la variable para el color de fondo */
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 20px;
     max-width: 300px;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
-    border: 1px solid #d1e7d4;
+    border: 1px solid var(--button-color-secondary); /* Usa la variable para el borde */
 }
 
 .feature:hover {
     transform: translateY(-8px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    background: #f0f8f0;
+    background: var(--background); /* Usa la variable para el color de fondo en hover */
 }
 
 /* Estilo del icono de características */
 .feature__icon {
     font-size: 3rem;
-    color: var(--green);
+    color: var(--button-color-primary); /* Usa la variable para el color del icono */
     margin-bottom: 15px;
     transition: color 0.3s;
 }
 
 .feature:hover .feature__icon {
-    color: #34b16a;
+    color: var(--button-hover-color); /* Usa la variable para el color del icono en hover */
 }
 
 .feature h2 {
     font-size: 1.5rem;
-    color: var(--dark-text);
+    color: var(--text); /* Usa la variable para el color del texto */
     margin: 15px 0;
 }
 
 .feature p {
     font-size: 1rem;
-    color: #666;
+    color: #666; /* Color del texto en las características */
 }
 
 /* Estilo del pie de página */
@@ -157,9 +150,9 @@ html, body {
     text-align: center;
     padding: 15px;
     font-size: 0.9rem;
-    color: #666;
-    background: #fff;
-    border-top: 1px solid #d1e7d4;
+    color: #666; /* Color del texto en el pie de página */
+    background: var(--background); /* Usa la variable para el color de fondo */
+    border-top: 1px solid var(--button-color-secondary); /* Usa la variable para el borde superior */
 }
 
 /* Animaciones */

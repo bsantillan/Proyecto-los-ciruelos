@@ -1,14 +1,5 @@
 <div class="home">
-  <!-- Barra de navegación -->
-  <nav class="navbar">
-    <div class="navbar__container">
-      <button mat-flat-button color="accent" routerLink="/components/about" type="button">Sobre Nosotros</button>
-      <button mat-flat-button color="accent" routerLink="/components/services" type="button">Servicios</button>
-      <button mat-flat-button color="accent" routerLink="/components/contact" type="button">Contacto</button>
-      <a routerLink="/login">Ir a Login</a>
-      <a routerLink="/register">Ir a Register</a>
-    </div>
-  </nav>
+
 
   <header class="home__header">
     <h1>Bienvenido a Los Ciruelos</h1>
@@ -21,19 +12,18 @@
     </p>
   </header>
 
+  <app-calendario_reserva></app-calendario_reserva>
+
   <section class="home__features">
     <div class="feature">
-      <mat-icon class="feature__icon">calendar_today</mat-icon>
       <h2>Reserva Fácil</h2>
       <p>Reserva tu turno en solo unos minutos con nuestro sistema en línea fácil de usar.</p>
     </div>
     <div class="feature">
-      <mat-icon class="feature__icon">access_time</mat-icon>
       <h2>Disponibilidad en Tiempo Real</h2>
       <p>Consulta la disponibilidad de las canchas en tiempo real para planificar tu juego.</p>
     </div>
     <div class="feature">
-      <mat-icon class="feature__icon">sports_tennis</mat-icon>
       <h2>Alquiler de Material</h2>
       <p>¿Necesitas paletas o pelotas?</p>
       <p>Puedes alquilar todo el material necesario en el club.</p>

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MercadopagoComponent } from './components/mercadopago/mercadopago.component';
-import { LoginComponent } from './components/login/login.component';
-import { CambiarContraseniaComponent } from './components/login/Cambiar-Contrasenia/cambiar-contrasenia.component';
-import { RegisterComponent } from './components/register/register.component';
+import { MercadopagoComponent } from './components/shared/mercadopago/mercadopago.component';
+import { LoginComponent } from './components/shared/login/login.component';
+import { CambiarContraseniaComponent } from './components/shared/login/cambiar_contrasenia/cambiar-contrasenia.component';
+import { RegisterComponent } from './components/shared/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'cambiar-contrasenia', component: CambiarContraseniaComponent },

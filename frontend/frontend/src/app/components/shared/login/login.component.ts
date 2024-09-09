@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ButtonProviders } from './Cambiar-Contrasenia/button-providers/button-providers.component';
+import { ButtonProviders } from './cambiar_contrasenia/button_provider/button-providers.component'
 
 
 @Component({

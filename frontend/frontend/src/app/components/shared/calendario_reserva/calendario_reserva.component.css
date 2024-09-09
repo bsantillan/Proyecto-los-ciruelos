@@ -1,0 +1,154 @@
+/* Centralizar la tabla */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ajusta según tu layout */
+}
+
+.calendar-container {
+  position: relative;
+  padding: 20px;
+}
+
+.table {
+  border-collapse: collapse; /* Asegura que las líneas divisorias se mantengan */
+  width: 100%; /* Asegura que la tabla ocupe el espacio disponible */
+}
+
+.table th, .table td {
+  border: 1px solid #ddd; /* Añade un borde claro a las celdas */
+  padding: 10px;
+  text-align: center;
+  background-color: var(--background-accent); /* Uso de la variable de fondo */
+  position: relative; /* Necesario para el posicionamiento de pseudo-elementos */
+}
+
+/* Estilo para las cabeceras de la tabla */
+.table thead th {
+  background-color: var(--background-accent); /* Uso del color de fondo de acento */
+  border-bottom: 2px solid #dee2e6;
+  color: var(--text); /* Color del texto */
+}
+
+/* Celdas disponibles */
+.table-success {
+  background-color: var(--background-accent) !important; /* Color para celdas disponibles */
+}
+
+/* Celdas deshabilitadas por estar ocupadas */
+.table-danger.disabled {
+  background-color: var(--background-accent) !important; /* Color de fondo para celdas deshabilitadas */
+  cursor: not-allowed; /* Cursor para indicar que no se puede interactuar con la celda */
+  background-image: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.2) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.2) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 20px 20px;
+  pointer-events: none; /* Desactiva la interacción con la celda */
+}
+
+/* Estilo general para las celdas de la tabla */
+.table td {
+  cursor: pointer;
+}
+
+/* Resaltar bordes de las celdas durante la interacción */
+.table td::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid transparent;
+  pointer-events: none;
+}
+
+.table td:hover::after {
+  border-color: var(--text); /* Resaltar el borde en hover */
+}
+
+/* Estilo adicional para las celdas cuando el mouse pasa sobre ellas */
+.table td:hover {
+  background-color: #f8f9fa;
+}
+
+/* Celdas deshabilitadas por ser horas pasadas */
+.past-time {
+  position: relative;
+  background-color: var(--background-accent); /* Color de fondo para horas pasadas */
+  color: var(--text); /* Color del texto */
+}
+
+.past-time::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.1) 0px,
+    rgba(0, 0, 0, 0.1) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  pointer-events: none;
+  z-index: 1; /* Asegúrate de que esté encima del contenido */
+  opacity: 1; /* Ajusta la intensidad del rayado si es necesario */
+}
+
+/* Celdas resaltadas completas */
+.highlight {
+  background-color: var(--button-color-secondary) !important; /* Usando el color secundario */
+}
+
+/* Celdas resaltadas a la mitad */
+.half-highlight {
+  background: linear-gradient(to right, var(--button-color-secondary) 50%, transparent 50%);
+}
+
+/* Estilo para el menú de opciones */
+.options-menu {
+  position: absolute;
+  background-color: var(--background); /* Fondo usando la variable principal */
+  border: 1px solid var(--background); /* Borde usando el color de fondo */
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.options-menu .option {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #ced4da;
+}
+
+.options-menu .option:last-child {
+  border-bottom: none;
+}
+
+.options-menu .option:hover {
+  background-color: #f1f3f5;
+}
+
+/* Tooltip con información */
+.tooltip-content {
+  position: absolute;
+  background-color: rgba(51, 51, 51, 0.9); /* Fondo oscuro con transparencia */
+  color: var(--white-text); /* Texto blanco */
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  white-space: nowrap;
+  font-size: 0.875rem;
+}
