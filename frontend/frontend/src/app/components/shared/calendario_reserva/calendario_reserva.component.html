@@ -1,0 +1,68 @@
+<!-- Contenedor principal -->
+<div class="container mt-4">
+
+    <div class="table-container">
+      <div class="table-responsive">
+        <table class="table table-bordered text-center">
+          <thead class="table-light">
+            <tr>
+              <th>
+                <!-- Fecha -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <input
+                    type="date"
+                    id="date-picker"
+                    class="form-control w-auto"
+                    [(ngModel)]="selectedDate"
+                    (change)="onDateChange($event)"
+                    [attr.min]="minDate"
+                  />
+                </div>
+              </th>
+              <!-- Hora -->
+              <th *ngFor="let slot of timeSlots">{{ slot }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let court of courts">
+              <td>{{ court.name }}</td>
+              <td *ngFor="let slot of timeSlots"
+                  [ngClass]="{
+                    'highlight': isHighlighted(court.id, slot),
+                    'half-highlight': isHalfHighlighted(court.id, slot),
+                    'past-time': isPastTime(slot),
+                    'table-danger': isReserved(court.id, slot)
+                  }"
+                  (mouseenter)="!isPastTime(slot) && !isReserved(court.id, slot) && showTooltip($event, court, slot)"
+                  (mouseleave)="hideTooltip()"
+                  (click)="!isPastTime(slot) && !isReserved(court.id, slot) && showTimeOptions(court, slot, $event)"
+                  >
+                <!-- Aquí puedes añadir contenido o dejarlo vacío -->
+              </td>
+            </tr>
+          </tbody>
+          
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Menú de opciones -->
+  <div *ngIf="showOptionsMenu" [ngStyle]="{ top: optionsMenuPosition.top + 'px', left: optionsMenuPosition.left + 'px' }" class="options-menu">
+    <div class="option" (click)="selectOption(90)">1h 30min</div>
+    <div class="option" (click)="selectOption(120)">2h 00min</div>
+    <div class="option" (click)="selectOption(150)">2h 30min</div>
+  </div>
+  
+  <!-- Tooltip con información -->
+  <div
+    *ngIf="tooltipVisible"
+    [ngStyle]="{ top: tooltipPosition.top + 'px', left: tooltipPosition.left + 'px' }"
+    class="tooltip-content"
+  >
+    <strong>{{ tooltipCourt?.name }}</strong><br />
+    {{ tooltipSlot }}<br />
+    <span>Blindex y sintético | Con iluminación | Techada</span><br />
+    $ {{ tooltipPrice }}
+  </div>
+  

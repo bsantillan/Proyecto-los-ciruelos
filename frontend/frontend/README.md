@@ -47,9 +47,9 @@ Cuentas prueba:
 | ----------------- | ------------------------------------------------------------------ |
 | Text Color | #041A0F |
 | Background Color |  #E0F3EA |
-| 2 Background Color |  #EBFFF5 |
+| background-accent Color |  #EBFFF5 |
 | Button Color |  #2BDA79 |
-| 2 Button Color |  #8CE3B9 |
+| Button secondary Color |  #8CE3B9 |
 | Accent Color |  #E45355 |
 
 

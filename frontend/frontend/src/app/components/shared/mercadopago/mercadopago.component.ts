@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MercadopagoService } from '../../services/mercadopago.service';
+import { MercadopagoService } from '../../../services/mercadopago.service';
 
 @Component({
   selector: 'app-mercadopago',

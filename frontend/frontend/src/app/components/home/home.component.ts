@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ButtonProviders } from '../login/Cambiar-Contrasenia/button-providers/button-providers.component';
+import { ButtonProviders } from '../shared/login/cambiar_contrasenia/button_provider/button-providers.component'
 
 @Component({
   selector: 'app-home',
