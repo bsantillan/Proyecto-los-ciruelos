@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,7 +45,11 @@ public class Reserva {
     @Column(nullable = false, name = "cantidad_paletas")
     private Integer cantidad_paletas;
 
-    @OneToOne
+    @OneToOne()
     @JoinColumn(nullable = false, name = "turno_id")
     private Turno turno;
+
+    @ManyToOne()
+    @JoinColumn(nullable = false, name = "jugador_id")
+    private Jugador jugador;
 }
