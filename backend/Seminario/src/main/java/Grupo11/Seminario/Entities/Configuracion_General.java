@@ -6,8 +6,6 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -21,10 +19,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Configuracion_General {
     
-    // Se define el ID como autoincremental
+    // Se define el ID = 1 para que haya una sola instanc
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id = 1;
 
     @Column(nullable = false, name = "monto_reserva")
     private Float monto_reserva;
