@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import Grupo11.Seminario.Entities.Configuracion_General;
 import Grupo11.Seminario.Entities.Dia_Apertura;
 import Grupo11.Seminario.Repository.IConfiguracionGeneral;
-import Grupo11.Seminario.Repository.IDiaApertura;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 
@@ -20,8 +19,6 @@ public class ConfiguracionGeneralService {
     
     @Autowired
     IConfiguracionGeneral i_configuracion_general;
-    @Autowired
-    IDiaApertura i_dia_apertura;
 
     Configuracion_General configuracion_general;
 
@@ -102,7 +99,7 @@ public class ConfiguracionGeneralService {
         // Se guarda la configuracion general
         i_configuracion_general.save(this.configuracion_general);
         this.configuracion_general = i_configuracion_general.findById(1).get();
-        
+
         return this.configuracion_general;
     }
 }
