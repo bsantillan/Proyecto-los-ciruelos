@@ -54,4 +54,29 @@ public class ConfiguracionGeneralService {
         });
     }
 
+    public Configuracion_General getConfiguracionGeneral() {
+        return this.configuracion_general;
+    }
+
+    public Configuracion_General actualizarConfiguracion(Configuracion_General nueva_configuracion) {
+        // Se setean todos los precios
+        this.configuracion_general.setDescuento_socio(nueva_configuracion.getDescuento_socio());
+        this.configuracion_general.setMonto_paletas(nueva_configuracion.getMonto_paletas());
+        this.configuracion_general.setMonto_pelotas(nueva_configuracion.getMonto_pelotas());
+        this.configuracion_general.setMonto_reserva(nueva_configuracion.getMonto_reserva());
+        this.configuracion_general.setPorcentaje_seña(nueva_configuracion.getPorcentaje_seña());
+            
+        // Se setean todas las horas
+        this.configuracion_general.setHorario_inicio_pico(nueva_configuracion.getHorario_inicio_pico());
+        this.configuracion_general.setHorario_fin_pico(nueva_configuracion.getHorario_fin_pico());
+
+        // Se setea la duracion maxima del turno
+        this.configuracion_general.setDuracion_maxima_turno(nueva_configuracion.getDuracion_maxima_turno());
+
+        // Se setan los dias de apertura
+        this.configuracion_general.setDias_apertura(nueva_configuracion.getDias_apertura());
+
+        // Se guarda la configuracion general
+        return i_configuracion_general.save(this.configuracion_general);
+    }
 }
