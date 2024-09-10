@@ -23,7 +23,7 @@ public class ConfiguracionGeneralController {
         return configuracion_general_service.getConfiguracionGeneral();
     }
 
-    @PutMapping("/configuracion")
+    @PutMapping("/actualizar_configuracion")
     public ResponseEntity<Configuracion_General> actualizar_configuracion_general(@RequestBody Configuracion_General nueva_configuracion) {
         return ResponseEntity.ok().body(configuracion_general_service.actualizarConfiguracion(nueva_configuracion));
     }
