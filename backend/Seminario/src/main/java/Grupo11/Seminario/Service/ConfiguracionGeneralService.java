@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import Grupo11.Seminario.Entities.Configuracion_General;
 import Grupo11.Seminario.Entities.Dia_Apertura;
 import Grupo11.Seminario.Repository.IConfiguracionGeneral;
+import Grupo11.Seminario.Repository.IDiaApertura;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 
@@ -19,6 +20,8 @@ public class ConfiguracionGeneralService {
     
     @Autowired
     IConfiguracionGeneral i_configuracion_general;
+    @Autowired
+    IDiaApertura i_dia_apertura;
 
     Configuracion_General configuracion_general;
 
@@ -46,7 +49,19 @@ public class ConfiguracionGeneralService {
             config.setDuracion_maxima_turno(3);
 
             // Se setan los dias de apertura
-            List<Dia_Apertura> dia_aperturas = new ArrayList<>(1);
+            List<Dia_Apertura> dia_aperturas = new ArrayList<>();
+
+            Dia_Apertura dia_apertura = new Dia_Apertura();
+            LocalTime hora_inicio = LocalTime.of(12, 0);
+            LocalTime hora_fin = LocalTime.of(16, 0);
+
+            dia_apertura.setDia("Lunes");
+            dia_apertura.setHorario_inicio(hora_inicio);
+            dia_apertura.setHorario_fin(hora_fin);
+
+            dia_aperturas.add(dia_apertura);
+
+            dia_apertura.setHorario_inicio(hora_fin_pico);
             config.setDias_apertura(dia_aperturas);
 
             // Se guarda la configuracion general
@@ -73,10 +88,21 @@ public class ConfiguracionGeneralService {
         // Se setea la duracion maxima del turno
         this.configuracion_general.setDuracion_maxima_turno(nueva_configuracion.getDuracion_maxima_turno());
 
-        // Se setan los dias de apertura
-        this.configuracion_general.setDias_apertura(nueva_configuracion.getDias_apertura());
+        // Eliminar los días de apertura existentes
+        if (this.configuracion_general.getDias_apertura() != null) {
+            this.configuracion_general.getDias_apertura().clear();
+        }
+
+        // Agregar los nuevos días de apertura
+        List<Dia_Apertura> dias_apertura_nuevos = nueva_configuracion.getDias_apertura();
+        if (dias_apertura_nuevos != null) {
+            this.configuracion_general.setDias_apertura(dias_apertura_nuevos);
+        }
 
         // Se guarda la configuracion general
-        return i_configuracion_general.save(this.configuracion_general);
+        i_configuracion_general.save(this.configuracion_general);
+        this.configuracion_general = i_configuracion_general.findById(1).get();
+        
+        return this.configuracion_general;
     }
 }
