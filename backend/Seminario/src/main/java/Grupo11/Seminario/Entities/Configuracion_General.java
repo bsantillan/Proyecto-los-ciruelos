@@ -4,8 +4,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -47,8 +49,8 @@ public class Configuracion_General {
     @Column(nullable = false, name = "horario_fin_pico")
     private LocalTime horario_fin_pico;
 
-    @OneToMany
-    @JoinColumn(nullable = false, name = "dia_apertura_id")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(nullable = false, name = "configuracion_general_id")
     private List<Dia_Apertura> dias_apertura = new ArrayList<>();
 
 }
