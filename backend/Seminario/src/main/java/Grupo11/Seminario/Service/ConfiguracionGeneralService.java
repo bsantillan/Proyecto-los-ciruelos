@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import Grupo11.Seminario.Entities.Configuracion_General;
-import Grupo11.Seminario.Entities.Dia_Apertura;
+import Grupo11.Seminario.Entities.ConfiguracionGeneral;
+import Grupo11.Seminario.Entities.DiaApertura;
 import Grupo11.Seminario.Repository.IConfiguracionGeneral;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
@@ -20,14 +20,14 @@ public class ConfiguracionGeneralService {
     @Autowired
     IConfiguracionGeneral i_configuracion_general;
 
-    Configuracion_General configuracion_general;
+    ConfiguracionGeneral configuracion_general;
 
     @PostConstruct
     public void init() {
         // Se setea la configuracion con la configuracion de la BD 
         // sino existe se crea con valores por default
         this.configuracion_general = i_configuracion_general.findById(1).orElseGet(() -> {
-            Configuracion_General config = new Configuracion_General();
+            ConfiguracionGeneral config = new ConfiguracionGeneral();
 
             // Se setean todos los precios
             config.setDescuento_socio(0.0f);
@@ -46,9 +46,9 @@ public class ConfiguracionGeneralService {
             config.setDuracion_maxima_turno(3);
 
             // Se setan los dias de apertura
-            List<Dia_Apertura> dia_aperturas = new ArrayList<>();
+            List<DiaApertura> dia_aperturas = new ArrayList<>();
 
-            Dia_Apertura dia_apertura = new Dia_Apertura();
+            DiaApertura dia_apertura = new DiaApertura();
             LocalTime hora_inicio = LocalTime.of(12, 0);
             LocalTime hora_fin = LocalTime.of(16, 0);
 
@@ -66,11 +66,11 @@ public class ConfiguracionGeneralService {
         });
     }
 
-    public Configuracion_General getConfiguracionGeneral() {
+    public ConfiguracionGeneral get_configuracion_general() {
         return this.configuracion_general;
     }
 
-    public Configuracion_General actualizarConfiguracion(Configuracion_General nueva_configuracion) {
+    public ConfiguracionGeneral actualizar_configuracion_general(ConfiguracionGeneral nueva_configuracion) {
         // Se setean todos los precios
         this.configuracion_general.setDescuento_socio(nueva_configuracion.getDescuento_socio());
         this.configuracion_general.setMonto_paletas(nueva_configuracion.getMonto_paletas());
@@ -91,7 +91,7 @@ public class ConfiguracionGeneralService {
         }
 
         // Agregar los nuevos días de apertura
-        List<Dia_Apertura> dias_apertura_nuevos = nueva_configuracion.getDias_apertura();
+        List<DiaApertura> dias_apertura_nuevos = nueva_configuracion.getDias_apertura();
         if (dias_apertura_nuevos != null) {
             this.configuracion_general.setDias_apertura(dias_apertura_nuevos);
         }

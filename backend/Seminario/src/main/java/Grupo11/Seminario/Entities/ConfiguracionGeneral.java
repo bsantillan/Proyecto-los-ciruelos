@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "configuracion_general")
 @Data
 @NoArgsConstructor
-public class Configuracion_General {
+public class ConfiguracionGeneral {
     
     // Se define el ID = 1 para que haya una sola instanc
     @Id
@@ -51,6 +51,6 @@ public class Configuracion_General {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(nullable = false, name = "configuracion_general_id")
-    private List<Dia_Apertura> dias_apertura = new ArrayList<>();
+    private List<DiaApertura> dias_apertura = new ArrayList<>();
 
 }
