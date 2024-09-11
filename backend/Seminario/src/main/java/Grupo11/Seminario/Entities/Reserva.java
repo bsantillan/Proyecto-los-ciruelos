@@ -52,4 +52,8 @@ public class Reserva {
     @ManyToOne()
     @JoinColumn(nullable = false, name = "jugador_id")
     private Jugador jugador;
+
+    @ManyToOne()
+    @JoinColumn(nullable = true, name = "empleado_id")
+    private Empleado empleado;
 }
