@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "dia_apertura")
 @Data
 @NoArgsConstructor
-public class Dia_Apertura {
+public class DiaApertura {
 
     // Valores permitidos para la variable dia
     private static final Set<String> dias_validos = Set.of(
