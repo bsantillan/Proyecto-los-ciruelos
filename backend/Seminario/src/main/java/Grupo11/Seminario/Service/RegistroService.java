@@ -35,7 +35,22 @@ public class RegistroService {
         i_empleado_repository.save(empleado);
     }
 
-    public Boolean existe_duenio(Integer id_empleado){
+    public Jugador buscar_jugador(Integer id_jugador){
+        return i_jugador_repository.findById(id_jugador).get();
+    }
+
+    public Empleado buscar_empleado(Integer id_empleado){
+        return i_empleado_repository.findById(id_empleado).get();
+    }
+
+    public Boolean existe_jugador(Integer id_jugador){
+        if (i_jugador_repository.findById(id_jugador).isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
+    public Boolean existe_empleado(Integer id_empleado){
         if (i_empleado_repository.findById(id_empleado).isEmpty()){
             return false;
         }
