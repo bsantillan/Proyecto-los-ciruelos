@@ -26,7 +26,7 @@ public class RegistroPrivadoController {
     @PostMapping(path = "/empleado/{id_duenio}")
     public ResponseEntity<?> registro_empleado(@PathVariable Integer id_duenio, @RequestBody EmpleadoDTO empleadoDTO){
         
-        if (registro_service.existe_duenio(id_duenio)){
+        if (registro_service.existe_empleado(id_duenio)){
         
             // Verificar que el que hace la peticion sea Duenio
             if (registro_service.verificar_duenio(id_duenio)){
