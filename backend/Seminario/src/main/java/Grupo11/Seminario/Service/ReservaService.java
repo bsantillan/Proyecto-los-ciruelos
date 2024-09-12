@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import Grupo11.Seminario.Entities.Cancha;
 import Grupo11.Seminario.Entities.Reserva;
 import Grupo11.Seminario.Repository.ICanchaRepository;
 import Grupo11.Seminario.Repository.IReservaRepository;
@@ -21,4 +22,9 @@ public class ReservaService {
         i_reserva_repository.save(reserva);
     }
 
+    public Cancha buscar_cancha(Integer numero_cancha){
+        return i_cancha_repository.findByNumero(numero_cancha).get();
+    }
+
+    
 }
