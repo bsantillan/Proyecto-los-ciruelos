@@ -3,6 +3,7 @@ package Grupo11.Seminario.Entities;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,19 +34,13 @@ public class Reserva {
     @Column(nullable = false, name = "precio")
     private Float precio;
 
-    @Column(nullable = false, name = "pelotas")
-    private Boolean pelotas;
-
-    @Column(nullable = false, name = "paletas")
-    private Boolean paletas;
-
     @Column(nullable = false, name = "cantidad_pelotas")
     private Integer cantidad_pelotas;
 
     @Column(nullable = false, name = "cantidad_paletas")
     private Integer cantidad_paletas;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false, name = "turno_id")
     private Turno turno;
 
