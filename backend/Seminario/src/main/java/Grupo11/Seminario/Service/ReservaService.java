@@ -26,5 +26,10 @@ public class ReservaService {
         return i_cancha_repository.findByNumero(numero_cancha).get();
     }
 
-    
+    public Boolean verificar_numero_cancha(Integer numero_cancha){
+        if (i_cancha_repository.findByNumero(numero_cancha).isEmpty()){
+            return false;
+        }
+        return true;
+    }
 }
