@@ -1,0 +1,37 @@
+.google-signin-btn {
+  display: flex;
+  align-items: center;
+  background-color: #fff; /* Fondo blanco */
+  color: #000; /* Texto negro */
+  border: 1px solid #ccc; /* Borde gris claro */
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  outline: none;
+  box-shadow: none; /* Sin sombra */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.google-signin-btn:hover {
+  background-color: #f1f3f4; /* Color de fondo al pasar el cursor */
+  border-color: #aaa; /* Color del borde al pasar el cursor */
+}
+
+.google-signin-btn:active {
+  background-color: #e0e0e0; /* Color de fondo cuando se presiona */
+  border-color: #888; /* Color del borde cuando se presiona */
+}
+
+.google-logo {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.google-signin-btn span {
+  display: inline-block;
+  vertical-align: middle;
+}

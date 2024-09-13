@@ -6,6 +6,8 @@ import { CambiarContraseniaComponent } from './components/shared/login/cambiar_c
 import { RegisterComponent } from './components/shared/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 
+
+
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },

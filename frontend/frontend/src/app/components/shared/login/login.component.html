@@ -5,21 +5,24 @@
 <div class="form">
   <div class="form__container">
     <h1>Iniciar Sesión</h1>
+    
+    <!-- Botón de proveedores de autenticación -->
+    <app-button-providers [isLogin]="true"></app-button-providers>
 
+    <!-- Formulario de inicio de sesión -->
     <form [formGroup]="form" (ngSubmit)="login()">
+      <!-- Campo de correo electrónico -->
       <div>
         <mat-form-field appearance="fill" class="custom-field">
           <mat-label>Correo electrónico</mat-label>
           <input matInput formControlName="email" />
-          <mat-error class="error-text" *ngIf="form.get('email')?.hasError('required')">
-            Este campo es obligatorio
-          </mat-error>
-          <mat-error class="error-text" *ngIf="form.get('email')?.hasError('email')">
-            Ingresa una dirección de correo electrónico válida
+          <mat-error class="error-text" *ngIf="isEmailValid">
+            {{ isEmailValid }}
           </mat-error>
         </mat-form-field>
       </div>
 
+      <!-- Campo de contraseña -->
       <div class="password-field-container">
         <mat-form-field appearance="fill" class="custom-field">
           <mat-label>Contraseña</mat-label>
@@ -34,11 +37,12 @@
           >
             <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
-          <mat-error class="error-text" *ngIf="form.get('password')?.hasError('required')">
-            Este campo es obligatorio
+          <mat-error class="error-text" *ngIf="isPasswordValid">
+            {{ isPasswordValid }}
           </mat-error>
         </mat-form-field>
 
+        <!-- Enlace para recuperar contraseña -->
         <div class="forgot-password">
           <a routerLink="/cambiar-contrasenia" class="forgot-password-link">
             Olvidé mi contraseña
@@ -46,17 +50,29 @@
         </div>
       </div>
 
+      <!-- Botón para iniciar sesión -->
       <div class="button-container">
         <button mat-flat-button color="primary" type="submit">Iniciar Sesión</button>
       </div>
     </form>
 
+    <!-- Mensaje de error o éxito -->
+    <div class="message" *ngIf="errorMessage">
+      <span class="error-message">{{ errorMessage }}</span>
+    </div>
+    <div class="message" *ngIf="successMessage">
+      <span class="success-message">{{ successMessage }}</span>
+    </div>
+
+    <!-- Línea divisoria -->
     <hr class="divider" />
 
+    <!-- Enlace para registrarse -->
     <div class="text-center">
-      ¿Aun no tienes una cuenta? 
+      ¿Aún no tienes una cuenta? 
       <div class="register">
-        <a routerLink="/register">registrarse </a>
+        <a routerLink="/register">Registrarse</a>
       </div>
+    </div>
   </div>
 </div>

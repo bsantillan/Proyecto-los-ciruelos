@@ -7,7 +7,6 @@ import {
   authState,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  getAuth,
   User
 } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
@@ -30,7 +29,12 @@ export class AuthService {
       this.auth,
       credential.email,
       credential.password
-    );
+    ).then((userCredential) => {
+      const role = this.getRoleBasedOnEmail();
+      console.log('Rol del usuario registrado:', role);
+      // Manejar el rol del usuario registrado aquí si es necesario
+      return userCredential;
+    });
   }
 
   loginWithEmailAndPassword(credential: Credential): Promise<UserCredential> {
@@ -38,17 +42,22 @@ export class AuthService {
       this.auth,
       credential.email,
       credential.password
-    );
+    ).then((userCredential) => {
+      const role = this.getRoleBasedOnEmail();
+      console.log('Rol del usuario logueado:', role);
+      // Manejar el rol del usuario logueado aquí si es necesario
+      return userCredential;
+    });
   }
 
-  async signInWithGoogleProvider(): Promise<any> {
+  async signInWithGoogleProvider(): Promise<UserCredential> {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.auth, provider);
       // Aquí puedes manejar el resultado o realizar cualquier acción adicional
-      return result;
+      return result as UserCredential;
     } catch (error) {
-      console.error('Error during sign-in with Google:', error);
+      console.error('Error durante el inicio de sesión con Google:', error);
       throw error;
     }
   }
@@ -59,26 +68,23 @@ export class AuthService {
       try {
         return await user.getIdToken();
       } catch (error) {
-        console.error('Error getting token:', error);
-        throw new Error('Failed to get token');
+        console.error('Error al obtener el token:', error);
+        throw new Error('No se pudo obtener el token');
       }
     } else {
-      throw new Error('No user is logged in');
+      throw new Error('No hay usuario conectado');
     }
   }
 
   getRoleBasedOnEmail(): string {
     const user = this.auth.currentUser;
-    if (user && user.email) {
+    if (user?.email) {
       if (user.email.endsWith('@jugador.com.ar')) {
         return 'jugador';
       } else if (user.email.endsWith('@empleado.com')) {
         return 'empleado';
-      } else {
-        return 'desconocido';
       }
     }
     return 'desconocido';
   }
-
 }

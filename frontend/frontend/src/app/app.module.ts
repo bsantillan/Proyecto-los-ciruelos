@@ -22,14 +22,15 @@ import { MercadopagoComponent } from './components/shared/mercadopago/mercadopag
 import { CambiarContraseniaComponent } from './components/shared/login/cambiar_contrasenia/cambiar-contrasenia.component';
 import { LoginComponent } from './components/shared/login/login.component';
 import { RegisterComponent } from './components/shared/register/register.component';
-import { ButtonProviders } from './components/shared/login/cambiar_contrasenia/button_provider/button-providers.component'
+import { ButtonProviders } from './components/shared/login/cambiar_contrasenia/button_provider/button_providers.component'
 import { HomeComponent } from './components/home/home.component';
+import { CalendarioReservaComponent } from './components/shared/calendario_reserva/calendario_reserva.component';
 
 // Firebase
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { CalendarioReservaComponent } from './components/shared/calendario_reserva/calendario_reserva.component';
+
 
 
 
@@ -41,9 +42,8 @@ import { CalendarioReservaComponent } from './components/shared/calendario_reser
     LoginComponent,
     RegisterComponent,
     ButtonProviders,
-    HomeComponent,
     CalendarioReservaComponent,
-
+    HomeComponent
   ],
   imports: [
     BrowserModule,
