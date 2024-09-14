@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import Grupo11.Seminario.DTO.UsuarioDTO;
 import Grupo11.Seminario.Service.ConsultaUsuarioService;
 
 @RestController
@@ -22,12 +21,12 @@ public class ConsultaUsuarioController {
 
     // Endpoint para buscar usuarios y devolver DTOs
     @GetMapping("/usuarios/buscar")
-    public ResponseEntity<List<UsuarioDTO>> buscarUsuarios(
+    public ResponseEntity<List<Object>> buscarUsuarios(
         @RequestParam Optional<String> nombre,
         @RequestParam Optional<String> apellido,
         @RequestParam Optional<String> email
     ) {
-        List<UsuarioDTO> usuarios = consultaUsuarioService.buscar_usuarios(nombre, apellido, email);
+        List<Object> usuarios = consultaUsuarioService.buscar_usuarios(nombre, apellido, email);
         return ResponseEntity.ok(usuarios);
     }
 }
