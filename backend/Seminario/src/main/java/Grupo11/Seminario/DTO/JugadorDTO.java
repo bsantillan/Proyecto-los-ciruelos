@@ -12,20 +12,18 @@ public class JugadorDTO {
     private String nombre;
     private String apellido;
     private String categoria;
-    private Boolean socio;
-    private Boolean profesor;
+    private Boolean socio = false;
+    private Boolean profesor  = false;
     private List<Telefono> telefonos;
 
     // Constructor con argumentos
     public JugadorDTO(
-    String email, String nombre, String apellido, String categoria, Boolean socio, Boolean profesor, List<Telefono> telefonos) 
+    String email, String nombre, String apellido, String categoria, List<Telefono> telefonos) 
     {
         this.email = email;
         this.nombre = nombre;
         this.apellido = apellido;
         this.categoria = categoria;
-        this.socio = socio;
-        this.profesor = profesor;
         this.telefonos = telefonos;
     }
     
@@ -36,8 +34,6 @@ public class JugadorDTO {
             jugador.getNombre(),
             jugador.getApellido(),
             jugador.getCategoria().toString(), // Convertimos el enum a String
-            jugador.getSocio(),
-            jugador.getProfesor(),
             jugador.getTelefonos()
         );
     }
