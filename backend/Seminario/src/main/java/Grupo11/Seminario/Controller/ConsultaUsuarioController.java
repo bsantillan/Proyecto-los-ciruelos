@@ -21,7 +21,7 @@ public class ConsultaUsuarioController {
 
     // Endpoint para buscar usuarios y devolver DTOs
     @GetMapping("/usuarios/buscar")
-    public ResponseEntity<List<Object>> buscarUsuarios(
+    public ResponseEntity<List<Object>> buscar_usuarios(
         @RequestParam Optional<String> nombre,
         @RequestParam Optional<String> apellido,
         @RequestParam Optional<String> email
