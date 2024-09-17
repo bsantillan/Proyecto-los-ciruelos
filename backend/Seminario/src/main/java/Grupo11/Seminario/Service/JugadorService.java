@@ -17,9 +17,12 @@ public class JugadorService {
     private IJugadorRepository i_jugador_repository;
 
     // Asignar rol de profesor a un jugador
-    public boolean asignar_rol_profesor(Integer id) {
-        Jugador jugador = i_jugador_repository.findById(id).orElse(null);
+    public Boolean asignar_rol_profesor(Integer jugador_id) {
+        Jugador jugador = i_jugador_repository.findById(jugador_id).orElse(null);
         if (jugador != null) {
+            if (jugador.getProfesor()) {
+                return false;
+            }
             jugador.setProfesor(true);  // Asigna el rol de profesor
             i_jugador_repository.save(jugador);  // Actualiza la base de datos
             return true;
