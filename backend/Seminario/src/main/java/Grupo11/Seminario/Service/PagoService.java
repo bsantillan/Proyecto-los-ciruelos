@@ -32,7 +32,7 @@ public class PagoService {
     @Autowired
     RestTemplate rest_template;
 
-    public PagoMercadoPagoDTO pagar_reserva(ResponseEntity<String> response) throws JsonMappingException, JsonProcessingException {
+    public PagoMercadoPagoDTO pagar(ResponseEntity<String> response) throws JsonMappingException, JsonProcessingException {
         LocalDate fecha = null;
         LocalTime hora = null;
         
@@ -106,10 +106,6 @@ public class PagoService {
         return pago_mpDTO;
     } 
 
-    public void pagar_asociacion(){
-
-    }
-
     public Boolean validar_pago(ResponseEntity<String> response){
         return !response.getStatusCode().equals(HttpStatus.NOT_FOUND);
     }
@@ -144,12 +140,13 @@ public class PagoService {
         // Crear los parámetros de la solicitud
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "client_credentials");
+        // Client_id de la cuenta a depositar
         body.add("client_id", "6872871786610767");
+        // Client_secret de la cueta a depositar
         body.add("client_secret", "UKIcaPM5E9Omg3gyYW0tNqCJMeZAaM3G");
 
         // Crear la entidad HTTP que contiene el cuerpo de la solicitud y los headers
         HttpEntity<Object> request = new HttpEntity<>(body,headers);
-
 
         try {
             // Hacer la solicitud POST
