@@ -3,10 +3,8 @@ package Grupo11.Seminario.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import Grupo11.Seminario.DTO.JugadorDTO;
 import Grupo11.Seminario.DTO.EmpleadoDTO;
 import Grupo11.Seminario.Entities.Empleado;
