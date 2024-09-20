@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import Grupo11.Seminario.Entities.ConfiguracionGeneral;
 import Grupo11.Seminario.Service.ConfiguracionGeneralService;
 import Grupo11.Seminario.Service.RegistroService;
@@ -24,8 +23,10 @@ public class ConfiguracionGeneralController {
 
     @GetMapping("/obtener_configuracion/{id_duenio}")
     public ResponseEntity<?> obtener_configuracion_general(@PathVariable Integer id_duenio) {
+
         // Se verifica que exista el empleado con dicho Id
-        if (registro_service.existe_duenio(id_duenio)){
+        if (registro_service.existe_empleado(id_duenio)){
+
             // Se verifica que el empleado sea un dueño
             if (registro_service.verificar_duenio(id_duenio)){
                 return ResponseEntity.ok().body(configuracion_general_service.get_configuracion_general());
@@ -37,8 +38,10 @@ public class ConfiguracionGeneralController {
 
     @PutMapping("/actualizar_configuracion/{id_duenio}")
     public ResponseEntity<?> actualizar_configuracion_general(@PathVariable Integer id_duenio, @RequestBody ConfiguracionGeneral nueva_configuracion) {
+        
         // Se verifica que exista el empleado con dicho Id
-        if (registro_service.existe_duenio(id_duenio)){
+        if (registro_service.existe_empleado(id_duenio)){
+            
             // Se verifica que el empleado sea un dueño
             if (registro_service.verificar_duenio(id_duenio)){
                 return ResponseEntity.ok().body(configuracion_general_service.actualizar_configuracion_general(nueva_configuracion));

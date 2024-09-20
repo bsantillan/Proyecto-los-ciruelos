@@ -3,10 +3,8 @@ package Grupo11.Seminario.Service;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import Grupo11.Seminario.Entities.ConfiguracionGeneral;
 import Grupo11.Seminario.Entities.DiaApertura;
 import Grupo11.Seminario.Repository.IConfiguracionGeneral;

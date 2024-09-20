@@ -1,6 +1,5 @@
 package Grupo11.Seminario.Controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,12 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import Grupo11.Seminario.DTO.EmpleadoDTO;
 import Grupo11.Seminario.Entities.Empleado;
 import Grupo11.Seminario.Service.RegistroService;
-
-
 
 @RestController
 @RequestMapping("/private/registro")
@@ -26,13 +22,13 @@ public class RegistroPrivadoController {
     @PostMapping(path = "/empleado/{id_duenio}")
     public ResponseEntity<?> registro_empleado(@PathVariable Integer id_duenio, @RequestBody EmpleadoDTO empleadoDTO){
         
-        if (registro_service.existe_duenio(id_duenio)){
+        // Se busca si existe el empleado
+        if (registro_service.existe_empleado(id_duenio)){
         
             // Verificar que el que hace la peticion sea Duenio
             if (registro_service.verificar_duenio(id_duenio)){
                 // Verifica que el mail no este registrado
                 if (registro_service.verificar_email(empleadoDTO.getEmail())){
-                    System.out.print("Entra");
                     Empleado empleado = new Empleado();
                     empleado.setEmail(empleadoDTO.getEmail());
                     empleado.setNombre(empleadoDTO.getNombre());
