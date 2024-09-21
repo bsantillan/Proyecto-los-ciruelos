@@ -27,6 +27,9 @@ public class ConfiguracionGeneral {
     @Column(nullable = false, name = "monto_reserva")
     private Float monto_reserva;
 
+    @Column(nullable = false, name = "monto_asociacion")
+    private Float monto_asociacion;
+
     @Column(nullable = false, name = "porcentaje_senia")
     private Float porcentaje_seña;
 
