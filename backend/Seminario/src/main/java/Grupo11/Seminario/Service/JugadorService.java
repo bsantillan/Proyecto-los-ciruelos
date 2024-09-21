@@ -18,6 +18,10 @@ public class JugadorService {
         i_jugador_repository.save(jugador);
     }
 
+    public Jugador buscar_jugador(Integer id_jugador){
+        return i_jugador_repository.findById(id_jugador).get();
+    }
+
     // Asignar rol de profesor a un jugador
     public Boolean asignar_rol_profesor(Integer jugador_id) {
         Jugador jugador = i_jugador_repository.findById(jugador_id).orElse(null);
