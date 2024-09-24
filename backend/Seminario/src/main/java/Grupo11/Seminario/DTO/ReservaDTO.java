@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class ReservaDTO {
-    private Float precio;
     private Integer cantidad_pelotas;
     private Integer cantidad_paletas;
     private LocalDate fecha;
@@ -15,12 +14,11 @@ public class ReservaDTO {
     private LocalTime horario_fin;
     private Integer numero_cancha;
     private Integer id_empleado;
+    private long id_mp;
 
     public ReservaDTO
-    (Float precio, 
-    Integer numero_cancha, Integer cantidad_pelotas, Integer cantidad_paletas, Integer id_empleado, 
+    ( Integer numero_cancha, Integer cantidad_pelotas, Integer cantidad_paletas, Integer id_empleado, 
     LocalDate fecha, LocalTime horario_inicio, LocalTime horario_fin){
-        this.precio=precio;
         this.numero_cancha=numero_cancha;
         this.cantidad_pelotas=cantidad_pelotas;
         this.cantidad_paletas=cantidad_paletas;
