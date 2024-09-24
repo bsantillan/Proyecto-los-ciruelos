@@ -2,6 +2,7 @@ package Grupo11.Seminario.Entities;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,10 +37,10 @@ public class Reserva {
     private Float precio;
 
     @Column(nullable = false, name = "cantidad_pelotas")
-    private Integer cantidad_pelotas;
+    private Integer cantidad_pelotas = 0;
 
     @Column(nullable = false, name = "cantidad_paletas")
-    private Integer cantidad_paletas;
+    private Integer cantidad_paletas = 0;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false, name = "turno_id")
@@ -51,4 +53,8 @@ public class Reserva {
     @ManyToOne()
     @JoinColumn(nullable = true, name = "empleado_id")
     private Empleado empleado;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false, name = "reserva_id")
+    private List<Pago> pagos;
 }
