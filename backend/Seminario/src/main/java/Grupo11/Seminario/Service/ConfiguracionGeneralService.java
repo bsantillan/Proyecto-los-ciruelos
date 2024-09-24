@@ -32,6 +32,7 @@ public class ConfiguracionGeneralService {
             config.setMonto_paletas(0.0f);
             config.setMonto_pelotas(0.0f);
             config.setMonto_reserva(0.0f);
+            config.setMonto_x_media_hora(0f);
             config.setPorcentaje_seña(0.0f);
             
             // Se setean todas las horas
@@ -40,8 +41,11 @@ public class ConfiguracionGeneralService {
             config.setHorario_inicio_pico(hora_inicio_pico);
             config.setHorario_fin_pico(hora_fin_pico);
 
+            //Se setea la duracion minima del turno
+            config.setDuracion_minima_turno(1.3f);
+
             // Se setea la duracion maxima del turno
-            config.setDuracion_maxima_turno(3);
+            config.setDuracion_maxima_turno(3.0f);
 
             // Se setan los dias de apertura
             List<DiaApertura> dia_aperturas = new ArrayList<>();
@@ -74,11 +78,15 @@ public class ConfiguracionGeneralService {
         this.configuracion_general.setMonto_paletas(nueva_configuracion.getMonto_paletas());
         this.configuracion_general.setMonto_pelotas(nueva_configuracion.getMonto_pelotas());
         this.configuracion_general.setMonto_reserva(nueva_configuracion.getMonto_reserva());
+        this.configuracion_general.setMonto_x_media_hora(nueva_configuracion.getMonto_x_media_hora());
         this.configuracion_general.setPorcentaje_seña(nueva_configuracion.getPorcentaje_seña());
             
         // Se setean todas las horas
         this.configuracion_general.setHorario_inicio_pico(nueva_configuracion.getHorario_inicio_pico());
         this.configuracion_general.setHorario_fin_pico(nueva_configuracion.getHorario_fin_pico());
+
+        // Se setea la duracion minima del turno
+        this.configuracion_general.setDuracion_minima_turno(nueva_configuracion.getDuracion_minima_turno());
 
         // Se setea la duracion maxima del turno
         this.configuracion_general.setDuracion_maxima_turno(nueva_configuracion.getDuracion_maxima_turno());
