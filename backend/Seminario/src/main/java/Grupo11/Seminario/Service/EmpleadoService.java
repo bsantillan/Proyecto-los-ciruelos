@@ -17,6 +17,10 @@ public class EmpleadoService {
         i_empleado_repository.save(empleado);
     }
 
+    public Empleado buscar_empleado(Integer id_empleado){
+        return i_empleado_repository.findById(id_empleado).get();
+    }
+
     public Boolean existe_empleado(Integer id_empleado){
         if (i_empleado_repository.findById(id_empleado).isEmpty()){
             return false;
