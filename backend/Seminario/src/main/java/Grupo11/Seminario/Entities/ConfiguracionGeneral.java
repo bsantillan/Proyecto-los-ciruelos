@@ -40,10 +40,10 @@ public class ConfiguracionGeneral {
     private Float monto_pelotas;
 
     @Column(nullable = false, name = "duracion_minima_turno")
-    private Float duracion_minima_turno;
+    private Integer duracion_minima_turno;
 
     @Column(nullable = false, name = "duracion_maxima_turno")
-    private Float duracion_maxima_turno;
+    private Integer duracion_maxima_turno;
 
     @Column(nullable = false, name = "horario_inicio_pico")
     private LocalTime horario_inicio_pico;
