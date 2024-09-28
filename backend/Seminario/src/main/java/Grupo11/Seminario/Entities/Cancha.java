@@ -24,7 +24,7 @@ public class Cancha {
     @Column(nullable = false, name = "numero")
     private Integer numero;
 
-    @Column(nullable = false, name = "descripccion", length = 300)
+    @Column(nullable = false, name = "descripcion", length = 300)
     private String descripccion;
 
     @Enumerated(EnumType.STRING)
