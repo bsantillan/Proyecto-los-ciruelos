@@ -25,6 +25,7 @@ import Grupo11.Seminario.Entities.Empleado;
 import Grupo11.Seminario.Entities.Pago;
 import Grupo11.Seminario.Entities.Reserva;
 import Grupo11.Seminario.Entities.Turno;
+import Grupo11.Seminario.Entities.Enum.EstadoReserva;
 import Grupo11.Seminario.Service.ReservaService;
 
 @RestController
@@ -76,8 +77,10 @@ public class ReservaController {
                     reserva.setHora(LocalTime.now());
                     reserva.setCantidad_paletas(reservaDTO.getCantidad_paletas());
                     reserva.setCantidad_pelotas(reservaDTO.getCantidad_pelotas());
-                    reserva.setPrecio(reserva_service.calcular_precio_reserva(reserva.getJugador().getSocio(), reserva.getCantidad_pelotas(), reserva.getCantidad_paletas()));
-                    
+                    reserva.setPrecio(reserva_service.calcular_precio_reserva(
+                        reserva.getCantidad_pelotas(), 
+                        reserva.getCantidad_paletas(), 
+                        reserva_service.calcular_medias_horas(reservaDTO.getHorario_inicio(), reservaDTO.getHorario_fin())));
                     PagoMercadoPagoDTO pago_mercado_pagoDTO =reserva_service.pagar(reponse);
                     Pago pago = new Pago();
                     pago.setFecha(pago_mercado_pagoDTO.getFecha());
@@ -85,12 +88,14 @@ public class ReservaController {
                     pago.setMetodo(pago_mercado_pagoDTO.getMetodo_pago());
                     pago.setMotivo(pago_mercado_pagoDTO.getMotivo());
 
-                    if (reserva_service.descuento(reserva.getJugador().getSocio()) != 0f) {
-                        pago.setMonto(reserva_service.calcular_precio_reserva(reserva.getJugador().getSocio(), reserva.getCantidad_pelotas(), reserva.getCantidad_paletas()) / pago.getDescuento());
+                    pago.setDescuento(reserva_service.descuento(reserva.getJugador().getSocio()) * reserva.getPrecio());
+                    if (reservaDTO.getSenia()) {
+                        pago.setMonto((reserva_service.calcular_monto_pago(reserva.getPrecio() - pago.getDescuento())));
+                        reserva.setEstado(EstadoReserva.Seniada);
                     }else{
-                        pago.setMonto(reserva_service.calcular_precio_reserva(reserva.getJugador().getSocio(), reserva.getCantidad_pelotas(), reserva.getCantidad_paletas()));
+                        pago.setMonto(reserva.getPrecio() - pago.getDescuento());
+                        reserva.setEstado(EstadoReserva.Pagada);
                     }
-                    pago.setDescuento(reserva_service.descuento(reserva.getJugador().getSocio()) * pago.getMonto());
 
                     Cuenta cuenta = new Cuenta();
                     cuenta.setNombre(pago_mercado_pagoDTO.getNombre_pagador());
@@ -100,11 +105,13 @@ public class ReservaController {
                     cuenta.setNumero_identificacion(pago_mercado_pagoDTO.getNumero_identificacion());
 
                     pago.setCuenta(cuenta);
+                    pago.setEstado(pago_mercado_pagoDTO.getEstado());
                     
                     List <Pago> pagos = new ArrayList<>();
                     pagos.add(pago);
 
                     reserva.setPagos(pagos);
+                    
 
                     // Se guarda la Reserva y el Turno
                     reserva_service.guardar_reserva(reserva);
