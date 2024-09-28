@@ -1,5 +1,8 @@
 package Grupo11.Seminario.Service;
 
+import java.time.Duration;
+import java.time.LocalTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -69,14 +72,18 @@ public class ReservaService {
         return true;
     }
 
-    public Float calcular_precio_reserva(Boolean socio, Integer cant_pelotas, Integer cant_paletas, Integer cant_medias_horas){
+    public Integer calcular_medias_horas(LocalTime horario_inicio, LocalTime horario_fin){
+        long minutos = Duration.between(horario_inicio, horario_fin).toMinutes();
+        Integer cant_medias_horas = (int) (minutos/30);
         ConfiguracionGeneral configuracion_general = configuracion_general_service.get_configuracion_general();
-        if (socio) {
-            return (configuracion_general.getMonto_reserva() + 
-            configuracion_general.getMonto_paletas() * cant_paletas + 
-            configuracion_general.getMonto_pelotas() * cant_pelotas +
-            configuracion_general.getMonto_x_media_hora() * cant_medias_horas) * descuento(socio);
+        if (cant_medias_horas == (configuracion_general.getDuracion_minima_turno() / 30)) {
+            return 0;
         }
+        return cant_medias_horas - (configuracion_general.getDuracion_minima_turno() / 30);
+    }
+
+    public Float calcular_precio_reserva(Integer cant_pelotas, Integer cant_paletas, Integer cant_medias_horas){
+        ConfiguracionGeneral configuracion_general = configuracion_general_service.get_configuracion_general();
         return configuracion_general.getMonto_reserva() + 
         configuracion_general.getMonto_paletas() * cant_paletas + 
         configuracion_general.getMonto_pelotas() * cant_pelotas +
@@ -89,6 +96,11 @@ public class ReservaService {
             return configuracion_general.getDescuento_socio();
         }
         return 0f;
+    }
+
+    public Float calcular_monto_pago(Float diferencia){
+        ConfiguracionGeneral configuracion_general = configuracion_general_service.get_configuracion_general();
+        return configuracion_general.getPorcentaje_seña() * diferencia;
     }
 
     public Boolean validar_pago(ResponseEntity<String> response) throws JsonMappingException, JsonProcessingException{
