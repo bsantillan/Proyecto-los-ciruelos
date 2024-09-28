@@ -28,12 +28,12 @@ public class ConfiguracionGeneralService {
             ConfiguracionGeneral config = new ConfiguracionGeneral();
 
             // Se setean todos los precios
-            config.setDescuento_socio(0.0f);
-            config.setMonto_paletas(0.0f);
-            config.setMonto_pelotas(0.0f);
-            config.setMonto_reserva(0.0f);
-            config.setMonto_x_media_hora(0f);
-            config.setPorcentaje_seña(0.0f);
+            config.setDescuento_socio(0.1f);
+            config.setMonto_paletas(1000.0f);
+            config.setMonto_pelotas(1800.0f);
+            config.setMonto_reserva(15000.0f);
+            config.setMonto_x_media_hora(5000f);
+            config.setPorcentaje_seña(0.25f);
             
             // Se setean todas las horas
             LocalTime hora_inicio_pico = LocalTime.of(12, 0);
@@ -42,10 +42,10 @@ public class ConfiguracionGeneralService {
             config.setHorario_fin_pico(hora_fin_pico);
 
             //Se setea la duracion minima del turno
-            config.setDuracion_minima_turno(1.3f);
+            config.setDuracion_minima_turno(90);
 
             // Se setea la duracion maxima del turno
-            config.setDuracion_maxima_turno(3.0f);
+            config.setDuracion_maxima_turno(config.getDuracion_minima_turno() * 2);
 
             // Se setan los dias de apertura
             List<DiaApertura> dia_aperturas = new ArrayList<>();
