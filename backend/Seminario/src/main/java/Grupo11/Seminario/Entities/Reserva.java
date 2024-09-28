@@ -4,9 +4,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import Grupo11.Seminario.Entities.Enum.EstadoReserva;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,6 +44,10 @@ public class Reserva {
 
     @Column(nullable = false, name = "cantidad_paletas")
     private Integer cantidad_paletas = 0;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "estado")
+    private EstadoReserva estado;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false, name = "turno_id")
