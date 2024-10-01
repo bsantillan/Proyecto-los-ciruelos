@@ -38,7 +38,7 @@ public class Usuario {
     @Column(nullable = false, name = "email", length = 50)
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(nullable = false, name = "usuario_id")
     private List<Telefono> telefonos = new ArrayList<>();
 
