@@ -11,11 +11,15 @@ export class ApiService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   async getProtectedData() {
-    const token = await this.authService.getToken();
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-
-    return this.http.get(this.apiUrl, { headers }).toPromise();
+    try {
+      const token = await this.authService.getToken();
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      });
+      return await this.http.get(this.apiUrl, { headers }).toPromise();
+    } catch (error) {
+      console.error('Error al obtener datos protegidos:', error);
+      throw error; 
+    }
   }
 }

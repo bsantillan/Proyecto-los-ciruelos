@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       password: this.formBuilder.control('', {
         validators: [Validators.required, Validators.minLength(6), this.passwordValidator],
         nonNullable: true,
-      })
+      }),
     });
   }
 
@@ -61,46 +61,74 @@ export class LoginComponent implements OnInit {
 
     if (email && password) {
       this.authService.loginWithEmailAndPassword({ email, password })
-        .then(result => {
+        .then(async (result) => {
           console.log('Inicio de sesión exitoso', result);
           this.successMessage = 'Inicio de sesión exitoso';
           this.errorMessage = null;
-          this.handleRoleRedirect();
+          await this.handleRoleRedirect(); // Esperar la redirección basada en el rol
         })
-        .catch((error: unknown) => {
-          if (error instanceof Error) {
-            if ((error as any).code === 'auth/user-not-found') {
-              this.errorMessage = 'El correo electrónico no está registrado. Por favor, regístrate primero.';
-              this.successMessage = null;
-            } else if ((error as any).code === 'auth/wrong-password') {
-              this.errorMessage = 'La contraseña es incorrecta. Por favor, intenta nuevamente.';
-              this.successMessage = null;
-            } else {
-              this.errorMessage = 'Ocurrió un error desconocido. Por favor, intenta nuevamente.';
-              this.successMessage = null;
-            }
-          } else {
-            this.errorMessage = 'Ocurrió un error desconocido. Por favor, intenta nuevamente.';
-            this.successMessage = null;
-          }
-          console.error('Error de inicio de sesión', error);
+        .catch((error) => {
+          this.handleLoginError(error);
         });
     } else {
       console.error('Email o contraseña no están definidos');
     }
   }
 
-  // Redirigir según el rol del usuario
-  handleRoleRedirect(): void {
-    const role = this.authService.getRoleBasedOnEmail();
-    if (role === 'jugador') {
-      this.router.navigate(['/jugador-home']);
-    } else if (role === 'empleado') {
-      this.router.navigate(['/empleado-home']);
+  // Manejo de errores de inicio de sesión
+  handleLoginError(error: unknown): void {
+    if (error instanceof Error) {
+      const firebaseError = (error as any).code;
+      switch (firebaseError) {
+        case 'auth/user-not-found':
+          this.errorMessage = 'El correo electrónico no está registrado. Por favor, regístrate primero.';
+          break;
+        case 'auth/wrong-password':
+          this.errorMessage = 'La contraseña es incorrecta. Por favor, intenta nuevamente.';
+          break;
+        case 'auth/too-many-requests':
+          this.errorMessage = 'Demasiados intentos fallidos. Intenta de nuevo más tarde.';
+          break;
+        default:
+          this.errorMessage = 'Ocurrió un error desconocido. Por favor, intenta nuevamente.';
+      }
     } else {
-      this.router.navigate(['/home']);
+      this.errorMessage = 'Error desconocido. Intenta de nuevo.';
     }
+    this.successMessage = null;
   }
+
+  // Redirigir según el rol del usuario
+  async handleRoleRedirect(): Promise<void> {
+    const email = this.form.value.email;
+
+    // Verificar que el email no esté vacío
+    if (!email) {
+        console.error('El email no está definido');
+        return;
+    }
+
+    const { role } = this.authService.getRoleBasedOnEmail(email);
+
+    switch (role) {
+        case 'jugador':
+            this.router.navigate(['/jugador-home']);
+            break;
+        case 'empleado':
+            this.router.navigate(['/empleado-home']);
+            break;
+        case 'profesor':
+            this.router.navigate(['/profesor-home']);
+            break;
+        case 'dueño':
+            this.router.navigate(['/dueno-home']);
+            break;
+        default:
+            this.router.navigate(['/home']);
+    }
+}
+
+
 
   // Validación específica del campo de email
   get isEmailValid(): string | boolean {

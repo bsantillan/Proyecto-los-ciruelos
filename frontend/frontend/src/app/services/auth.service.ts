@@ -21,7 +21,6 @@ export interface Credential {
 })
 export class AuthService {
   private auth: Auth = inject(Auth);
-
   readonly authState$: Observable<User | null> = authState(this.auth);
 
   registerWithEmailAndPassword(credential: Credential): Promise<UserCredential> {
@@ -30,10 +29,11 @@ export class AuthService {
       credential.email,
       credential.password
     ).then((userCredential) => {
-      const role = this.getRoleBasedOnEmail();
-      console.log('Rol del usuario registrado:', role);
-      // Manejar el rol del usuario registrado aquí si es necesario
+      console.log('Usuario registrado:', userCredential);
       return userCredential;
+    }).catch(error => {
+      console.error('Error durante el registro:', error);
+      throw error;
     });
   }
 
@@ -43,10 +43,11 @@ export class AuthService {
       credential.email,
       credential.password
     ).then((userCredential) => {
-      const role = this.getRoleBasedOnEmail();
-      console.log('Rol del usuario logueado:', role);
-      // Manejar el rol del usuario logueado aquí si es necesario
+      console.log('Usuario logueado:', userCredential);
       return userCredential;
+    }).catch(error => {
+      console.error('Error durante el inicio de sesión:', error);
+      throw error;
     });
   }
 
@@ -54,7 +55,6 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.auth, provider);
-      // Aquí puedes manejar el resultado o realizar cualquier acción adicional
       return result as UserCredential;
     } catch (error) {
       console.error('Error durante el inicio de sesión con Google:', error);
@@ -76,15 +76,23 @@ export class AuthService {
     }
   }
 
-  getRoleBasedOnEmail(): string {
-    const user = this.auth.currentUser;
-    if (user?.email) {
-      if (user.email.endsWith('@jugador.com.ar')) {
-        return 'jugador';
-      } else if (user.email.endsWith('@empleado.com')) {
-        return 'empleado';
-      }
+  getRoleBasedOnEmail(email: string): { role: string; esProfesor?: boolean; esDueño?: boolean } {
+    if (email) {
+        // Rol Jugador con booleano esProfesor
+        if (email.endsWith('@jugador.com.ar')) {
+            const esProfesor = email.startsWith('profesor');
+            return { role: 'jugador', esProfesor };
+        }
+        // Rol Empleado con booleano esDueño
+        else if (email.endsWith('@empleado.com')) {
+            const esDueño = email.startsWith('dueño');
+            return { role: 'empleado', esDueño };
+        }
+        // Rol Administrador
+        else if (email.endsWith('@admin.com')) {
+            return { role: 'administrador' };
+        }
     }
-    return 'desconocido';
+    return { role: 'desconocido' };
   }
 }

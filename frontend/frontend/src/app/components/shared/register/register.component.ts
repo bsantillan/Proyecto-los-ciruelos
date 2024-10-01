@@ -67,9 +67,9 @@ export class RegisterComponent {
 
   errorMessages: string[] = [];
 
-  passwordsMatch(group: AbstractControl): ValidationErrors | null {
-    const password = group.get('password')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
+  passwordsMatch(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
     return password === confirmPassword ? null : { mismatch: true };
   }
 
