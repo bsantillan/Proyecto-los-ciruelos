@@ -37,6 +37,11 @@ public class RegistroService {
         return empleado_service.existe_empleado(id_empleado);
     }
 
+    // Se busca si existe el jugador
+    public Boolean existe_jugador(Integer id_jugador){
+        return jugador_service.existe_jugador(id_jugador);
+    }
+
     // Se verifica si el empleado es un dueño
     public Boolean verificar_duenio(Integer id_empleado){
         return empleado_service.verificar_duenio(id_empleado);

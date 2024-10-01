@@ -42,6 +42,9 @@ public class ConfiguracionGeneral {
     @Column(nullable = false, name = "monto_pelotas")
     private Float monto_pelotas;
 
+    @Column(nullable = false, name = "duracion_minima_turno")
+    private Integer duracion_minima_turno;
+
     @Column(nullable = false, name = "duracion_maxima_turno")
     private Integer duracion_maxima_turno;
 
@@ -50,6 +53,9 @@ public class ConfiguracionGeneral {
 
     @Column(nullable = false, name = "horario_fin_pico")
     private LocalTime horario_fin_pico;
+
+    @Column(nullable = false, name = "monto_x_media_hora")
+    private Float monto_x_media_hora;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(nullable = false, name = "configuracion_general_id")

@@ -23,7 +23,7 @@ public class JugadorService {
     }
 
     public Boolean existe_jugador(Integer id_jugador){
-        if (i_jugador_repository.findById(id_jugador).isEmpty()) {
+        if (i_jugador_repository.findById(id_jugador).isEmpty()){
             return false;
         }
         return true;
