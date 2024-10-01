@@ -35,6 +35,10 @@ public class AsociacionService {
         return empleado_service.existe_empleado(id_empleado);
     }
 
+    public Boolean existe_jugador(Integer id_jugador){
+        return jugador_service.existe_jugador(id_jugador);
+    }
+
     public Boolean verificar_duenio(Integer id_empleado){
         return empleado_service.verificar_duenio(id_empleado);
     }
