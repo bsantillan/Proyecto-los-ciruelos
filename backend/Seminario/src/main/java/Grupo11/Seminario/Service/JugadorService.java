@@ -18,15 +18,15 @@ public class JugadorService {
         i_jugador_repository.save(jugador);
     }
 
+    public Jugador buscar_jugador(Integer id_jugador){
+        return i_jugador_repository.findById(id_jugador).get();
+    }
+
     public Boolean existe_jugador(Integer id_jugador){
-        if (i_jugador_repository.findById(id_jugador).isEmpty()){
+        if (i_jugador_repository.findById(id_jugador).isEmpty()) {
             return false;
         }
         return true;
-    }
-
-    public Jugador buscar_jugador(Integer id_jugador){
-        return i_jugador_repository.findById(id_jugador).get();
     }
 
     // Asignar rol de profesor a un jugador

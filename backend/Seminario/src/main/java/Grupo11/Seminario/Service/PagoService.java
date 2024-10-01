@@ -130,7 +130,6 @@ public class PagoService {
     }
 
     public String obtener_token_mercado_pago() throws JsonMappingException, JsonProcessingException {
-
         String url = "https://api.mercadopago.com/oauth/token";  // URL de la API
 
         // Crear el headers del tipo URLENCODED
