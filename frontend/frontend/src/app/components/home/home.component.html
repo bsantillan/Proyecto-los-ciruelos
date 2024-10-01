@@ -1,18 +1,20 @@
 <div class="home">
 
-
-  <header class="home__header">
-    <h1>Bienvenido a Los Ciruelos</h1>
-    <p class="description">
-      La mejor cancha de pádel en la ciudad
-    </p>
-    <p>Reserva tu turno y disfruta de un excelente juego</p>
-    <p class="hours">
-      Abierto de lunes a sábados, de 10:00 a 23:00
-    </p>
-  </header>
-
-  <app-calendario_reserva></app-calendario_reserva>
+  <div class="encabezado">
+    <header class="home_header">
+      <h1>Los Ciruelos Padel Club</h1>
+      <p class="description">
+        Alcanza tu mejor nivel
+      </p>
+      <p class="description">Elige tu turno</p>
+    </header>
+  
+    <div class="calendario">
+      <app-calendario_reserva></app-calendario_reserva>
+  
+    </div>
+  </div>
+  
 
   <section class="home__features">
     <div class="feature">
@@ -28,9 +30,14 @@
       <p>¿Necesitas paletas o pelotas?</p>
       <p>Puedes alquilar todo el material necesario en el club.</p>
     </div>
+
+
   </section>
 
   <footer class="home__footer">
     <p>&copy; 2024 Los Ciruelos. Todos los derechos reservados.</p>
   </footer>
 </div>
+
+<app-mercadopago></app-mercadopago>
+

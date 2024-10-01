@@ -84,6 +84,20 @@ export class CalendarioReservaComponent implements OnInit {
     this.selectedDate = input.value;
     this.minDate = this.getMinDate(); // Actualiza la fecha mínima
     this.loadReservations(this.selectedDate);
+  
+    // Limpiar las celdas seleccionadas al cambiar de fecha
+    this.clearSelectedCells();
+    this.hideOptionsMenu();
+  }
+  
+  clearSelectedCells(): void {
+    this.highlightedCells = [];
+    this.halfHighlightedCell = null;
+    
+  }
+
+  hideOptionsMenu(): void {
+    this.showOptionsMenu = false;
   }
 
   showTooltip(event: MouseEvent, court: Court, slot: string) {
