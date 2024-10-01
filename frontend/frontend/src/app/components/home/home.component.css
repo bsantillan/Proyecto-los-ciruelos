@@ -16,13 +16,13 @@
 
     /* Fondo para la sección "Bienvenidos" hasta el calendario */
     .encabezado {
+        position: relative;
         display: flex;
-        flex-direction: column;
-        justify-content: center; /* Centrar verticalmente */
-        align-items: center;     /* Centrar horizontalmente */
-        padding: 80px 20px;
-        height: 100vh; /* Ocupa toda la pantalla */
-        background-image: url('../../assets/images/john-fornander-y6_SJpU3Alk-unsplash.jpg'); 
+        justify-content: center;
+        align-items: center; 
+        padding: 60px 20px;
+        min-height: 100vh;
+        background-image: url('../../assets/images/john-fornander-y6_SJpU3Alk-unsplash.jpg');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -140,36 +140,43 @@
 /* ---------------------------------------- QUIENES SOMOS ----------------------------------------------- */
 
     .descripcion {
-        padding: 30px; /* Espaciado interno */
         max-width: 800px; /* Ancho máximo */
-        margin: 40px auto; /* Centrar la sección */
-        text-align: center; /* Centrar el texto */
+        margin: 0 auto; /* Centrar la sección horizontalmente */
+        padding: 20px;
+        min-height: 80vh; /* Altura mínima de la sección */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Centrar el contenido verticalmente */
+
     }
 
     .descripcion h1 {
-        font-size: 2.5rem; /* Tamaño de fuente del título */
+        font-size: 3rem; /* Aumentar el tamaño de fuente del título */
         color: var(--text); /* Color del texto, usando la variable */
         margin-bottom: 20px; /* Espaciado debajo del título */
     }
 
     .descripcion p {
-        font-size: 1.2rem; /* Tamaño de fuente del párrafo */
+        font-size: 1.5rem; /* Aumentar el tamaño de fuente del párrafo */
         color: var(--textx); /* Color del texto */
-        line-height: 1.6; /* Altura de línea para mejorar la legibilidad */
+        line-height: 1.8; /* Altura de línea para mejorar la legibilidad */
         margin: 0; /* Sin margen por defecto */
     }
 
 /* ---------------------------------------- DONDE ESTAMOS ----------------------------------------------- */
 
     .ubicacion {
-        padding: 30px; /* Espaciado interno */
         max-width: 800px; /* Ancho máximo */
-        margin: 40px auto; /* Centrar la sección */
-        text-align: center; /* Centrar el texto */
+        margin: 0 auto; /* Centrar la sección horizontalmente */
+        padding: 20px;
+        min-height: 80vh; /* Altura mínima de la sección */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Centrar el contenido verticalmente */
     }
 
     .ubicacion h1 {
-        font-size: 2.5rem; /* Tamaño de fuente del título */
+        font-size: 3rem; /* Aumentar el tamaño de fuente del título */
         color: var(--text); /* Color del texto, usando la variable */
         margin-bottom: 20px; /* Espaciado debajo del título */
     }
@@ -178,7 +185,6 @@
         font-size: 1.2rem; /* Tamaño de fuente del párrafo */
         color: var(--textx); /* Color del texto */
         line-height: 1.6; /* Altura de línea para mejorar la legibilidad */
-        margin: 0; /* Sin margen por defecto */
     }
 
 /* ---------------------------------------- INFORMACION SOBRE EL CLUB ----------------------------------------------- */
