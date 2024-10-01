@@ -79,6 +79,7 @@ public class ConfiguracionGeneralService {
         this.configuracion_general.setMonto_pelotas(nueva_configuracion.getMonto_pelotas());
         this.configuracion_general.setMonto_reserva(nueva_configuracion.getMonto_reserva());
         this.configuracion_general.setMonto_x_media_hora(nueva_configuracion.getMonto_x_media_hora());
+        this.configuracion_general.setMonto_asociacion(nueva_configuracion.getMonto_asociacion());
         this.configuracion_general.setPorcentaje_seña(nueva_configuracion.getPorcentaje_seña());
             
         // Se setean todas las horas
