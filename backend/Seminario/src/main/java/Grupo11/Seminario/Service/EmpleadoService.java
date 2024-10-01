@@ -24,6 +24,10 @@ public class EmpleadoService {
         return true;
     }
 
+    public Empleado buscar_empleado(Integer id_empleado){
+        return i_empleado_repository.findById(id_empleado).get();
+    }
+
     public Boolean verificar_duenio(Integer id_empleado){
         return i_empleado_repository.findById(id_empleado).get().getDuenio();
     }
