@@ -32,6 +32,7 @@ public class ConfiguracionGeneralService {
             config.setMonto_paletas(1000.0f);
             config.setMonto_pelotas(1800.0f);
             config.setMonto_reserva(15000.0f);
+            config.setMonto_asociacion(10000.0f);
             config.setMonto_x_media_hora(5000f);
             config.setPorcentaje_seña(0.25f);
             
@@ -90,7 +91,7 @@ public class ConfiguracionGeneralService {
         this.configuracion_general.setDuracion_minima_turno(nueva_configuracion.getDuracion_minima_turno());
 
         // Se setea la duracion maxima del turno
-        this.configuracion_general.setDuracion_maxima_turno(nueva_configuracion.getDuracion_maxima_turno());
+        this.configuracion_general.setDuracion_maxima_turno(this.configuracion_general.getDuracion_minima_turno()*2);
 
         // Eliminar los días de apertura existentes
         if (this.configuracion_general.getDias_apertura() != null) {
