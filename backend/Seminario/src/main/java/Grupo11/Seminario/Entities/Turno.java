@@ -28,7 +28,7 @@ public class Turno {
     private LocalDate fecha;
 
     @Column(nullable = false, name = "horario_inicio")
-    private LocalTime horario_inicio;
+    private LocalTime horarioInicio;
 
     @Column(nullable = false, name = "horario_fin")
     private LocalTime horario_fin;
