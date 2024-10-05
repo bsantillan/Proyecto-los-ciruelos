@@ -21,8 +21,8 @@ public class ConfiguracionGeneralController {
     @Autowired
     private RegistroService registro_service;
 
-    @GetMapping("/public/obtener_configuracion")
-    public ResponseEntity<?> obtener_configuracion_general() {
+    @GetMapping("/public/consultar_configuracion")
+    public ResponseEntity<?> consultar_configuracion_general() {
         return ResponseEntity.ok().body(configuracion_general_service.get_configuracion_general());
     }
 
