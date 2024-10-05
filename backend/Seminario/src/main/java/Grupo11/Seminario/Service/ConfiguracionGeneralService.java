@@ -48,20 +48,23 @@ public class ConfiguracionGeneralService {
             // Se setea la duracion maxima del turno
             config.setDuracion_maxima_turno(config.getDuracion_minima_turno() * 2);
 
-            // Se setan los dias de apertura
             List<DiaApertura> dia_aperturas = new ArrayList<>();
 
-            DiaApertura dia_apertura = new DiaApertura();
-            LocalTime hora_inicio = LocalTime.of(12, 0);
-            LocalTime hora_fin = LocalTime.of(16, 0);
+            String[] diasSemana = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
 
-            dia_apertura.setDia("Lunes");
-            dia_apertura.setHorario_inicio(hora_inicio);
-            dia_apertura.setHorario_fin(hora_fin);
+            // Horarios de apertura
+            LocalTime hora_inicio = LocalTime.of(8, 0);
+            LocalTime hora_fin = LocalTime.of(22, 0);
 
-            dia_aperturas.add(dia_apertura);
+            // Añadimos los días con los horarios correspondientes
+            for (String dia : diasSemana) {
+                DiaApertura dia_apertura = new DiaApertura();
+                dia_apertura.setDia(dia);
+                dia_apertura.setHorario_inicio(hora_inicio);
+                dia_apertura.setHorario_fin(hora_fin);
+                dia_aperturas.add(dia_apertura);
+            }
 
-            dia_apertura.setHorario_inicio(hora_fin_pico);
             config.setDias_apertura(dia_aperturas);
 
             // Se guarda la configuracion general
