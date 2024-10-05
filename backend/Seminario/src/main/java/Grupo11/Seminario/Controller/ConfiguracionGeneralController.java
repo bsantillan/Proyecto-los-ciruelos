@@ -13,7 +13,7 @@ import Grupo11.Seminario.Service.ConfiguracionGeneralService;
 import Grupo11.Seminario.Service.RegistroService;
 
 @RestController
-@RequestMapping(path = "/private/configuracion_general")
+@RequestMapping(path = "/configuracion_general")
 public class ConfiguracionGeneralController {
 
     @Autowired
@@ -21,22 +21,12 @@ public class ConfiguracionGeneralController {
     @Autowired
     private RegistroService registro_service;
 
-    @GetMapping("/obtener_configuracion/{id_duenio}")
-    public ResponseEntity<?> obtener_configuracion_general(@PathVariable Integer id_duenio) {
-
-        // Se verifica que exista el empleado con dicho Id
-        if (registro_service.existe_empleado(id_duenio)){
-
-            // Se verifica que el empleado sea un dueño
-            if (registro_service.verificar_duenio(id_duenio)){
-                return ResponseEntity.ok().body(configuracion_general_service.get_configuracion_general());
-            }
-            return ResponseEntity.badRequest().body("No tiene permisos para obtener la configuracion general");
-        }
-        return ResponseEntity.badRequest().body("No esta registrado el empleado o no es un empleado");
+    @GetMapping("/public/obtener_configuracion")
+    public ResponseEntity<?> obtener_configuracion_general() {
+        return ResponseEntity.ok().body(configuracion_general_service.get_configuracion_general());
     }
 
-    @PutMapping("/actualizar_configuracion/{id_duenio}")
+    @PutMapping("/private/actualizar_configuracion/{id_duenio}")
     public ResponseEntity<?> actualizar_configuracion_general(@PathVariable Integer id_duenio, @RequestBody ConfiguracionGeneral nueva_configuracion) {
         
         // Se verifica que exista el empleado con dicho Id
