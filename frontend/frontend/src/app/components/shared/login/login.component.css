@@ -14,6 +14,8 @@ html, body {
     --text: #fff;
 }
 
+
+
 .form {
     display: flex;
     align-items: center;
@@ -21,6 +23,26 @@ html, body {
     min-height: 100vh;
     padding: 20px; /* Añadido padding para evitar que el formulario esté pegado al borde de la pantalla */
 }
+
+.error-message-container {
+    text-align: center; /* Centra el texto dentro del contenedor */
+    margin-top: 20px;  /* Espaciado superior para mayor separación */
+  }
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    display: block;
+  }
+  
+
+  .success-message {
+    color: green;
+    font-weight: bold;
+    font-size: 16px;
+    display: block;
+  }
+  
 
 .form__container {
     width: 100%;
@@ -163,3 +185,4 @@ html, body {
     text-align: center;
     margin-top: 20px; 
 }
+

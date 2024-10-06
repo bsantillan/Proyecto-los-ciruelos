@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { MatCheckboxModule } from '@angular/material/checkbox'
 
 // Importaciones de Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -58,6 +58,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MatToolbarModule,
     MatSelectModule,
     NgOptimizedImage,
+    MatCheckboxModule,
     FormsModule
   ],
   providers: [

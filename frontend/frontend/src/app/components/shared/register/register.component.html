@@ -1,18 +1,22 @@
 <div class="form">
   <div class="form__container">
-    <!-- Botón para volver a la página de login -->
     <button mat-icon-button class="go-back-button" (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
     </button>
 
     <h1>Registrarse</h1>
 
-    <!-- Botón para iniciar sesión con proveedores -->
-    <app-button-providers [isLogin]="false"></app-button-providers>
+<app-button-providers 
+   class="custom-button"
+   [isLogin]="false" 
+   (googleData)="onGoogleSignIn($event)">
+</app-button-providers>
 
-    <!-- Formulario de registro -->
-    <form [formGroup]="form" (ngSubmit)="signUp()">
-      <!-- Campo para nombre -->
+  
+
+    <form [formGroup]="form" (ngSubmit)="signUp()" novalidate>
+
+
       <mat-form-field appearance="fill" class="custom-field">
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="names" />
@@ -21,7 +25,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Campo para apellido -->
       <mat-form-field appearance="fill" class="custom-field">
         <mat-label>Apellido</mat-label>
         <input matInput formControlName="lastName" />
@@ -30,7 +33,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Campo para correo electrónico -->
       <mat-form-field appearance="fill" class="custom-field">
         <mat-label>Correo electrónico</mat-label>
         <input matInput formControlName="email" />
@@ -47,19 +49,24 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Campo para contraseña -->
+
       <mat-form-field appearance="fill" class="custom-field">
         <mat-label>Contraseña</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" />
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          (blur)="checkValidations()"
+        />
         <button
           mat-icon-button
+
           matSuffix
-          (click)="toggleHide()"
-          [attr.aria-label]="hide ? 'Mostrar contraseña' : 'Ocultar contraseña'"
-          [attr.aria-pressed]="!hide"
-          class="password-toggle-button"
+          (click)="toggleHidePassword()"
+          [attr.aria-label]="hidePassword ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+          type="button"
         >
-          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
         <mat-error *ngIf="form.get('password')?.touched">
           <ng-container *ngIf="form.get('password')?.hasError('required')">
@@ -68,22 +75,29 @@
           <ng-container *ngIf="form.get('password')?.hasError('minlength')">
             Contraseña debe tener al menos 6 caracteres.
           </ng-container>
+          <ng-container *ngIf="form.get('password')?.hasError('pattern')">
+            Contraseña debe incluir al menos una letra mayúscula.
+          </ng-container>
         </mat-error>
       </mat-form-field>
 
-      <!-- Campo para confirmar contraseña -->
+
       <mat-form-field appearance="fill" class="custom-field">
-        <mat-label>Confirmar contraseña</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'" formControlName="confirmPassword" />
+        <mat-label>Confirmar Contraseña</mat-label>
+        <input
+          matInput
+          [type]="hideConfirmPassword ? 'password' : 'text'"
+          formControlName="confirmPassword"
+          (blur)="checkValidations()"
+        />
         <button
           mat-icon-button
           matSuffix
-          (click)="toggleHide()"
-          [attr.aria-label]="hide ? 'Mostrar contraseña' : 'Ocultar contraseña'"
-          [attr.aria-pressed]="!hide"
-          class="password-toggle-button"
+          (click)="toggleHideConfirmPassword()"
+          [attr.aria-label]="hideConfirmPassword ? 'Mostrar confirmación' : 'Ocultar confirmación'"
+          type="button"
         >
-          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
         <mat-error *ngIf="form.get('confirmPassword')?.touched">
           <ng-container *ngIf="form.get('confirmPassword')?.hasError('required')">
@@ -92,58 +106,70 @@
           <ng-container *ngIf="form.get('confirmPassword')?.hasError('minlength')">
             Confirmar contraseña debe tener al menos 6 caracteres.
           </ng-container>
-          <ng-container *ngIf="form.hasError('mismatch')">
+          <ng-container *ngIf="passwordMismatch && form.get('confirmPassword')?.touched">
             Las contraseñas no coinciden.
           </ng-container>
         </mat-error>
       </mat-form-field>
 
-      <!-- Campo para teléfonos -->
       <div formArrayName="phones">
-        <div *ngFor="let phone of phones.controls; let i = index">
+        <div *ngFor="let phone of phones.controls; let i = index" class="phone-entry">
           <mat-form-field appearance="fill" class="custom-field">
-            <mat-label>Teléfono {{ i + 1 }}</mat-label>
+            <mat-label>Número de Teléfono {{i + 1}}</mat-label>
             <input matInput [formControlName]="i" />
-            <mat-error *ngIf="getPhoneError(i)">
-              {{ getPhoneError(i) }}
+            <mat-error *ngIf="phone.touched">
+              <ng-container *ngIf="phone.hasError('required')">
+                Número de teléfono es obligatorio.
+              </ng-container>
+              <ng-container *ngIf="phone.hasError('pattern')">
+                Número de teléfono inválido (debe tener entre 6 y 15 dígitos).
+              </ng-container>
             </mat-error>
           </mat-form-field>
+
+          <button mat-icon-button (click)="removePhone(i)" aria-label="Eliminar teléfono">
+            <mat-icon>delete</mat-icon>
+          </button>
         </div>
-        <button mat-raised-button color="primary" (click)="addPhone()">Agregar teléfono</button>
       </div>
 
-      <!-- Campo para categoría de jugador -->
+      <button mat-button (click)="addPhone()" [disabled]="phones.length >= maxPhones">
+        Agregar otro número de teléfono
+      </button>
+
       <mat-form-field appearance="fill" class="custom-field">
-        <mat-label>Categoría de jugador</mat-label>
+        <mat-label>Categoría de Jugador</mat-label>
         <mat-select formControlName="playerCategory">
-          <mat-option *ngFor="let category of playerCategories" [value]="category">
-            {{ category }}
-          </mat-option>
+          <mat-option *ngFor="let category of playerCategories" [value]="category">{{ category }}</mat-option>
         </mat-select>
         <mat-error *ngIf="form.get('playerCategory')?.touched && form.get('playerCategory')?.hasError('required')">
           Seleccione una categoría de jugador.
         </mat-error>
       </mat-form-field>
 
-      <!-- Mensajes de error generales -->
+
       <div *ngIf="errorMessages.length > 0" class="error-messages">
         <mat-error *ngFor="let message of errorMessages">
           {{ message }}
         </mat-error>
       </div>
 
-      <!-- Botón para registrarse -->
-      <button mat-raised-button color="primary" type="submit">
-        Registrarse
-      </button>
-
-      <div class="text-center">
-        ¿Ya tenes una cuenta? 
-        <div class="login">
-          <a routerLink="/login">Iniciar Sesion</a>
-        </div>
+      <div *ngIf="passwordMismatch" class="password-mismatch-message">
+        <mat-error>
+          Las contraseñas no coinciden.
+        </mat-error>
       </div>
 
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Registrarse</button>
     </form>
+
+    <div class="text-center">
+      ¿Ya tenes una cuenta? 
+      <div class="login">
+        <a routerLink="/login">Iniciar Sesion</a>
+      </div>
+    </div>
+
   </div>
 </div>

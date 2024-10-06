@@ -1,4 +1,3 @@
-/* Global styles */
 html, body {
   height: 100%;
   margin: 0;
@@ -19,18 +18,39 @@ html, body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 20px; /* Aumentado padding para crear más espacio alrededor del formulario */
+  padding: 20px;
 }
 
-/* Contenedor principal del formulario */
 .form__container {
   width: 100%;
-  max-width: 500px; /* Reducido el ancho máximo del contenedor */
-  background: #fff; /* Fondo blanco para el contenedor del formulario */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-  padding: 20px; /* Reducido el espacio interno del contenedor */
-  margin: 40px auto; /* Aumenta el margen alrededor del contenedor */
+  max-width: 500px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 40px auto;
+}
+
+.phone-entry {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.phone-entry mat-form-field {
+  flex: 1;
+}
+
+.phone-entry button {
+  margin-left: 8px;
+  background-color: transparent; 
+  color: var(--green); 
+  border: none;
+  cursor: pointer; 
+}
+
+.phone-entry button:hover {
+  color: #ff4d4d; 
 }
 
 .form h1 {
@@ -44,61 +64,60 @@ html, body {
 
 .form mat-form-field {
   width: 100%;
-  margin-bottom: 20px; /* Espacio entre los campos del formulario */
-  color: var(--text); /* Asegura que el texto del label y errores sea blanco */
+  margin-bottom: 20px;
+  color: var(--text);
 }
 
 .form mat-form-field input,
 .form mat-form-field textarea {
-  color: var(--text); /* Establece el color del texto al escribir */
+  color: var(--text);
 }
 
 .form mat-form-field .mat-input-element::placeholder {
-  color: var(--text); /* Asegura que el placeholder sea blanco */
+  color: var(--text);
 }
 
 .form mat-form-field .mat-icon {
-  color: var(--text); /* Asegura que los íconos sean blancos */
+  color: var(--text);
 }
 
-/* Estilo específico para el botón de mostrar/ocultar contraseña */
 .password-toggle-button {
-  background-color: #fff; /* Fondo blanco del botón */
-  color: #000; /* Color negro para el ícono */
-  border-radius: 50%; /* Opcional: para hacer el botón redondo */
-  border: none; /* Elimina el borde predeterminado del botón */
-  height: 40px; /* Ajusta la altura del botón */
-  width: 40px; /* Ajusta el ancho del botón */
-  padding: 0; /* Elimina el padding para ajustar el tamaño */
-  display: flex; /* Centra el ícono dentro del botón */
-  align-items: center; /* Centra verticalmente */
-  justify-content: center; /* Centra horizontalmente */
-  cursor: pointer; /* Cursor de puntero */
-  font-size: 20px; /* Tamaño de fuente adecuado para el ícono */
+  background-color: #fff;
+  color: #000;
+  border-radius: 50%;
+  border: none;
+  height: 40px;
+  width: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
 }
 
 .password-toggle-button .mat-icon {
-  color: #000; /* Asegura que el ícono sea negro */
+  color: #000;
 }
 
 .password-toggle-button:hover {
-  background-color: #f0f0f0; /* Color más claro al pasar el cursor */
+  background-color: #f0f0f0;
 }
 
-/* Estilo para los enlaces */
+
 .link-style {
-  color: var(--green); /* Color verde agua para los enlaces */
-  text-decoration: underline; /* Subrayado */
-  cursor: pointer; /* Cursor de puntero */
+  color: var(--green);
+  text-decoration: underline;
+  cursor: pointer;
 }
 
-/* Ubicación del enlace "Ir a Cambiar Contraseña" */
+
 .forgot-password {
-  text-align: left; /* Alinea el texto a la izquierda */
-  margin-top: 10px; /* Ajusta este valor según el espacio deseado */
+  text-align: left;
+  margin-top: 10px;
 }
 
-/* Estilo de los botones en el formulario */
+
 .button-container {
   display: flex;
   justify-content: center; 
@@ -129,7 +148,6 @@ html, body {
   background-color: #f0f0f0; 
 }
 
-/* Ajustes generales para los textos pequeños */
 .small-text {
   font-size: 14px;
   display: block;
@@ -145,13 +163,33 @@ html, body {
   margin-top: 30px;
 }
 
+.professor-checkbox {
+  font-size: 16px; 
+  color: #333; 
+  margin-top: 20px; 
+}
+
+
+.professor-checkbox:hover {
+  cursor: pointer; 
+}
+
+.professor-checkbox.mat-checkbox-checked .mat-checkbox-label {
+  color: #4caf50; 
+}
+
+
+.mat-checkbox {
+  margin-right: 10px; 
+}
+
+
 .small-text.log-in-redirect a {
   color: var(--green);
   text-decoration: underline;
   cursor: pointer;
 }
 
-/* Asegura que el div con clase text-center esté centrado */
 .text-center {
   text-align: center;
   margin-top: 20px; 

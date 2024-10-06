@@ -15,10 +15,10 @@
         <input matInput 
                placeholder="Ingrese su correo electrónico" 
                formControlName="email">
-        <mat-error class="error-text" *ngIf="email?.hasError('required')">
+        <mat-error class="error-text" *ngIf="email?.hasError('required') && email?.touched">
           El correo electrónico es obligatorio.
         </mat-error>
-        <mat-error class="error-text" *ngIf="email?.hasError('email')">
+        <mat-error class="error-text" *ngIf="email?.hasError('email') && email?.touched">
           Por favor, ingrese un correo electrónico válido.
         </mat-error>
       </mat-form-field>

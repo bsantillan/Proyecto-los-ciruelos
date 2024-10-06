@@ -5,13 +5,12 @@
 <div class="form">
   <div class="form__container">
     <h1>Iniciar Sesión</h1>
-    
-    <!-- Botón de proveedores de autenticación -->
+
     <app-button-providers [isLogin]="true"></app-button-providers>
 
-    <!-- Formulario de inicio de sesión -->
+
     <form [formGroup]="form" (ngSubmit)="login()">
-      <!-- Campo de correo electrónico -->
+
       <div>
         <mat-form-field appearance="fill" class="custom-field">
           <mat-label>Correo electrónico</mat-label>
@@ -22,7 +21,7 @@
         </mat-form-field>
       </div>
 
-      <!-- Campo de contraseña -->
+
       <div class="password-field-container">
         <mat-form-field appearance="fill" class="custom-field">
           <mat-label>Contraseña</mat-label>
@@ -42,7 +41,7 @@
           </mat-error>
         </mat-form-field>
 
-        <!-- Enlace para recuperar contraseña -->
+
         <div class="forgot-password">
           <a routerLink="/cambiar-contrasenia" class="forgot-password-link">
             Olvidé mi contraseña
@@ -50,13 +49,13 @@
         </div>
       </div>
 
-      <!-- Botón para iniciar sesión -->
+
       <div class="button-container">
         <button mat-flat-button color="primary" type="submit">Iniciar Sesión</button>
       </div>
     </form>
 
-    <!-- Mensaje de error o éxito -->
+
     <div class="message" *ngIf="errorMessage">
       <span class="error-message">{{ errorMessage }}</span>
     </div>
@@ -64,10 +63,10 @@
       <span class="success-message">{{ successMessage }}</span>
     </div>
 
-    <!-- Línea divisoria -->
+
     <hr class="divider" />
 
-    <!-- Enlace para registrarse -->
+
     <div class="text-center">
       ¿Aún no tienes una cuenta? 
       <div class="register">
