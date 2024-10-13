@@ -25,6 +25,7 @@ import { RegisterComponent } from './components/shared/register/register.compone
 import { ButtonProviders } from './components/shared/login/cambiar_contrasenia/button_provider/button_providers.component'
 import { HomeComponent } from './components/home/home.component';
 import { CalendarioReservaComponent } from './components/shared/calendario_reserva/calendario_reserva.component';
+import { PostRegisterComponent } from './components/shared/register/postregister/postregister.component';
 
 // Firebase
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -43,7 +44,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     RegisterComponent,
     ButtonProviders,
     CalendarioReservaComponent,
-    HomeComponent
+    HomeComponent,
+    PostRegisterComponent
+
   ],
   imports: [
     BrowserModule,

@@ -6,7 +6,8 @@
   <div class="form__container">
     <h1>Iniciar Sesión</h1>
 
-    <app-button-providers [isLogin]="true"></app-button-providers>
+    <app-button-providers [isLogin]="true" (onGoogleLogin)="onGoogleLogin()"></app-button-providers>
+
 
 
     <form [formGroup]="form" (ngSubmit)="login()">

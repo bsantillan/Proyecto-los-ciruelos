@@ -13,8 +13,6 @@ interface RegisterForm {
   email: FormControl<string>;
   password: FormControl<string>;
   confirmPassword: FormControl<string>;
-  phones: FormArray<FormControl<string>>;
-  playerCategory: FormControl<string>;
 }
 
 
@@ -33,16 +31,10 @@ export class RegisterComponent {
   userNames: string = '';
   userLastName: string = '';
   isGoogleSignInInProgress = false;
-  
-
   errorMessages: string[] = []; 
   
   emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  maxPhones = 3; 
 
-  playerCategories = [
-    'Principiante', 'Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta', 'Sexta', 'Séptima'
-  ];
   
   form: FormGroup<RegisterForm> = this.formBuilder.group({
     names: this.formBuilder.control('', {
@@ -64,16 +56,6 @@ export class RegisterComponent {
     }),
     confirmPassword: this.formBuilder.control('', {
       validators: [Validators.required, Validators.minLength(6)],
-      nonNullable: true,
-    }),
-    phones: this.formBuilder.array([
-      this.formBuilder.control('', {
-        validators: [Validators.required, Validators.pattern(/^\d{6,15}$/)],
-        nonNullable: true,
-      })
-    ]),
-    playerCategory: this.formBuilder.control('', {
-      validators: Validators.required,
       nonNullable: true,
     })
   }, { validators: this.passwordsMatch });
@@ -116,6 +98,7 @@ export class RegisterComponent {
       );
     };
   }
+
   signUp(): void {
     if (this.form.invalid) {
       this.errorMessages = this.getFormErrors();
@@ -126,7 +109,7 @@ export class RegisterComponent {
       email: this.form.get('email')?.value || '',
       password: this.form.get('password')?.value || '',
     };
-  
+
     this.authService.isEmailRegistered(credential.email)
       .then(isRegistered => {
         if (isRegistered) {
@@ -134,28 +117,39 @@ export class RegisterComponent {
           this.router.navigate(['/login']);
           return;
         }
-  
-        // Solo después de completar el formulario, procedemos a registrar el usuario
         return this.authService.registerWithEmailAndPassword(credential)
           .then(() => {
-            console.log('Registro exitoso y correo de verificación enviado.');
-            alert('Registro exitoso. Por favor, te solicitamos verifica tu email y validarlo.');
-            this.router.navigate(['/login']);
+            alert('Registro exitoso. Verifica tu correo electrónico para completar la validación .');
+            this.router.navigate(['/postregister']);
           });
       })
       .catch(error => {
         console.error('Error en el registro:', error);
-        this.errorMessages.push(error.message);
+        this.errorMessages.push(error.message || 'Error desconocido');
       });
   }
-  
-  
-  
-  
-  onGoogleSignIn(googleData: { name: string; lastName: string; email: string }): void {
-    this.fillFormWithGoogleData(googleData);
-    console.log('Formulario autocompletado con:', googleData);
-  }
+
+  onGoogleSignIn(): void {
+    this.isGoogleSignInInProgress = true; 
+    this.authService.signInWithGoogleProvider()
+      .then(userData => {
+          if (userData) {
+              this.fillFormWithGoogleData(userData);
+              alert('Registro exitoso. Verifica tu correo electrónico para completar la validación.');
+              this.router.navigate(['/postregister']);
+          } else {
+              alert('No se pudo completar el registro con Google.');
+          }
+      })
+      .catch(error => {
+          console.error('Error en la autenticación de Google:', error);
+          alert('Hubo un error al iniciar sesión con Google. Por favor, intenta de nuevo.');
+      })
+      .finally(() => {
+        this.isGoogleSignInInProgress = false; 
+      });
+}
+
   
   
   fillFormWithGoogleData(userData: { name: string; lastName: string; email: string }): void {
@@ -211,18 +205,6 @@ errorMessage: string = '';
     if (this.form.hasError('mismatch')) {
       messages.push('Las contraseñas no coinciden.');
     }
-    if (controls['playerCategory'].invalid) {
-      messages.push('Seleccione una categoría de jugador.');
-    }
-    if (this.phones.length < 1) {
-      messages.push('Debe agregar al menos un número de teléfono.');
-    } else {
-      this.phones.controls.forEach((control, index) => {
-        if (control.invalid && control.value) { 
-          messages.push(`Número de teléfono ${index + 1} inválido.`);
-        }
-      });
-    }
     return messages;
   }
 
@@ -235,17 +217,7 @@ errorMessage: string = '';
     }
 }
 
-  addPhone(): void {
-    if (this.phones.length < this.maxPhones) {
-      this.phones.push(
-        this.formBuilder.control('', {
-          validators: [Validators.required, Validators.pattern(/^\d{6,15}$/)],
-          nonNullable: true,
-        })
-      );
-    }
 
-  }
 
   checkValidations() {
     Object.keys(this.form.controls).forEach(controlName => {
@@ -262,17 +234,8 @@ errorMessage: string = '';
 
     this.passwordMismatch = password !== confirmPassword;
   }
-  get phones(): FormArray {
-    return this.form.get('phones') as FormArray;
-  }
 
-  removePhone(index: number): void {
-    if (this.phones.length === 1) {
-      this.phones.at(index).setValue('');
-    } else {
-      this.phones.removeAt(index);
-    }
-  }
+
 
   toggleHidePassword(): void {
     this.hidePassword = !this.hidePassword;

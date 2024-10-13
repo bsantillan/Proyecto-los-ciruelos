@@ -1,0 +1,52 @@
+<div class="form">
+    <div class="form__container">
+  
+      <h1>Post Registro</h1>
+  
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div formArrayName="phones">
+          <div *ngFor="let phone of phones.controls; let i = index" class="phone-entry">
+            <mat-form-field appearance="fill" class="custom-field">
+              <mat-label>Número de Teléfono {{ i + 1 }}</mat-label>
+              <input matInput [formControlName]="i" placeholder="Ej. 123456" />
+              <mat-error *ngIf="phone.touched">
+                <ng-container *ngIf="phone.hasError('required')">
+                  Número de teléfono es obligatorio.
+                </ng-container>
+                <ng-container *ngIf="phone.hasError('pattern')">
+                  Número de teléfono inválido (debe tener entre 6 y 15 dígitos).
+                </ng-container>
+              </mat-error>
+            </mat-form-field>
+  
+            <button mat-icon-button (click)="removePhone(i)" aria-label="Eliminar teléfono">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+  
+        <button mat-button (click)="addPhone()" [disabled]="phones.length >= maxPhones">
+          Agregar otro número de teléfono
+        </button>
+  
+        <mat-form-field appearance="fill" class="custom-field">
+          <mat-label>Categoría de Jugador</mat-label>
+          <mat-select formControlName="playerCategory">
+            <mat-option *ngFor="let category of playerCategories" [value]="category">{{ category }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('playerCategory')?.touched && form.get('playerCategory')?.hasError('required')">
+            Seleccione una categoría de jugador.
+          </mat-error>
+        </mat-form-field>
+  
+        <div *ngIf="errorMessages.length > 0" class="error-messages">
+          <mat-error *ngFor="let message of errorMessages">
+            {{ message }}
+          </mat-error>
+        </div>
+  
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Guardar Datos</button>
+      </form>
+    </div>
+  </div>
+  

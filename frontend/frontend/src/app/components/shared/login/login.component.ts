@@ -39,8 +39,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Inicialización si es necesario
-  }
+}
+
 
   passwordValidator(control: FormControl<string>): { [key: string]: boolean } | null {
     const password = control.value;
@@ -72,9 +72,25 @@ export class LoginComponent implements OnInit {
         });
     } else {
       console.error('Email o contraseña no están definidos');
+    
+    
     }
   }
-  
+  onGoogleLogin(): void {
+    this.authService.loginWithGoogleProvider()
+        .then(user => {
+            if (user) {
+                console.log('Inicio de sesión con Google exitoso');
+                this.router.navigate(['/home']);
+            }
+        })
+        .catch(error => {
+            console.error('Error en la autenticación de Google:', error);
+            alert('Hubo un error al iniciar sesión con Google. Por favor, intenta de nuevo.');
+        });
+}
+
+
 
   handleLoginError(error: unknown): void {
     if (error instanceof Error) {
@@ -90,13 +106,16 @@ export class LoginComponent implements OnInit {
           this.errorMessage = 'Demasiados intentos fallidos. Intenta de nuevo más tarde.';
           break;
         default:
-          this.errorMessage = 'El usuario no se encuentra registrado o no ha validado el email';
+          this.errorMessage = 'Error desconocido. Intenta de nuevo.';
       }
     } else {
       this.errorMessage = 'Error desconocido. Intenta de nuevo.';
     }
     this.successMessage = null;
   }
+
+
+
   async handleRoleRedirect(): Promise<void> {
     const email = this.form.value.email;
 
