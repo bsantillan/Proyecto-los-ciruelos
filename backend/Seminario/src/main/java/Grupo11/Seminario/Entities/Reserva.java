@@ -62,6 +62,6 @@ public class Reserva {
     private Empleado empleado;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false, name = "reserva_id")
+    @JoinColumn(nullable = true, name = "reserva_id")
     private List<Pago> pagos;
 }

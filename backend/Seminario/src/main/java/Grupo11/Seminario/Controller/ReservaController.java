@@ -66,7 +66,7 @@ public class ReservaController {
                     Turno turno = new Turno();
                     turno.setCancha(cancha);
                     turno.setFecha(reservaDTO.getFecha());
-                    turno.setHorario_inicio(reservaDTO.getHorario_inicio());
+                    turno.setHorarioInicio(reservaDTO.getHorario_inicio());
                     turno.setHorario_fin(reservaDTO.getHorario_fin());
 
                     // Se setea el Jugador
