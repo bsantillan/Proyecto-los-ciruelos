@@ -29,4 +29,14 @@ public class ConsultaUsuarioController {
         List<Object> usuarios = consultaUsuarioService.buscar_usuarios(nombre, apellido, email);
         return ResponseEntity.ok(usuarios);
     }
+
+    @GetMapping("/usuarios/buscar_profesor")
+    public ResponseEntity<List<Object>> buscar_profesores(
+        @RequestParam Optional<String> nombre,
+        @RequestParam Optional<String> apellido,
+        @RequestParam Optional<String> email
+    ) {
+        List<Object> profesores = consultaUsuarioService.buscar_profesores(nombre, apellido, email);
+        return ResponseEntity.ok(profesores);
+    }
 }
