@@ -60,4 +60,44 @@ public class ConsultaUsuarioService {
 
         return usuarios;
     }
+
+    // Método para buscar profesores
+    public List<Object> buscar_profesores(Optional<String> nombre, Optional<String> apellido, Optional<String> email) {
+        List<Jugador> profesores;
+
+        // Si se busca por email, hacer la búsqueda solo por email y verificar si es profesor
+        if (email.isPresent()) {
+            profesores = jugadorRepository.findByEmail(email.get())
+                .stream()
+                .filter(Jugador::getProfesor) // Filtrar solo los que son profesores
+                .collect(Collectors.toList());
+        }
+        // Filtrar y ordenar por Nombre y Apellido si hay criterios, de lo contrario, buscar todos
+        else if (nombre.isPresent() && apellido.isPresent()) {
+            profesores = jugadorRepository.findByNombreAndApellidoOrderByApellidoAscNombreAsc(nombre.get(), apellido.get())
+                .stream()
+                .filter(Jugador::getProfesor) // Filtrar solo los que son profesores
+                .collect(Collectors.toList());
+        } else if (nombre.isPresent()) {
+            profesores = jugadorRepository.findByNombreOrderByApellidoAscNombreAsc(nombre.get())
+                .stream()
+                .filter(Jugador::getProfesor) // Filtrar solo los que son profesores
+                .collect(Collectors.toList());
+        } else if (apellido.isPresent()) {
+            profesores = jugadorRepository.findByApellidoOrderByApellidoAscNombreAsc(apellido.get())
+                .stream()
+                .filter(Jugador::getProfesor) // Filtrar solo los que son profesores
+                .collect(Collectors.toList());
+        } else {
+            // Si no hay criterios, devolver todos los profesores
+            profesores = jugadorRepository.findByProfesorTrue();
+        }
+
+        // Convertir la lista de profesores a DTOs
+        List<Object> profesList = profesores.stream()
+            .map(JugadorDTO::fromEntity)
+            .collect(Collectors.toList());
+
+        return profesList;
+    }
 }
