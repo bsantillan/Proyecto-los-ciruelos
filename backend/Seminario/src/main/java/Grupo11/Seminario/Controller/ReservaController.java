@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,18 +26,26 @@ import Grupo11.Seminario.Entities.Reserva;
 import Grupo11.Seminario.Entities.Turno;
 import Grupo11.Seminario.Entities.Enum.EstadoReserva;
 import Grupo11.Seminario.Service.ReservaService;
+import Grupo11.Seminario.Service.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(path = "/private/reservas")
+@RequestMapping(path = "/private/")
 public class ReservaController {
 
     @Autowired
     ReservaService reserva_service;
+    @Autowired
+    UsuarioService usuarioService;
     
-    @PostMapping(path = "/reservar_turno/{id_jugador}")
+    @PostMapping(path = "/reservas/reservar_turno")
     public ResponseEntity<?> reservar_turno
-    (@RequestBody ReservaDTO reservaDTO, @PathVariable Integer id_jugador) throws JsonMappingException, JsonProcessingException{
+    (HttpServletRequest request, @RequestBody ReservaDTO reservaDTO) throws JsonMappingException, JsonProcessingException{
         
+        String email = (String) request.getAttribute("email");
+    
+        Integer id_jugador = usuarioService.buscar_usuario(email).get().getId();
+
         // Se verifica que el numero de cancha exista
         if (reserva_service.verificar_numero_cancha(reservaDTO.getNumero_cancha())){
 
@@ -58,7 +65,7 @@ public class ReservaController {
                     }
                 }
                 ResponseEntity<String> reponse = reserva_service.buscar_pago(reservaDTO.getId_mp());
-                if (reserva_service.validar_pago(reponse)) {
+                if (reponse.getStatusCode() == HttpStatus.OK) {
                     // Se busca la cancha
                     Cancha cancha = reserva_service.buscar_cancha(reservaDTO.getNumero_cancha());
 

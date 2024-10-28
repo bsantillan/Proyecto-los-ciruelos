@@ -12,19 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 import Grupo11.Seminario.Service.ConsultaUsuarioService;
 
 @RestController
-@RequestMapping(path = "/private/consultar")
+@RequestMapping(path = "/private/")
 public class ConsultaUsuarioController {
 
     @Autowired
     private ConsultaUsuarioService consultaUsuarioService;
 
     // Endpoint para buscar usuarios y devolver DTOs
-    @GetMapping("/usuarios/buscar")
+    @GetMapping("/consultar/usuarios/buscar")
     public ResponseEntity<List<Object>> buscar_usuarios(
         @RequestParam Optional<String> nombre,
         @RequestParam Optional<String> apellido,
         @RequestParam Optional<String> email
     ) {
+        // Falta hacer la validacion de que el usaurio que hace la peticion tenga permisos
+        // Y tiene que mostrar el id de los usuarios
         List<Object> usuarios = consultaUsuarioService.buscar_usuarios(nombre, apellido, email);
         return ResponseEntity.ok(usuarios);
     }
