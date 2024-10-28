@@ -2,7 +2,6 @@ package Grupo11.Seminario.Entities;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,7 +38,7 @@ public class Usuario {
     @Column(nullable = false, name = "email", length = 50)
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(nullable = false, name = "usuario_id")
     private List<Telefono> telefonos = new ArrayList<>();
 

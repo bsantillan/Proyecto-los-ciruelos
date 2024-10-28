@@ -1,7 +1,6 @@
 package Grupo11.Seminario.DTO;
 
 import java.util.List;
-
 import Grupo11.Seminario.Entities.Jugador;
 import Grupo11.Seminario.Entities.Telefono;
 import lombok.Data;

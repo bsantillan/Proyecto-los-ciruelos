@@ -1,7 +1,6 @@
 package Grupo11.Seminario.Security;
 
 import java.util.Arrays;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -11,7 +10,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +21,9 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(authorizeRequests -> 
                 authorizeRequests
                 .requestMatchers("/public/**").permitAll() // Permite acceso sin autenticación a "/public/**"
+                .requestMatchers("configuracion_general/public/**").permitAll() // Permite acceso sin autenticación a "/public/**"
                 .requestMatchers("/private/**").authenticated()
+                .requestMatchers("configuracion_general/private/**").authenticated()
             )
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita CORS
             .csrf(csrf->csrf.disable()); // Opcional: desactiva CSRF si no es necesario

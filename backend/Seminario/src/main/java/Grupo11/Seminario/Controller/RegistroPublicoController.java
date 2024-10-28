@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import Grupo11.Seminario.DTO.JugadorDTO;
 import Grupo11.Seminario.Entities.Jugador;
 import Grupo11.Seminario.Service.RegistroService;
@@ -24,7 +23,6 @@ public class RegistroPublicoController {
         
         // Verifica que el mail no este registrado
         if (registro_service.verificar_email(jugadorDTO.getEmail())){
-            System.out.print("Entra");
             Jugador jugador = new Jugador();
             jugador.setEmail(jugadorDTO.getEmail());
             jugador.setNombre(jugadorDTO.getNombre());

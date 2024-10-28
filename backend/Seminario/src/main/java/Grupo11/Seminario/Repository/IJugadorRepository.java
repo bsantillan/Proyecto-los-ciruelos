@@ -2,7 +2,6 @@ package Grupo11.Seminario.Repository;
 
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
-
 import Grupo11.Seminario.Entities.Jugador;
 
 public interface IJugadorRepository extends CrudRepository<Jugador, Integer> {
