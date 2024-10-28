@@ -1,6 +1,7 @@
 package Grupo11.Seminario.DTO;
 
 import java.util.List;
+
 import Grupo11.Seminario.Entities.Telefono;
 import Grupo11.Seminario.Entities.Usuario;
 import lombok.Data;
@@ -11,6 +12,7 @@ public class UsuarioDTO {
     private String nombre;
     private String apellido;
     private List<Telefono> telefonos;
+    private String categoria;
 
     // Constructor con argumentos
     public UsuarioDTO(String email, String nombre, String apellido, List<Telefono> telefonos) {
