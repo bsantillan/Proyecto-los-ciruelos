@@ -3,31 +3,40 @@ package Grupo11.Seminario.Security;
 import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import Grupo11.Seminario.Service.UsuarioService;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+
+    private final UsuarioService usuarioService;
+
+    // Inyecta UsuarioService en el constructor
+    public WebSecurityConfig(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita CORS
+            .csrf(csrf->csrf.disable()) // Opcional: desactiva CSRF si no es necesario
             .authorizeHttpRequests(authorizeRequests -> 
                 authorizeRequests
                 .requestMatchers("/public/**").permitAll() // Permite acceso sin autenticación a "/public/**"
-                .requestMatchers("configuracion_general/public/**").permitAll() // Permite acceso sin autenticación a "/public/**"
+                .requestMatchers("/configuracion_general/public/**").permitAll() // Permite acceso sin autenticación a "/public/**"
                 .requestMatchers("/private/**").authenticated()
-                .requestMatchers("configuracion_general/private/**").authenticated()
+                .requestMatchers("/configuracion_general/private/**").authenticated()
             )
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita CORS
-            .csrf(csrf->csrf.disable()); // Opcional: desactiva CSRF si no es necesario
-            http.oauth2ResourceServer(oauth2->oauth2.jwt(Customizer.withDefaults()));
+            .addFilterBefore(new FirebaseAuthFilter(usuarioService), CorsFilter.class);
         return http.build();
     }
 
