@@ -2,6 +2,9 @@ package Grupo11.Seminario.Controller;
 
 import Grupo11.Seminario.Service.EmpleadoService;
 import Grupo11.Seminario.Service.JugadorService;
+import Grupo11.Seminario.Service.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,21 +20,29 @@ public class JugadorController {
     private JugadorService jugadorService;
     @Autowired
     private EmpleadoService empleadoService;
+    @Autowired
+    UsuarioService usuarioService;
 
     // Asigna el rol de profesor a un jugador
-    @PutMapping("/asignar_profesor/{jugador_id}/{duenio_id}")
-    public ResponseEntity<String> asignarRolProfesor(@PathVariable Integer jugador_id, @PathVariable Integer duenio_id) {
+    @PutMapping("/asignar_profesor/{jugador_id}")
+    public ResponseEntity<String> asignarRolProfesor(HttpServletRequest request ,@PathVariable Integer jugador_id) {
         Boolean exito = jugadorService.asignar_rol_profesor(jugador_id);
-        Boolean vduenio = empleadoService.verificar_duenio(duenio_id);
-        if (vduenio) {
+
+        String email = (String) request.getAttribute("email");
+        Integer duenio_id = usuarioService.buscar_usuario(email).get().getId();
+        if (empleadoService.existe_empleado(duenio_id)) {
+            Boolean vduenio = empleadoService.verificar_duenio(duenio_id);
+            if (vduenio) {
             
-            if (exito) {
-                return ResponseEntity.ok("Rol de profesor asignado exitosamente al jugador.");
-            } else {
-                return ResponseEntity.badRequest().body("Error al asignar el rol de profesor.");
+                if (exito) {
+                    return ResponseEntity.ok("Rol de profesor asignado exitosamente al jugador.");
+                } else {
+                    return ResponseEntity.badRequest().body("Error al asignar el rol de profesor.");
+                }
             }
+            return ResponseEntity.badRequest().body("Error al verificar que se sea un dueño");   
         }
-        return ResponseEntity.badRequest().body("Error al verificar que se sea un dueño");
+        return ResponseEntity.badRequest().body("El usuario no es un empleado");
     }
 }
 
