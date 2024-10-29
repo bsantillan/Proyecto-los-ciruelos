@@ -44,20 +44,11 @@ public class ConsultaUsuarioController {
 
     @GetMapping("/usuarios/buscar_profesor")
     public ResponseEntity<?> buscar_profesores(
-        HttpServletRequest request,
         @RequestParam Optional<String> nombre,
         @RequestParam Optional<String> apellido,
         @RequestParam Optional<String> email
     ) {
-
-        String email_usuario = (String) request.getAttribute("email");
-    
-        Integer id_empleado = usuarioService.buscar_usuario(email_usuario).get().getId();
-
-        if (consultaUsuarioService.existe_empleado(id_empleado)) {
-            List<Object> profesores = consultaUsuarioService.buscar_profesores(nombre, apellido, email);
-            return ResponseEntity.ok(profesores);
-        }
-        return ResponseEntity.badRequest().body("No tiene permisos para realizar esta accion");
+        List<Object> profesores = consultaUsuarioService.buscar_profesores(nombre, apellido, email);
+        return ResponseEntity.ok(profesores);
     }
 }
