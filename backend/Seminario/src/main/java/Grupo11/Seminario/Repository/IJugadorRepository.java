@@ -10,4 +10,6 @@ public interface IJugadorRepository extends CrudRepository<Jugador, Integer> {
     List<Jugador> findByNombreOrderByApellidoAscNombreAsc(String nombre);
     List<Jugador> findByApellidoOrderByApellidoAscNombreAsc(String apellido);
     List<Jugador> findAllByOrderByApellidoAscNombreAsc();
+    // Añadir método para buscar profesores
+    List<Jugador> findByProfesorTrue();
 }
