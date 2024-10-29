@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class EmpleadoDTO {
+    private Integer id;
     private String email;
     private String nombre;
     private String apellido;
@@ -26,12 +27,15 @@ public class EmpleadoDTO {
 
     // Método estático para convertir de Empleado (entidad) a EmpleadoDTO
     public static EmpleadoDTO fromEntity(Empleado empleado) {
-        return new EmpleadoDTO(
+        EmpleadoDTO empleadoDTO= new EmpleadoDTO(
             empleado.getEmail(),
             empleado.getNombre(),
             empleado.getApellido(),
             empleado.getDuenio(),
             empleado.getTelefonos()
         );
+
+        empleadoDTO.setId(empleado.getId());
+        return empleadoDTO;
     }
 }
