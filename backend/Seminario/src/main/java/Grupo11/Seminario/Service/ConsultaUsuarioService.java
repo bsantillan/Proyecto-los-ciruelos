@@ -21,6 +21,15 @@ public class ConsultaUsuarioService {
     @Autowired
     private IEmpleadoRepository empleadoRepository;
 
+    @Autowired
+    private EmpleadoService empleado_service;
+
+
+    // Se busca si existe el empleado
+    public Boolean existe_empleado(Integer id_empleado){
+        return empleado_service.existe_empleado(id_empleado);
+    }
+
     // Método para buscar usuarios (Jugadores y Empleados) con filtros y devolver una lista de DTOs
     public List<Object> buscar_usuarios(Optional<String> nombre, Optional<String> apellido, Optional<String> email) {
         List<Jugador> jugadores;
