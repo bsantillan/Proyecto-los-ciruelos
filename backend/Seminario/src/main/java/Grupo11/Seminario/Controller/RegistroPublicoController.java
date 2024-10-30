@@ -11,14 +11,14 @@ import Grupo11.Seminario.Entities.Jugador;
 import Grupo11.Seminario.Service.RegistroService;
 
 @RestController
-@RequestMapping(path = "/public/registro")
+@RequestMapping(path = "/public/")
 public class RegistroPublicoController {
     
     @Autowired
     RegistroService registro_service;
 
     // Controlador publico para registrarse como jugador en la aplicacion
-    @PostMapping(path = "/jugador")
+    @PostMapping(path = "/registro/jugador")
     public ResponseEntity<?> registro_jugador(@RequestBody JugadorDTO jugadorDTO){
         
         // Verifica que el mail no este registrado

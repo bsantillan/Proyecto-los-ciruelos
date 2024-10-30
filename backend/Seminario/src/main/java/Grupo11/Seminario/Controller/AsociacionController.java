@@ -2,10 +2,10 @@ package Grupo11.Seminario.Controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +23,8 @@ import Grupo11.Seminario.Entities.Pago;
 import Grupo11.Seminario.Service.AsociacionService;
 import Grupo11.Seminario.Service.ConfiguracionGeneralService;
 import Grupo11.Seminario.Service.PagoService;
+import Grupo11.Seminario.Service.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(path = "/private")
@@ -34,12 +36,18 @@ public class AsociacionController {
     PagoService pago_service;
     @Autowired
     ConfiguracionGeneralService configuracion_general_service;
+    @Autowired
+    UsuarioService usuarioService;
     
-    @PutMapping(path = "/asociar_jugador/{id_duenio}")
-    public ResponseEntity<?> asociar_jugador(@PathVariable Integer id_duenio, @RequestBody AsociacionDTO asociacionDTO) throws JsonMappingException, JsonProcessingException{
+    @PutMapping(path = "/asociar_jugador")
+    public ResponseEntity<?> asociar_jugador(HttpServletRequest request, @RequestBody AsociacionDTO asociacionDTO) throws JsonMappingException, JsonProcessingException{
         
+        String email = (String) request.getAttribute("email");
+    
+        Integer id_duenio = usuarioService.buscar_usuario(email).get().getId();
+
         // Se busca si existe el empleado
-        if (asociacion_service.existe_empleado(id_duenio)){
+        if (asociacion_service.existe_empleado(id_duenio) ){
 
             // Se verifica que sea un dueño
             if (asociacion_service.verificar_duenio(id_duenio)) {
@@ -50,7 +58,7 @@ public class AsociacionController {
                         ResponseEntity<String> response = pago_service.buscar_pago(asociacionDTO.getId_pago());
 
                         // Se valida que este realizado el pago
-                        if (pago_service.validar_pago(response)) {
+                        if (response.getStatusCode() == HttpStatus.OK) {
                             Jugador jugador = asociacion_service.buscar_jugador(asociacionDTO.getId_jugador());
                             jugador.setSocio(true);
 
