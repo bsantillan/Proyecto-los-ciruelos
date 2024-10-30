@@ -36,11 +36,12 @@ public class ConsultarTurnosService {
         List<TurnoDTO> turnosDTO = new ArrayList<>();
         List<Cancha> canchas = (List<Cancha>) i_cancha_repository.findAll();
         ConfiguracionGeneral configuracion_general = configuracion_general_service.get_configuracion_general();
+        LocalDate fechaActual = LocalDate.now();
 
         // Iteramos por cada cancha
         for (Cancha cancha: canchas){
             // Obtenemos los turnos por cada cancha, ordenados por fecha y por horario de inicio
-            List<Turno> turnos_por_cancha = i_turno_repository.findByCanchaOrderByFechaAscHorarioInicioAsc(cancha);
+            List<Turno> turnos_por_cancha = i_turno_repository.findByCanchaAndFechaGreaterThanEqualOrderByFechaAscHorarioInicioAsc(cancha, fechaActual);
             
             // Revisar los espacios entre turnos ocupados
             for (int i = 0; i < turnos_por_cancha.size(); i++) {
