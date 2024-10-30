@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>Grupo11</groupId>
-	<artifactId>Seminario</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-	<name>Seminario</name>
+	<artifactId>los_ciruelos</artifactId>
+	<version>0.0.1</version>
+	<packaging>jar</packaging>
+	<name>los_ciruelos</name>
 	<description>Proyecto para reservas de canchas de padel</description>
 	<url/>
 	<licenses>

@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class JugadorDTO {
+    private Integer id;
     private String email;
     private String nombre;
     private String apellido;
@@ -28,12 +29,15 @@ public class JugadorDTO {
     
     // Método estático para convertir de Jugador (entidad) a JugadorDTO
     public static JugadorDTO fromEntity(Jugador jugador) {
-        return new JugadorDTO(
+        JugadorDTO jugadorDTO = new JugadorDTO(
             jugador.getEmail(),
             jugador.getNombre(),
             jugador.getApellido(),
             jugador.getCategoria().toString(), // Convertimos el enum a String
             jugador.getTelefonos()
         );
+
+        jugadorDTO.setId(jugador.getId());
+        return jugadorDTO;
     }
 }

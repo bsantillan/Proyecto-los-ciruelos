@@ -21,6 +21,7 @@ import Grupo11.Seminario.DTO.ReservaDTO;
 import Grupo11.Seminario.Entities.Cancha;
 import Grupo11.Seminario.Entities.Cuenta;
 import Grupo11.Seminario.Entities.Empleado;
+import Grupo11.Seminario.Entities.Jugador;
 import Grupo11.Seminario.Entities.Pago;
 import Grupo11.Seminario.Entities.Reserva;
 import Grupo11.Seminario.Entities.Turno;
@@ -42,26 +43,46 @@ public class ReservaController {
     public ResponseEntity<?> reservar_turno
     (HttpServletRequest request, @RequestBody ReservaDTO reservaDTO) throws JsonMappingException, JsonProcessingException{
         
+        Integer id_jugador=0;
+        Integer id_empleado=0;
+
         String email = (String) request.getAttribute("email");
     
-        Integer id_jugador = usuarioService.buscar_usuario(email).get().getId();
+        Integer id_accionar = usuarioService.buscar_usuario(email).get().getId();
 
         // Se verifica que el numero de cancha exista
         if (reserva_service.verificar_numero_cancha(reservaDTO.getNumero_cancha())){
 
             // Se verifica que exista el jugador con dicho Id
-            if (reserva_service.existe_jugador(id_jugador)){
+            if (reserva_service.existe_jugador(id_accionar) | reserva_service.existe_empleado(id_accionar)){
+
                 // Se crea la Reserva
                 Reserva reserva = new Reserva();
 
-                // Se verifica que la reserva la hizo un empleado
-                if (reservaDTO.getId_empleado() != null){
-                    // Se verifica que exista el empleado con dicho Id
-                    if (reserva_service.existe_empleado(reservaDTO.getId_empleado())){
-                        Empleado empleado = reserva_service.buscar_empleado(reservaDTO.getId_empleado());
-                        reserva.setEmpleado(empleado);
+                if (reserva_service.existe_jugador(id_accionar)) {
+                    id_jugador = id_accionar;
+                    id_empleado = null;
+
+                    Jugador jugador = reserva_service.buscar_jugador(id_jugador);
+                    reserva.setJugador(jugador);
+
+                }else{
+                    id_empleado = id_accionar;
+                    id_jugador = reservaDTO.getId_reservador();
+
+                    Empleado empleado = reserva_service.buscar_empleado(id_empleado);
+                    reserva.setEmpleado(empleado);
+
+                    if (id_jugador!=null){
+                        // Se verifica que exista el jugador con dicho Id
+                        if (reserva_service.existe_jugador(id_jugador)){
+                            Jugador jugador = reserva_service.buscar_jugador(id_jugador);
+                            reserva.setJugador(jugador);
+                        }else{
+                            return ResponseEntity.badRequest().body("No se encontro el jugador");
+                        }
                     }else{
-                        return ResponseEntity.badRequest().body("No se encontro el empleado");
+                        return ResponseEntity.badRequest().body("No ingreso el id del jugador de la reserva");
                     }
                 }
                 ResponseEntity<String> reponse = reserva_service.buscar_pago(reservaDTO.getId_mp());
@@ -75,9 +96,6 @@ public class ReservaController {
                     turno.setFecha(reservaDTO.getFecha());
                     turno.setHorarioInicio(reservaDTO.getHorario_inicio());
                     turno.setHorario_fin(reservaDTO.getHorario_fin());
-
-                    // Se setea el Jugador
-                    reserva.setJugador(reserva_service.buscar_jugador(id_jugador));
 
                     reserva.setTurno(turno);
                     reserva.setFecha(LocalDate.now());
@@ -127,7 +145,7 @@ public class ReservaController {
                 }
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el pago");
             }
-            return ResponseEntity.badRequest().body("No se encontro el jugador");
+            return ResponseEntity.badRequest().body("No se encontro el jugador o al empleado");
         }
         return ResponseEntity.badRequest().body("No se encontro la cancha con ese numero");
     }
