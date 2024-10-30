@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox'
+import { ToastrModule } from 'ngx-toastr';
 
 // Importaciones de Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -62,6 +63,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MatSelectModule,
     NgOptimizedImage,
     MatCheckboxModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }),
     FormsModule
   ],
   providers: [

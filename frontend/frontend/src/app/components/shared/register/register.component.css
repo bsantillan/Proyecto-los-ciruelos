@@ -194,3 +194,29 @@ html, body {
   text-align: center;
   margin-top: 20px; 
 }
+
+.passwordMismatch {
+  color: red;
+}
+
+.error-message {
+  color: red;
+}
+
+.error-message, .passwordMismatch {
+  color: red; /* Esto asegura que ambos estilos se apliquen */
+  font-weight: bold; /* Agrega negrita para mayor visibilidad */
+  margin-top: 10px; /* Espacio superior para separar del campo */
+}
+
+/* Estilo opcional para hacer el mensaje más prominente */
+.error-message {
+  font-size: 14px;
+  color: red; /* Ajusta el tamaño si es necesario */
+}
+
+.error-message {
+  color: red; /* Esto asegura que el texto sea rojo */
+  font-weight: bold; /* Opcional: hace que el texto sea más visible */
+  margin-top: 10px; /* Espacio superior para separar del campo */
+}

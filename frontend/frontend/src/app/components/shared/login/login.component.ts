@@ -1,8 +1,10 @@
+// Importaciones necesarias
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-
+import { sendEmailVerification } from 'firebase/auth';
+import { UserCredential } from 'firebase/auth';
 
 interface LoginForm {
   email: FormControl<string>;
@@ -20,6 +22,10 @@ export class LoginComponent implements OnInit {
   emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  isGoogleSignInInProgress = false;
+  isEmailVerified: boolean = false;
+  userCredential: any;
+  showResendButton: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,9 +44,9 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-}
-
+  ngOnInit() {
+    this.checkUserStatus();
+  }
 
   passwordValidator(control: FormControl<string>): { [key: string]: boolean } | null {
     const password = control.value;
@@ -48,6 +54,15 @@ export class LoginComponent implements OnInit {
       return { passwordStrength: true };
     }
     return null;
+  }
+
+  
+
+  checkUserStatus() {
+    if (this.userCredential && this.userCredential.user) {
+      this.isEmailVerified = this.userCredential.user.emailVerified;
+      this.showResendButton = !this.isEmailVerified; 
+    }
   }
 
   login(): void {
@@ -61,7 +76,8 @@ export class LoginComponent implements OnInit {
     if (email && password) {
       this.authService.loginWithEmailAndPassword({ email, password })
         .then(async (result) => {
-          console.log('Inicio de sesión exitoso', result);
+          this.userCredential = result; 
+          this.checkUserStatus();
           this.successMessage = 'Ha iniciado sesión con éxito'; 
           this.errorMessage = null; 
           await this.handleRoleRedirect(); 
@@ -69,82 +85,67 @@ export class LoginComponent implements OnInit {
         .catch((error) => {
           this.handleLoginError(error);
           this.successMessage = null; 
+          this.showResendButton = error.code === 'auth/email-not-verified';
         });
-    } else {
-      console.error('Email o contraseña no están definidos');
-    
-    
     }
   }
-  onGoogleLogin(): void {
-    this.authService.loginWithGoogleProvider()
-        .then(user => {
-            if (user) {
-                console.log('Inicio de sesión con Google exitoso');
-                this.router.navigate(['/home']);
-            }
-        })
-        .catch(error => {
-            console.error('Error en la autenticación de Google:', error);
-            alert('Hubo un error al iniciar sesión con Google. Por favor, intenta de nuevo.');
-        });
-}
-
-
+  
 
   handleLoginError(error: unknown): void {
-    if (error instanceof Error) {
-      const firebaseError = (error as any).code;
-      switch (firebaseError) {
-        case 'auth/user-not-found':
-          this.errorMessage = 'El correo electrónico no está registrado. Por favor, regístrate primero.';
-          break;
-        case 'auth/wrong-password':
-          this.errorMessage = 'La contraseña es incorrecta. Por favor, intenta nuevamente.';
-          break;
-        case 'auth/too-many-requests':
-          this.errorMessage = 'Demasiados intentos fallidos. Intenta de nuevo más tarde.';
-          break;
-        default:
-          this.errorMessage = 'Error desconocido. Intenta de nuevo.';
-      }
-    } else {
-      this.errorMessage = 'Error desconocido. Intenta de nuevo.';
+    this.errorMessage = 'Error desconocido. Intenta de nuevo.';
+    this.showResendButton = false; 
+
+    if (typeof error === 'object' && error !== null && 'code' in error) {
+      const firebaseErrorCode = (error as any).code;
+      const errorMessages: { [key: string]: string } = {
+        'auth/user-not-found': 'El correo electrónico no está registrado. Por favor, regístrate primero.',
+        'auth/email-not-verified': 'El correo no está verificado. Por favor, verifica tu correo ya que te reenviamos el mail de verificacion',
+      };
+      this.errorMessage = errorMessages[firebaseErrorCode] || 'Error desconocido. Intenta de nuevo.';
     }
-    this.successMessage = null;
   }
 
-
+  onGoogleLogin(): void {
+    this.isGoogleSignInInProgress = true; 
+    this.authService.loginWithGoogleProvider()
+      .then(async userData => {
+        if (userData) {
+          console.log('Inicio de sesión con Google exitoso', userData);
+          this.router.navigate(['/home']);
+        } else {
+          console.log('No se pudo iniciar sesión con Google');
+        }
+      })
+      .catch(error => {
+        console.error('Error en la autenticación de Google:', error);
+        alert('Hubo un error al iniciar sesión con Google. Por favor, intenta de nuevo.');
+      })
+      .finally(() => {
+        this.isGoogleSignInInProgress = false; 
+      });
+  }
 
   async handleRoleRedirect(): Promise<void> {
     const email = this.form.value.email;
 
     if (!email) {
-        console.error('El email no está definido');
-        return;
+      console.error('El email no está definido');
+      return;
     }
 
     const { role } = this.authService.getRoleBasedOnEmail(email);
 
     switch (role) {
-        case 'jugador':
-            this.router.navigate(['/home']);
-            break;
-        case 'empleado':
-            this.router.navigate(['/home']);
-            break;
-        case 'profesor':
-            this.router.navigate(['/home']);
-            break;
-        case 'dueño':
-            this.router.navigate(['/home']);
-            break;
-        default:
-            this.router.navigate(['/home']);
+      case 'jugador':
+      case 'empleado':
+      case 'profesor':
+      case 'dueño':
+        this.router.navigate(['/home']);
+        break;
+      default:
+        this.router.navigate(['/home']);
     }
-}
-
-
+  }
 
   get isEmailValid(): string | boolean {
     const control = this.form.get('email');

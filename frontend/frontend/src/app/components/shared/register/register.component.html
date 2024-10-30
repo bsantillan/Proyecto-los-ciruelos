@@ -97,18 +97,28 @@
             Confirmar contraseña debe tener al menos 6 caracteres.
           </ng-container>
         </mat-error>
-        <mat-error *ngIf="passwordMismatch && form.get('confirmPassword')?.touched">
+        <mat-error *ngIf="(passwordMismatch && form.get('confirmPassword')?.touched) || !isRegisterButtonEnabled">
           Las contraseñas no coinciden.
         </mat-error>
-      </mat-form-field>
+        
 
-      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Registrarse</button>
+    </mat-form-field>
 
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || !passwordsMatch">Registrarse</button>
+
+      <ng-container *ngIf="passwordMismatch" class="error-message">
+        <mat-error *ngIf="(passwordMismatch && form.get('confirmPassword')?.touched) || !isRegisterButtonEnabled">
+          Las contraseñas no coinciden.
+        </mat-error>
+      </ng-container>
+      
+      
       <div *ngIf="errorMessages.length > 0" class="error-messages">
         <ng-container *ngFor="let error of errorMessages">
           <div>{{ error }}</div>
         </ng-container>
       </div>
+
 
     </form>
 

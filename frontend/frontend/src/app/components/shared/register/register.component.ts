@@ -7,6 +7,7 @@ import { AuthService, Credential } from '../../../services/auth.service';
 
 
 
+
 interface RegisterForm {
   names: FormControl<string>;
   lastName: FormControl<string>;
@@ -32,6 +33,7 @@ export class RegisterComponent {
   userLastName: string = '';
   isGoogleSignInInProgress = false;
   errorMessages: string[] = []; 
+
   
   emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -86,8 +88,9 @@ export class RegisterComponent {
   passwordsMatch(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password')?.value;
     const confirmPassword = control.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
-  }
+    return password && confirmPassword && password !== confirmPassword ? { mismatch: true } : null;
+}
+
 
   emailTakenValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -98,7 +101,6 @@ export class RegisterComponent {
       );
     };
   }
-
   signUp(): void {
     if (this.form.invalid) {
       this.errorMessages = this.getFormErrors();
@@ -129,12 +131,13 @@ export class RegisterComponent {
       });
   }
 
-  onGoogleSignIn(): void {
-    this.isGoogleSignInInProgress = true; 
-    this.authService.signInWithGoogleProvider()
-      .then(userData => {
+onGoogleSignIn(): void {
+  this.isGoogleSignInInProgress = true; 
+  this.authService.loginWithGoogleProvider()
+      .then(async userData => {
           if (userData) {
               this.fillFormWithGoogleData(userData);
+
               alert('Registro exitoso. Verifica tu correo electrónico para completar la validación.');
               this.router.navigate(['/postregister']);
           } else {
@@ -146,13 +149,14 @@ export class RegisterComponent {
           alert('Hubo un error al iniciar sesión con Google. Por favor, intenta de nuevo.');
       })
       .finally(() => {
-        this.isGoogleSignInInProgress = false; 
+          this.isGoogleSignInInProgress = false; 
       });
 }
 
+
   
   
-  fillFormWithGoogleData(userData: { name: string; lastName: string; email: string }): void {
+  fillFormWithGoogleData(userData: any) {
     this.form.patchValue({
       names: userData.name,
       lastName: userData.lastName,
@@ -160,73 +164,85 @@ export class RegisterComponent {
     });
   }
   
+
   
 errorMessage: string = '';
-  getFormErrors(): string[] {
-    const messages: string[] = [];
-    const controls = this.form.controls;
+getFormErrors(): string[] {
+  const messages: string[] = [];
+  const controls = this.form.controls;
 
-    if (controls['names'].invalid) {
+  if (controls['names'].invalid) {
       messages.push('El nombre es obligatorio.');
-    }
-    if (controls['lastName'].invalid) {
+  }
+  if (controls['lastName'].invalid) {
       messages.push('El apellido es obligatorio.');
-    }
-    if (controls['email'].invalid) {
+  }
+  if (controls['email'].invalid) {
       if (controls['email'].hasError('required')) {
-        messages.push('Correo electrónico es obligatorio.');
+          messages.push('Correo electrónico es obligatorio.');
       }
       if (controls['email'].hasError('pattern')) {
-        messages.push('Correo electrónico inválido.');
+          messages.push('Correo electrónico inválido.');
       }
       if (controls['email'].hasError('emailTaken')) {
-        messages.push('Correo electrónico ya registrado.');
+          messages.push('Correo electrónico ya registrado.');
       }
-    }
-    if (controls['password'].invalid) {
+  }
+  if (controls['password'].invalid) {
       if (controls['password'].hasError('required')) {
-        messages.push('Contraseña es obligatoria.');
+          messages.push('Contraseña es obligatoria.');
       }
       if (controls['password'].hasError('minlength')) {
-        messages.push('Contraseña debe tener al menos 6 caracteres.');
+          messages.push('Contraseña debe tener al menos 6 caracteres.');
       }
       if (controls['password'].hasError('pattern')) {
-        messages.push('Contraseña debe incluir al menos una letra mayúscula.');
+          messages.push('Contraseña debe incluir al menos una letra mayúscula.');
       }
-    }
-    if (controls['confirmPassword'].invalid) {
+  }
+  if (controls['confirmPassword'].invalid) {
       if (controls['confirmPassword'].hasError('required')) {
-        messages.push('Confirmar contraseña es obligatorio.');
+          messages.push('Confirmar contraseña es obligatorio.');
       }
       if (controls['confirmPassword'].hasError('minlength')) {
-        messages.push('Confirmar contraseña debe tener al menos 6 caracteres.');
+          messages.push('Confirmar contraseña debe tener al menos 6 caracteres.');
       }
-    }
-    if (this.form.hasError('mismatch')) {
-      messages.push('Las contraseñas no coinciden.');
-    }
-    return messages;
+  }
+
+  if (this.form.hasError('mismatch')) {
+      messages.push('Las contraseñas no coinciden.'); 
+  }
+
+  return messages;
+}
+
+
+private generateErrorMessage(): void {
+  this.errorMessages = this.getFormErrors(); 
+
+  if (this.passwordMismatch) {
+      this.errorMessages.push('Las contraseñas deben coincidir.');
   }
 
 
-  private generateErrorMessage(): void {
-    if (this.errorMessages.length > 0) {
-        this.errorMessage = this.errorMessages.join(' ');
-    } else {
-        this.errorMessage = '';
-    }
+  if (this.errorMessages.length > 0) {
+      this.errorMessage = this.errorMessages.join(' ');
+  } else {
+      this.errorMessage = '';
+  }
 }
 
 
 
-  checkValidations() {
-    Object.keys(this.form.controls).forEach(controlName => {
-      const control = this.form.get(controlName);
-      if (control) {
-        control.markAsTouched();
-      }
-    });
-  }
+checkValidations() {
+  Object.keys(this.form.controls).forEach(controlName => {
+    const control = this.form.get(controlName);
+    if (control) {
+      control.markAsTouched();
+    }
+  });
+}
+
+
 
   checkPasswordMatch(): void {
     const password = this.form.get('password')?.value;
@@ -241,6 +257,12 @@ errorMessage: string = '';
     this.hidePassword = !this.hidePassword;
   }
 
+  isRegisterButtonEnabled: boolean = false;
+
+
+checkFormValidity() {
+  this.isRegisterButtonEnabled = this.form.valid && !this.passwordMismatch;
+}
   toggleHideConfirmPassword(): void {
     this.hideConfirmPassword = !this.hideConfirmPassword;
     this.checkPasswordMatch(); 

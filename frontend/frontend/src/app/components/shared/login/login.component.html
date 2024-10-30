@@ -8,10 +8,7 @@
 
     <app-button-providers [isLogin]="true" (onGoogleLogin)="onGoogleLogin()"></app-button-providers>
 
-
-
     <form [formGroup]="form" (ngSubmit)="login()">
-
       <div>
         <mat-form-field appearance="fill" class="custom-field">
           <mat-label>Correo electrónico</mat-label>
@@ -21,7 +18,6 @@
           </mat-error>
         </mat-form-field>
       </div>
-
 
       <div class="password-field-container">
         <mat-form-field appearance="fill" class="custom-field">
@@ -42,7 +38,6 @@
           </mat-error>
         </mat-form-field>
 
-
         <div class="forgot-password">
           <a routerLink="/cambiar-contrasenia" class="forgot-password-link">
             Olvidé mi contraseña
@@ -50,29 +45,19 @@
         </div>
       </div>
 
+      <div class="error-message">{{ errorMessage }}</div>
+      <div class="success-message">{{ successMessage }}</div>
 
-      <div class="button-container">
-        <button mat-flat-button color="primary" type="submit">Iniciar Sesión</button>
-      </div>
+      <button mat-raised-button type="submit" color="primary" class="submit-button">Iniciar sesión</button>
     </form>
 
 
-    <div class="message" *ngIf="errorMessage">
-      <span class="error-message">{{ errorMessage }}</span>
-    </div>
-    <div class="message" *ngIf="successMessage">
-      <span class="success-message">{{ successMessage }}</span>
-    </div>
-
-
-    <hr class="divider" />
-
-
+  
     <div class="text-center">
-      ¿Aún no tienes una cuenta? 
+      ¿No tienes cuenta?
       <div class="register">
-        <a routerLink="/register">Registrarse</a>
+        <a routerLink="/register">Regístrate</a>
       </div>
-    </div>
+
   </div>
 </div>
