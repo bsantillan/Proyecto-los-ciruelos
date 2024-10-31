@@ -3,18 +3,14 @@
   <div class="encabezado">
     <header class="home_header">
       <h1>Los Ciruelos Padel Club</h1>
-      <p class="description">
-        Alcanza tu mejor nivel
-      </p>
+      <p class="description">Alcanza tu mejor nivel</p>
       <p class="description">Elige tu turno</p>
     </header>
   
     <div class="calendario">
       <app-calendario_reserva></app-calendario_reserva>
-  
     </div>
   </div>
-  
 
   <section class="home__features">
     <div class="feature">
@@ -30,14 +26,26 @@
       <p>¿Necesitas paletas o pelotas?</p>
       <p>Puedes alquilar todo el material necesario en el club.</p>
     </div>
-
-
   </section>
+
+  <div class="association-info">
+    <h2>¡Asóciate Ahora!</h2>
+    <p>Cualquier usuario puede asociarse para disfrutar de beneficios exclusivos, como descuentos en reservas, prioridad en horarios de alta demanda, y acceso a eventos especiales.</p>
+  </div>
+
+  <div class="button-container">
+    <button class="asociarse-btn" (click)="asociarse()">¡Quiero Asociarme!</button>
+  </div>
+
+  <div class="map-container">
+    <div class="location-info">
+        <h2>Ubicación</h2>
+        <p> Veni a visitarnos para disfrutar de las instalaciones y actividades.</p>
+    </div>
+    <div id="map"></div>
+</div>
 
   <footer class="home__footer">
     <p>&copy; 2024 Los Ciruelos. Todos los derechos reservados.</p>
   </footer>
 </div>
-
-<app-mercadopago></app-mercadopago>
-

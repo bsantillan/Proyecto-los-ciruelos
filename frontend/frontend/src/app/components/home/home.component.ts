@@ -14,6 +14,10 @@ import { ButtonProviders } from '../shared/login/cambiar_contrasenia/button_prov
 export class HomeComponent {
   constructor(private router: Router) {}
 
+  asociarse(): void {
+    this.router.navigate(['/asociarse']); // Cambia '/asociarse' a la ruta de tu página de asociación
+  }
+
   navigateToLogin(): void {
     this.router.navigate(['/components/login']);
   }

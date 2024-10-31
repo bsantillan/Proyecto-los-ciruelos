@@ -24,6 +24,8 @@ import { LoginComponent } from './components/shared/login/login.component';
 import { RegisterComponent } from './components/shared/register/register.component';
 import { ButtonProviders } from './components/shared/login/cambiar_contrasenia/button_provider/button-providers.component'
 import { HomeComponent } from './components/home/home.component';
+import { AsociarseComponent } from './components/socios/asociarse/asociarse.component';
+import { DesasociarseComponent } from './components/socios/desasociarse/desasociarse.component';
 
 // Firebase
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -41,7 +43,9 @@ import { CalendarioReservaComponent } from './components/shared/calendario_reser
     LoginComponent,
     RegisterComponent,
     ButtonProviders,
+    AsociarseComponent,
     HomeComponent,
+    DesasociarseComponent,
     CalendarioReservaComponent,
 
   ],
