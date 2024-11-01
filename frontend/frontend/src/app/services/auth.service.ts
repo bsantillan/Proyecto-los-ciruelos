@@ -45,7 +45,6 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.auth, provider);
-      // Aquí puedes manejar el resultado o realizar cualquier acción adicional
       return result;
     } catch (error) {
       console.error('Error during sign-in with Google:', error);
@@ -81,4 +80,21 @@ export class AuthService {
     return 'desconocido';
   }
 
+
+  getCurrentUser(): Promise<User | null> {
+    return new Promise((resolve, reject) => {
+      const user = this.auth.currentUser;
+      if (user) {
+        resolve(user);
+      } else {
+        reject('No hay un usuario autenticado');
+      }
+    });
+  }
+  
+
+
+  isLoggedIn(): boolean {
+    return this.auth.currentUser !== null;
+  }
 }

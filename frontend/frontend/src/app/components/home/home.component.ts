@@ -1,4 +1,4 @@
-// src/app/home/home.component.ts
+
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -20,14 +20,14 @@ export class HomeComponent {
 
   @ViewChild('calendario', { static: false }) calendario!: ElementRef;
 
-  // Función que se ejecuta al hacer clic en "Reserva Fácil"
+
   scrollToCalendar() {
     if (this.calendario) {
       this.calendario.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
-  asociarse(){
-    // linkeo a asocairse
+  asociarse() {
+    this.router.navigate(['/asociarse']); 
   }
 }
