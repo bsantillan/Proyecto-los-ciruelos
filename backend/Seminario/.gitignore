@@ -33,7 +33,7 @@ build/
 .vscode/
 
 ### FireBase ###
-src/main/resources/serviceAccountKey.json
+src/main/resources/firebase_credentials.json
 
 ### Enviroment ###
 .env
