@@ -31,7 +31,4 @@ export class HomeComponent {
     }
   }
 
-  asociarse() {
-    this.router.navigate(['/asociarse']); 
-  }
 }
