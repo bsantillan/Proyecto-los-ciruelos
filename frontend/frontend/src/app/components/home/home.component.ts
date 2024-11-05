@@ -1,5 +1,5 @@
-// src/app/home/home.component.ts
-import { Component } from '@angular/core';
+
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,5 +20,18 @@ export class HomeComponent {
 
   navigateToLogin(): void {
     this.router.navigate(['/components/login']);
+  }
+
+  @ViewChild('calendario', { static: false }) calendario!: ElementRef;
+
+
+  scrollToCalendar() {
+    if (this.calendario) {
+      this.calendario.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  asociarse() {
+    this.router.navigate(['/asociarse']); 
   }
 }
