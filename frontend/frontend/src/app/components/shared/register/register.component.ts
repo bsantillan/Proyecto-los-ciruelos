@@ -111,7 +111,8 @@ export class RegisterComponent {
       email: this.form.get('email')?.value || '',
       password: this.form.get('password')?.value || '',
     };
-
+  
+    // Verifica si el correo ya está registrado
     this.authService.isEmailRegistered(credential.email)
       .then(isRegistered => {
         if (isRegistered) {
@@ -119,9 +120,11 @@ export class RegisterComponent {
           this.router.navigate(['/login']);
           return;
         }
+        
+        // Si no está registrado, continua con el registro
         return this.authService.registerWithEmailAndPassword(credential)
           .then(() => {
-            alert('Registro exitoso. Verifica tu correo electrónico para completar la validación .');
+            alert('Registro exitoso. Verifica tu correo electrónico para completar la validación.');
             this.router.navigate(['/postregister']);
           });
       })
@@ -130,6 +133,7 @@ export class RegisterComponent {
         this.errorMessages.push(error.message || 'Error desconocido');
       });
   }
+  
 
 onGoogleSignIn(): void {
   this.isGoogleSignInInProgress = true; 

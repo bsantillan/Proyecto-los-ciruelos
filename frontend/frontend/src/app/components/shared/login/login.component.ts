@@ -65,46 +65,50 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  login(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched(); 
-      return;
-    }
-  
-    const { email, password } = this.form.value;
-  
-    if (email && password) {
-      this.authService.loginWithEmailAndPassword({ email, password })
-        .then(async (result) => {
-          this.userCredential = result; 
-          this.checkUserStatus();
-          this.successMessage = 'Ha iniciado sesión con éxito'; 
-          this.errorMessage = null; 
-          await this.handleRoleRedirect(); 
-        })
-        .catch((error) => {
-          this.handleLoginError(error);
-          this.successMessage = null; 
-          this.showResendButton = error.code === 'auth/email-not-verified';
-        });
-    }
+login(): void {
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
   }
+
+  const { email, password } = this.form.value;
+
+  if (email && password) {
+    this.authService.loginWithEmailAndPassword({ email, password })
+      .then(async (result) => {
+        this.userCredential = result; 
+        this.checkUserStatus();
+        this.successMessage = 'Ha iniciado sesión con éxito';
+        this.errorMessage = null; 
+        await this.handleRoleRedirect();
+      })
+      .catch((error) => {
+        this.handleLoginError(error);
+        this.successMessage = null;
+        this.showResendButton = error.code === 'auth/email-not-verified';
+      });
+  }
+}
+
   
 
-  handleLoginError(error: unknown): void {
-    this.errorMessage = 'Error desconocido. Intenta de nuevo.';
-    this.showResendButton = false; 
+handleLoginError(error: unknown): void {
+  // Mensaje de error más claro y opción para reenviar el correo
+  this.errorMessage = 'No puedes iniciar sesión aún. Debes verificar tu correo electrónico. Revisa tu bandeja de entrada y haz clic en el enlace de confirmación. ¿No recibiste el correo?';
+  this.showResendButton = true;  // Mostrar botón para reenviar el correo
 
-    if (typeof error === 'object' && error !== null && 'code' in error) {
+  if (typeof error === 'object' && error !== null && 'code' in error) {
       const firebaseErrorCode = (error as any).code;
       const errorMessages: { [key: string]: string } = {
-        'auth/user-not-found': 'El correo electrónico no está registrado. Por favor, regístrate primero.',
-        'auth/email-not-verified': 'El correo no está verificado. Por favor, verifica tu correo ya que te reenviamos el mail de verificacion',
+          'auth/user-not-found': 'Nombre de usuario y/o contraseña incorrecta.',
+          'auth/wrong-password': 'Nombre de usuario y/o contraseña incorrecta.',
+          'auth/email-not-verified': this.errorMessage, // Usar el mensaje ya definido
       };
-      this.errorMessage = errorMessages[firebaseErrorCode] || 'Error desconocido. Intenta de nuevo.';
-    }
+      this.errorMessage = errorMessages[firebaseErrorCode] || 'Nombre de usuario y/ o contraseña incorrecta';
   }
+}
 
+  
   onGoogleLogin(): void {
     this.isGoogleSignInInProgress = true; 
     this.authService.loginWithGoogleProvider()
@@ -170,9 +174,9 @@ export class LoginComponent implements OnInit {
       if (control.hasError('required')) {
         return 'Este campo es obligatorio';
       } else if (control.hasError('minlength')) {
-        return 'La contraseña no coincide';
+        return 'Nombre de usuario y/ o contraseña incorrecta';
       } else if (control.hasError('passwordStrength')) {
-        return 'La contraseña no coincide';
+        return 'Se solicita que ambos campos esten completos';
       }
     }
 
