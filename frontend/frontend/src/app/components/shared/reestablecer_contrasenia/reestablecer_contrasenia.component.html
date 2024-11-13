@@ -1,0 +1,53 @@
+<div class="cambio-contrasenia-container">
+  <div class="cambio-contrasenia-form">
+    <h2>Cambiar Contraseña</h2>
+    <form [formGroup]="cambioContraseniaForm" (ngSubmit)="onSubmit()">
+
+      <!-- Nueva contraseña -->
+      <div class="form-group">
+        <label for="newPassword">Nueva Contraseña</label>
+        <div class="password-container">
+          <input 
+            [type]="showNewPassword ? 'text' : 'password'" 
+            id="newPassword" 
+            formControlName="newPassword" 
+            placeholder="Introduce tu nueva contraseña"
+            (focus)="onFocusNewPassword($event)" 
+            (blur)="onBlurNewPassword($event)" />
+          <button type="button" class="password-toggle-button" (click)="togglePasswordVisibility('newPassword')">
+            <mat-icon>{{ showNewPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </div>
+        
+        <!-- Requisitos de la contraseña -->
+        <div *ngIf="showPasswordRequirements" class="password-requirements">
+          <ul>
+            <li [class.valid]="passwordRequirements.minLength">Debe tener al menos 6 caracteres</li>
+            <li [class.valid]="passwordRequirements.hasUpperCase">Debe tener una letra mayúscula</li>
+            <li [class.valid]="passwordRequirements.hasNumber">Debe contener al menos un número</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Confirmación de nueva contraseña -->
+      <div class="form-group">
+        <label for="confirmNewPassword">Confirmar Nueva Contraseña</label>
+        <div class="password-container">
+          <input 
+            [type]="showConfirmPassword ? 'text' : 'password'" 
+            id="confirmNewPassword" 
+            formControlName="confirmNewPassword" 
+            placeholder="Confirma tu nueva contraseña" />
+          <button type="button" class="password-toggle-button" (click)="togglePasswordVisibility('confirmNewPassword')">
+            <mat-icon>{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="cambioContraseniaForm.hasError('mismatch') && (cambioContraseniaForm.get('confirmNewPassword')?.touched || cambioContraseniaForm.get('newPassword')?.touched)">
+          <small class="error">Las contraseñas no coinciden.</small>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="cambioContraseniaForm.invalid">Actualizar Contraseña</button>
+    </form>
+  </div>
+</div>

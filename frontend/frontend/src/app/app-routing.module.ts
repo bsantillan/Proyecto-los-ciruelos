@@ -6,6 +6,9 @@ import { CambiarContraseniaComponent } from './components/shared/login/cambiar_c
 import { RegisterComponent } from './components/shared/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { PostRegisterComponent } from './components/shared/register/postregister/postregister.component';
+import { ReestablecerContraseniaComponent } from './components/shared/reestablecer_contrasenia/reestalecer_contrasenia.component';
+import { VerificarCorreoComponent } from './components/shared/verificar-correo/verificar-correo.component';
+import { AuthActionComponent } from './handle-action.component';
 
 
 const routes: Routes = [
@@ -16,6 +19,9 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'postregister', component: PostRegisterComponent},
   { path: 'mercadopago', component: MercadopagoComponent },
+  { path: 'reestablecer-contrasenia', component: ReestablecerContraseniaComponent },
+  { path: 'verificar-correo', component: VerificarCorreoComponent},
+  { path: 'action/:actionType/:oobCode', component: AuthActionComponent }, 
   { path: '**', redirectTo: 'home' }
 ];
 

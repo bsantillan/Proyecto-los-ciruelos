@@ -93,16 +93,15 @@ login(): void {
   
 
 handleLoginError(error: unknown): void {
-  // Mensaje de error más claro y opción para reenviar el correo
   this.errorMessage = 'No puedes iniciar sesión aún. Debes verificar tu correo electrónico. Revisa tu bandeja de entrada y haz clic en el enlace de confirmación. ¿No recibiste el correo?';
-  this.showResendButton = true;  // Mostrar botón para reenviar el correo
+  this.showResendButton = true;  
 
   if (typeof error === 'object' && error !== null && 'code' in error) {
       const firebaseErrorCode = (error as any).code;
       const errorMessages: { [key: string]: string } = {
           'auth/user-not-found': 'Nombre de usuario y/o contraseña incorrecta.',
           'auth/wrong-password': 'Nombre de usuario y/o contraseña incorrecta.',
-          'auth/email-not-verified': this.errorMessage, // Usar el mensaje ya definido
+          'auth/email-not-verified': this.errorMessage, 
       };
       this.errorMessage = errorMessages[firebaseErrorCode] || 'Nombre de usuario y/ o contraseña incorrecta';
   }

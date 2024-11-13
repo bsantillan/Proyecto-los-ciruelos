@@ -12,7 +12,7 @@ export class CambiarContraseniaComponent {
   passwordResetForm: FormGroup;
 
   constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
-    // Inicializamos el formulario
+
     this.passwordResetForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });

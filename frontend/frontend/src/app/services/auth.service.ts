@@ -9,6 +9,9 @@ import {
   signInWithEmailAndPassword,
   User,
   sendPasswordResetEmail,
+  EmailAuthProvider,
+  updatePassword,
+  reauthenticateWithCredential,
   sendEmailVerification,
   fetchSignInMethodsForEmail,
 } from '@angular/fire/auth';
@@ -41,6 +44,14 @@ export class AuthService {
 
   }
   
+  async updatePassword(newPassword: string): Promise<void> {
+    const user = this.auth.currentUser;
+    if (user) {
+      return updatePassword(user, newPassword); // Actualizar la contraseña sin pedir la actual
+    } else {
+      throw new Error('No hay usuario autenticado');
+    }
+  }
   
   registerWithEmailAndPassword(credential: Credential): Promise<UserCredential> {
     return createUserWithEmailAndPassword(this.auth, credential.email, credential.password)
@@ -68,6 +79,15 @@ export class AuthService {
         throw error;
       });
   }
+  async checkEmailVerification(): Promise<boolean> {
+    const user = this.auth.currentUser;
+    if (user) {
+      await user.reload();  // Recarga los datos del usuario
+      return user.emailVerified;
+    }
+    return false;
+  }
+  
   
 
   loginWithEmailAndPassword(credential: Credential): Promise<UserCredential> {
@@ -133,17 +153,49 @@ export class AuthService {
 
 
 async sendEmailVerification(userCredential: UserCredential): Promise<void> {
-  const user = userCredential.user; 
+  const user = userCredential.user;
   if (user && !user.emailVerified) {
+    try {
       alert('Enviando correo de verificación...');
-      await sendEmailVerification(user);
+      const actionCodeSettings = {
+        url: 'https://proyecto-los-ciruelos.firebaseapp.com/__/auth/action',
+        handleCodeInApp: true,
+      };
+
+      await sendEmailVerification(user, actionCodeSettings);
       alert('Correo de verificación enviado.');
+    } catch (error) {
+      console.error('Error al enviar el correo de verificación:', error);
+      alert('Hubo un error al enviar el correo de verificación.');
+    }
   } else {
-      alert('No se encontró al usuario o el correo ya está verificado.');
-      throw new Error('No se encontró al usuario o el correo ya está verificado.');
+    alert('No se encontró al usuario o el correo ya está verificado.');
+    throw new Error('No se encontró al usuario o el correo ya está verificado.');
   }
 }
 
+handleAuthActionUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const mode = urlParams.get('mode');
+  const actionCode = urlParams.get('oobCode');
+
+  if (mode && actionCode) {
+    switch (mode) {
+      case 'verifyEmail':
+        // Redirige a la página de verificación de correo
+        this.router.navigate(['/verify-email'], { queryParams: { oobCode: actionCode } });
+        break;
+      case 'resetPassword':
+        // Redirige a la página de restablecimiento de contraseña
+        this.router.navigate(['/reset-password'], { queryParams: { oobCode: actionCode } });
+        break;
+      default:
+        console.error('Acción desconocida:', mode);
+    }
+  } else {
+    console.error('Parámetros insuficientes en la URL');
+  }
+}
 
 
 

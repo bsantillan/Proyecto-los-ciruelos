@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSelectModule } from '@angular/material/select';
 
+
 // Components
 import { AppComponent } from './app.component';
 import { MercadopagoComponent } from './components/shared/mercadopago/mercadopago.component';
@@ -27,6 +28,8 @@ import { ButtonProviders } from './components/shared/login/cambiar_contrasenia/b
 import { HomeComponent } from './components/home/home.component';
 import { CalendarioReservaComponent } from './components/shared/calendario_reserva/calendario_reserva.component';
 import { PostRegisterComponent } from './components/shared/register/postregister/postregister.component';
+import { ReestablecerContraseniaComponent } from './components/shared/reestablecer_contrasenia/reestalecer_contrasenia.component'; 
+import { VerificarCorreoComponent } from './components/shared/verificar-correo/verificar-correo.component';
 
 // Firebase
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -46,7 +49,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     ButtonProviders,
     CalendarioReservaComponent,
     HomeComponent,
-    PostRegisterComponent
+    PostRegisterComponent,
+    ReestablecerContraseniaComponent,
+    VerificarCorreoComponent
 
   ],
   imports: [
