@@ -49,7 +49,7 @@ export class AuthService {
   async updatePassword(newPassword: string): Promise<void> {
     const user = this.auth.currentUser;
     if (user) {
-      return updatePassword(user, newPassword); // Actualizar la contraseña sin pedir la actual
+      return updatePassword(user, newPassword); 
     } else {
       throw new Error('No hay usuario autenticado');
     }
@@ -85,11 +85,11 @@ export class AuthService {
   async verifyEmailWithCode(oobCode: string): Promise<void> {
     const auth = getAuth();
     try {
-      await applyActionCode(auth, oobCode); // Aplica el código de acción de Firebase
+      await applyActionCode(auth, oobCode); 
       console.log('Correo electrónico verificado');
     } catch (error) {
       console.error('Error al verificar el correo electrónico:', error);
-      throw error; // Maneja errores de verificación si es necesario
+      throw error; 
     }
   }
   
@@ -100,7 +100,7 @@ export class AuthService {
     return signInWithEmailAndPassword(this.auth, credential.email, credential.password)
       .then(async (userCredential) => { 
           if (!userCredential.user?.emailVerified) {
-              // Enviar el correo de verificación nuevamente si no está verificado
+
               await sendEmailVerification(userCredential.user); 
               throw {
                   code: 'auth/email-not-verified',
@@ -136,7 +136,7 @@ export class AuthService {
         const user = result.user;
 
         if (user) {
-            // Verifica si el usuario ya está en la página de inicio, evita redirecciones innecesarias
+
             if (this.router.url !== '/home') {
                 this.router.navigate(['/home']);
             }
@@ -145,7 +145,7 @@ export class AuthService {
     } catch (error: any) {
         console.error("Error en el inicio de sesión con Google:", error);
         
-        // Manejo de error detallado
+
         if (error.code === 'auth/popup-closed-by-user') {
             alert('El proceso de inicio de sesión fue cancelado.');
         } else {
@@ -164,12 +164,12 @@ async sendEmailVerification(userCredential: UserCredential): Promise<void> {
     try {
       alert('Enviando correo de verificación...');
       const actionCodeSettings = {
-        url: 'https://proyecto-los-ciruelos.firebaseapp.com/__/auth/action',  // Asegúrate de que esta URL sea correcta
+        url: 'https://proyecto-los-ciruelos.firebaseapp.com/__/auth/action',  
         handleCodeInApp: true,
       };
       
 
-      // Enviamos el correo de verificación
+
       await sendEmailVerification(user, actionCodeSettings);
       alert('Correo de verificación enviado.');
     } catch (error) {
@@ -193,14 +193,14 @@ async signInWithGoogleProvider(): Promise<{ name: string; lastName: string; emai
     if (user) {
       const email = user.email || '';
 
-      // Verifica si el correo ya está registrado con otro método
+
       const signInMethods = await fetchSignInMethodsForEmail(this.auth, email);
       if (signInMethods.length > 0) {
         alert('Este correo ya está registrado. Por favor, inicia sesión.');
         throw new Error('Este correo ya está registrado. Por favor, inicia sesión.');
       }
 
-      // Si no está registrado, continua con el registro
+
       await sendEmailVerification(user);
       const [name, ...lastNameParts] = (user.displayName || 'Sin nombre').split(' ');
       const lastName = lastNameParts.join(' ');

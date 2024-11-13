@@ -5,9 +5,6 @@ import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { AuthService, Credential } from '../../../services/auth.service';
 
-
-
-
 interface RegisterForm {
   names: FormControl<string>;
   lastName: FormControl<string>;
@@ -37,6 +34,14 @@ export class RegisterComponent {
   
   emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
+
+  passwordRequirements = {
+    minLength: false,
+    hasUpperCase: false,
+    hasNumber: false
+  };
+  showPasswordRequirements = false;
+
   
   form: FormGroup<RegisterForm> = this.formBuilder.group({
     names: this.formBuilder.control('', {
@@ -64,19 +69,36 @@ export class RegisterComponent {
 
   passwordsMismatch: boolean = false; 
 
+
   constructor(private authService: AuthService) {
-    this.form.get('password')?.valueChanges.subscribe(() => {
-      this.checkPasswordMatch(); 
+    this.form.get('password')?.valueChanges.subscribe((value) => {
+      this.checkPasswordStrength(value);
     });
-
     this.form.get('confirmPassword')?.valueChanges.subscribe(() => {
-      this.checkPasswordMatch(); 
-    });
+      this.checkPasswordMatch();
+    }); 
+  }
 
-    this.form.get('password')?.valueChanges.subscribe(() => this.checkPasswordMatch());
-    this.form.get('confirmPassword')?.valueChanges.subscribe(() => this.checkPasswordMatch());
+  passwordsMatch(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
+    return password && confirmPassword && password !== confirmPassword ? { mismatch: true } : null;
+  }
 
-    
+  checkPasswordStrength(password: string) {
+    this.passwordRequirements.minLength = password.length >= 6;
+    this.passwordRequirements.hasUpperCase = /[A-Z]/.test(password);
+    this.passwordRequirements.hasNumber = /\d/.test(password);
+  }
+
+  onFocusPassword(): void {
+    this.showPasswordRequirements = true;
+  }
+
+  onBlurPassword(): void {
+    if (!this.form.get('password')?.value) {
+      this.showPasswordRequirements = false;
+    }
   }
 
   handleUserData(event: { names: string; lastName: string; email: string }): void {
@@ -84,13 +106,6 @@ export class RegisterComponent {
     this.userLastName = event.lastName;
     this.userEmail = event.email;
   }
-
-  passwordsMatch(control: AbstractControl): ValidationErrors | null {
-    const password = control.get('password')?.value;
-    const confirmPassword = control.get('confirmPassword')?.value;
-    return password && confirmPassword && password !== confirmPassword ? { mismatch: true } : null;
-}
-
 
   emailTakenValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -247,13 +262,21 @@ checkValidations() {
 }
 
 
+checkPasswordMatch(): void {
+  const password = this.form.get('password')?.value;
+  const confirmPassword = this.form.get('confirmPassword')?.value;
 
-  checkPasswordMatch(): void {
-    const password = this.form.get('password')?.value;
-    const confirmPassword = this.form.get('confirmPassword')?.value;
+  // Mantén la bandera de "passwordMismatch" si las contraseñas no coinciden
+  this.passwordMismatch = password !== confirmPassword;
 
-    this.passwordMismatch = password !== confirmPassword;
+  // Si hay una discrepancia, asegura que el formulario marque el error "mismatch"
+  if (this.passwordMismatch) {
+    this.form.get('confirmPassword')?.setErrors({ mismatch: true });
+  } else {
+    this.form.get('confirmPassword')?.setErrors(null); // Elimina el error cuando las contraseñas coinciden
   }
+  this.form.updateValueAndValidity(); // Asegúrate de actualizar la validez del formulario
+}
 
 
 

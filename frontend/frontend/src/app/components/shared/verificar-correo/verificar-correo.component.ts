@@ -16,7 +16,7 @@ export class VerificarCorreoComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) { }
-  
+
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const oobCode = params['oobCode'];
@@ -37,6 +37,6 @@ export class VerificarCorreoComponent implements OnInit {
   
 
   goToHome(): void {
-    this.router.navigate(['/login']);  // Redirige al login
+    this.router.navigate(['/login']);  
   }
 }
