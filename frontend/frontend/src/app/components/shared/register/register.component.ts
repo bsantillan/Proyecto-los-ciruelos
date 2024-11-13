@@ -126,8 +126,7 @@ export class RegisterComponent {
       email: this.form.get('email')?.value || '',
       password: this.form.get('password')?.value || '',
     };
-  
-    // Verifica si el correo ya está registrado
+
     this.authService.isEmailRegistered(credential.email)
       .then(isRegistered => {
         if (isRegistered) {
@@ -136,7 +135,6 @@ export class RegisterComponent {
           return;
         }
         
-        // Si no está registrado, continua con el registro
         return this.authService.registerWithEmailAndPassword(credential)
           .then(() => {
             alert('Registro exitoso. Verifica tu correo electrónico para completar la validación.');
@@ -266,16 +264,16 @@ checkPasswordMatch(): void {
   const password = this.form.get('password')?.value;
   const confirmPassword = this.form.get('confirmPassword')?.value;
 
-  // Mantén la bandera de "passwordMismatch" si las contraseñas no coinciden
+
   this.passwordMismatch = password !== confirmPassword;
 
-  // Si hay una discrepancia, asegura que el formulario marque el error "mismatch"
+
   if (this.passwordMismatch) {
     this.form.get('confirmPassword')?.setErrors({ mismatch: true });
   } else {
-    this.form.get('confirmPassword')?.setErrors(null); // Elimina el error cuando las contraseñas coinciden
+    this.form.get('confirmPassword')?.setErrors(null); 
   }
-  this.form.updateValueAndValidity(); // Asegúrate de actualizar la validez del formulario
+  this.form.updateValueAndValidity(); 
 }
 
 

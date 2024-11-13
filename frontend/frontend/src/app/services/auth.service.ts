@@ -129,33 +129,36 @@ export class AuthService {
   
   async loginWithGoogleProvider(): Promise<User | null> {
     const provider = new GoogleAuthProvider();
-
+  
     try {
-        // Iniciar sesión con Google usando el proveedor
-        const result = await signInWithPopup(this.auth, provider);
-        const user = result.user;
-
-        if (user) {
-
-            if (this.router.url !== '/home') {
-                this.router.navigate(['/home']);
-            }
-            return user;
+      const result = await signInWithPopup(this.auth, provider);
+      const user = result.user;
+  
+      if (user) {
+        const email = user.email || '';
+  
+        // Verificamos si el correo ya está registrado
+        const signInMethods = await fetchSignInMethodsForEmail(this.auth, email);
+        if (signInMethods.length > 0) {
+          // Si el correo está registrado, iniciamos sesión
+          alert('Este correo ya está registrado. Por favor, inicia sesión.');
+          if (this.router.url !== '/home') {
+            this.router.navigate(['/home']);
+          }
+        } else {  
+          alert('Le solicitamos que se registre');
+          this.router.navigate(['/register']);
         }
+        return user;
+      }
     } catch (error: any) {
-        console.error("Error en el inicio de sesión con Google:", error);
-        
-
-        if (error.code === 'auth/popup-closed-by-user') {
-            alert('El proceso de inicio de sesión fue cancelado.');
-        } else {
-            alert('Hubo un problema al iniciar sesión con Google. Por favor, intenta de nuevo.');
-        }
+      console.error("Error en el inicio de sesión con Google:", error);
+      alert('Hubo un error al iniciar sesión con Google. Por favor, intenta de nuevo.');
     }
-
+  
     return null;
-}
-
+  }
+  
 
 
 async sendEmailVerification(userCredential: UserCredential): Promise<void> {
