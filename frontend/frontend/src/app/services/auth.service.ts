@@ -19,6 +19,8 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { applyActionCode, getAuth } from 'firebase/auth';
+
 
 export interface Credential {
   email: string;
@@ -79,14 +81,18 @@ export class AuthService {
         throw error;
       });
   }
-  async checkEmailVerification(): Promise<boolean> {
-    const user = this.auth.currentUser;
-    if (user) {
-      await user.reload();  // Recarga los datos del usuario
-      return user.emailVerified;
+  
+  async verifyEmailWithCode(oobCode: string): Promise<void> {
+    const auth = getAuth();
+    try {
+      await applyActionCode(auth, oobCode); // Aplica el código de acción de Firebase
+      console.log('Correo electrónico verificado');
+    } catch (error) {
+      console.error('Error al verificar el correo electrónico:', error);
+      throw error; // Maneja errores de verificación si es necesario
     }
-    return false;
   }
+  
   
   
 
@@ -158,10 +164,12 @@ async sendEmailVerification(userCredential: UserCredential): Promise<void> {
     try {
       alert('Enviando correo de verificación...');
       const actionCodeSettings = {
-        url: 'https://proyecto-los-ciruelos.firebaseapp.com/__/auth/action',
+        url: 'https://proyecto-los-ciruelos.firebaseapp.com/__/auth/action',  // Asegúrate de que esta URL sea correcta
         handleCodeInApp: true,
       };
+      
 
+      // Enviamos el correo de verificación
       await sendEmailVerification(user, actionCodeSettings);
       alert('Correo de verificación enviado.');
     } catch (error) {
@@ -170,32 +178,9 @@ async sendEmailVerification(userCredential: UserCredential): Promise<void> {
     }
   } else {
     alert('No se encontró al usuario o el correo ya está verificado.');
-    throw new Error('No se encontró al usuario o el correo ya está verificado.');
   }
 }
 
-handleAuthActionUrl() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const mode = urlParams.get('mode');
-  const actionCode = urlParams.get('oobCode');
-
-  if (mode && actionCode) {
-    switch (mode) {
-      case 'verifyEmail':
-        // Redirige a la página de verificación de correo
-        this.router.navigate(['/verify-email'], { queryParams: { oobCode: actionCode } });
-        break;
-      case 'resetPassword':
-        // Redirige a la página de restablecimiento de contraseña
-        this.router.navigate(['/reset-password'], { queryParams: { oobCode: actionCode } });
-        break;
-      default:
-        console.error('Acción desconocida:', mode);
-    }
-  } else {
-    console.error('Parámetros insuficientes en la URL');
-  }
-}
 
 
 

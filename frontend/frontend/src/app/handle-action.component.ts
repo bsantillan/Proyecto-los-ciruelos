@@ -24,6 +24,8 @@ export class AuthActionComponent implements OnInit {
   
           this.router.navigate(['/verificar-correo'], { queryParams: { oobCode: actionCode } });
           break;
+
+          
         case 'resetPassword':
 
           this.router.navigate(['/reestablecer-contrasenia'], { queryParams: { oobCode: actionCode } });

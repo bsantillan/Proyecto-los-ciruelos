@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { applyActionCode } from 'firebase/auth'; 
 
 @Component({
   selector: 'app-verificar-correo',
@@ -9,32 +10,33 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class VerificarCorreoComponent implements OnInit {
 
+
   constructor(
     private authService: AuthService, 
     private router: Router,
-    private route: ActivatedRoute // 
+    private route: ActivatedRoute
   ) { }
-
+  
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const oobCode = params['oobCode'];
       if (oobCode) {
-  
-        this.authService.checkEmailVerification().then(isVerified => {
-          if (isVerified) {
-            this.router.navigate(['/login']); 
-          } else {
-            alert('Por favor, verifica tu correo electrónico.');
-          }
+        this.authService.verifyEmailWithCode(oobCode).then(() => {
+          console.log('Correo verificado con éxito');
+          this.router.navigate(['/login']);
+        }).catch(error => {
+          console.error('Error en la verificación del correo:', error);
         });
       } else {
-        alert('Código de verificación no encontrado en la URL.');
+        console.log('Código de verificación no proporcionado.');
       }
     });
   }
   
+  
+  
 
   goToHome(): void {
-    this.router.navigate(['/login']);  
+    this.router.navigate(['/login']);  // Redirige al login
   }
 }
