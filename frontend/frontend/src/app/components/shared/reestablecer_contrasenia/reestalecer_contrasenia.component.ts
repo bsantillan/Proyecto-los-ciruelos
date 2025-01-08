@@ -4,6 +4,7 @@ import { AuthService } from '../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { getAuth, confirmPasswordReset } from 'firebase/auth'; 
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reestablecer-contrasenia',
@@ -30,7 +31,8 @@ export class ReestablecerContraseniaComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private toastr: ToastrService,
-    private route: ActivatedRoute 
+    private route: ActivatedRoute, 
+    private router: Router
   ) {
     this.cambioContraseniaForm = this.fb.group({
       newPassword: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[A-Z])/)]],
@@ -80,6 +82,7 @@ export class ReestablecerContraseniaComponent implements OnInit {
       confirmPasswordReset(auth, this.oobCode, newPassword)
         .then(() => {
           alert('Contraseña actualizada con éxito.');
+          this.router.navigate(['/login']);
           this.cambioContraseniaForm.reset();
         })
         .catch(error => {
