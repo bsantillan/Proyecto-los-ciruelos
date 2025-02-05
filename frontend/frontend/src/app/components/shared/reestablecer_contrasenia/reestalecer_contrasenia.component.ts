@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { getAuth, confirmPasswordReset } from 'firebase/auth'; 
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reestablecer-contrasenia',
@@ -13,11 +13,9 @@ import { Router } from '@angular/router';
 })
 export class ReestablecerContraseniaComponent implements OnInit {
   cambioContraseniaForm: FormGroup;
-  passwordMismatch = false;
-  showNewPassword = false;
-  showConfirmPassword = false;
-  showPasswordRequirements = false; 
-
+  hidePassword: boolean = true;
+  hideConfirmPassword: boolean = true;
+  showPasswordRequirements: boolean = false;
 
   passwordRequirements = {
     minLength: false,
@@ -45,7 +43,6 @@ export class ReestablecerContraseniaComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.route.queryParams.subscribe(params => {
       this.oobCode = params['oobCode']; 
       if (!this.oobCode) {
@@ -60,8 +57,6 @@ export class ReestablecerContraseniaComponent implements OnInit {
     return newPassword && confirmNewPassword && newPassword !== confirmNewPassword ? { mismatch: true } : null;
   }
 
-
-
   checkPasswordStrength(password: string) {
     this.passwordRequirements.minLength = password.length >= 6;
     this.passwordRequirements.hasUpperCase = /[A-Z]/.test(password);
@@ -71,13 +66,19 @@ export class ReestablecerContraseniaComponent implements OnInit {
   onSubmit() {
     if (this.cambioContraseniaForm.invalid) {
       this.toastr.error('Por favor, completa el formulario correctamente.');
+  
+      // Marca todos los campos como tocados para mostrar errores
+      Object.keys(this.cambioContraseniaForm.controls).forEach(field => {
+        const control = this.cambioContraseniaForm.get(field);
+        control?.markAsTouched();
+      });
+  
       return;
     }
-
+  
     const { newPassword } = this.cambioContraseniaForm.value;
-
+  
     if (this.oobCode) {
-
       const auth = getAuth();
       confirmPasswordReset(auth, this.oobCode, newPassword)
         .then(() => {
@@ -92,30 +93,21 @@ export class ReestablecerContraseniaComponent implements OnInit {
       this.toastr.error('El código de restablecimiento no es válido.');
     }
   }
+  
 
-onFocusNewPassword(event: FocusEvent) {
-  this.showPasswordRequirements = true;
-}
+  togglePasswordVisibility(field: string) {
+    if (field === 'newPassword') {
+      this.hidePassword = !this.hidePassword;
+    } else if (field === 'confirmNewPassword') {
+      this.hideConfirmPassword = !this.hideConfirmPassword;
+    }
+  }
 
-onBlurNewPassword(event: FocusEvent) {
-  if (!this.cambioContraseniaForm.get('newPassword')?.value && !this.isEyeButtonClicked) {
+  onFocusPassword() {
+    this.showPasswordRequirements = true;
+  }
+
+  onBlurPassword() {
     this.showPasswordRequirements = false;
   }
-}
-
-
-isEyeButtonClicked = false;
-
-togglePasswordVisibility(field: string) {
-  if (field === 'newPassword') {
-    this.showNewPassword = !this.showNewPassword;
-  } else if (field === 'confirmNewPassword') {
-    this.showConfirmPassword = !this.showConfirmPassword;
-  }
-  this.isEyeButtonClicked = true;
-  setTimeout(() => {
-    this.isEyeButtonClicked = false;
-  }, 100);
-}
-
 }

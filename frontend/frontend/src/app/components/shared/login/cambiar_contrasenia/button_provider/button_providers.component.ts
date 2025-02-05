@@ -1,6 +1,7 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../../../../../services/auth.service';
+import { Router } from '@angular/router'; // Importa Router
 
 @Component({
   selector: 'app-button-providers',
@@ -15,8 +16,7 @@ export class ButtonProviders {
   isGoogleSignInInProgress: boolean = false; 
   errorMessages: string[] = []; 
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {
-    // Crear el formulario vacío
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) { 
     this.form = this.fb.group({
       name: [''],
       email: ['']
@@ -25,25 +25,30 @@ export class ButtonProviders {
 
   signInWithGoogle(): void {
     this.isGoogleSignInInProgress = true; 
-  
-    const authMethod = this.isLogin ? this.authService.loginWithGoogleProvider() : this.authService.signInWithGoogleProvider();
 
-    authMethod
-      .then((userData) => {
+    this.authService.loginWithGoogleProvider().then(async (userData) => {
+      if (userData) {
         console.log('Inicio de sesión exitoso con Google:', userData);
-        this.googleData.emit(userData);
-        this.fillFormWithGoogleData(userData); 
-      })
-      .catch((error) => {
-        console.error('Error durante el inicio de sesión con Google:', error);
-        this.errorMessages.push('Error durante el inicio de sesión con Google. Intenta nuevamente.');
-      })
-      .finally(() => {
-        this.isGoogleSignInInProgress = false; 
-      });
+
+        localStorage.setItem('firebaseToken', await userData.user.getIdToken());
+        const email = userData.user.email;
+        const name = userData.user.displayName;
+
+        //Verificar si el emai esta registrado en el Backend, si lo esta redireccionar al home, sino al postregister
+        this.router.navigate(['/home'], {
+          queryParams: {  email: email, name: name  }
+        });
+      }
+    })
+    .catch((error) => {
+      console.error('Error durante el inicio de sesión con Google:', error);
+      this.errorMessages.push('Error durante el inicio de sesión con Google. Intenta nuevamente.');
+    })
+    .finally(() => {
+      this.isGoogleSignInInProgress = false; 
+    });
   }
 
-  
   fillFormWithGoogleData(userData: any): void {
     this.form.patchValue({
       name: userData.name || '',

@@ -1,7 +1,7 @@
 // src/environments/environment.prod.ts
 export const environment = {
     production: true,
-    firebase: {
+    firebaseConfig: {
       apiKey: "AIzaSyADexIDOi159hPk8yHrKvBrh8n8OeY5Cpo",
       authDomain: "proyecto-los-ciruelos.firebaseapp.com",
       projectId: "proyecto-los-ciruelos",

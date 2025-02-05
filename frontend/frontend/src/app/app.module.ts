@@ -34,7 +34,9 @@ import { VerificarCorreoComponent } from './components/shared/verificar-correo/v
 // Firebase
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire/compat';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { environment } from '../environments/environment';
 
 
 
@@ -69,11 +71,17 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     NgOptimizedImage,
     MatCheckboxModule,
     ToastrModule.forRoot({
-      timeOut: 3000,
-      positionClass: 'toast-top-right',
+      positionClass: 'toast-bottom-right',
       preventDuplicates: true,
-    }),
-    FormsModule
+      timeOut: 5000, // Aumenta el tiempo de permanencia del toast
+      progressBar: true, // Si deseas agregar una barra de progreso
+      closeButton: true, // Botón de cierre
+      enableHtml: true, // Habilita el uso de HTML en los mensajes
+      extendedTimeOut: 1000, // Aumenta el tiempo de animación al cerrarse
+      easeTime: 300, // Agrega más tiempo para la animación
+    }),    
+    FormsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig), // Asegúrate de importar esto
   ],
   providers: [
     provideFirebaseApp(() => initializeApp({"projectId":"proyecto-los-ciruelos","appId":"1:458631280275:web:077d19f3d31ac919ca3f66","storageBucket":"proyecto-los-ciruelos.appspot.com","apiKey":"AIzaSyADexIDOi159hPk8yHrKvBrh8n8OeY5Cpo","authDomain":"proyecto-los-ciruelos.firebaseapp.com","messagingSenderId":"458631280275","measurementId":"G-K0V8KZ571Q"})),

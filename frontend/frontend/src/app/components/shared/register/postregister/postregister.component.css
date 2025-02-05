@@ -1,197 +1,73 @@
-html, body {
-    height: 100%;
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    color: var(--text);
-    background: var(--background);
-  }
-  
-  :root {
-    --background: #060b10;
-    --green: #45d8b4;
-    --dark-text: rgba(12, 42, 42);
-    --text: #fff;
-  }
-  
-  .form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 20px;
-  }
-  
-  .form__container {
-    width: 100%;
-    max-width: 500px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 40px auto;
-  }
-  
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.form__container {
+  width: 100%;
+  max-width: 800px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 40px auto;
+}
+
+.register-button,
+.add-phone-button {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.phones-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Espacio entre los campos de teléfono */
+}
+
+.phone-entry {
+  flex: 1 1 calc(50% - 10px); /* Hace que cada teléfono ocupe el 50% del contenedor */
+  min-width: 250px; /* Evita que los campos sean demasiado pequeños */
+}
+
+@media (max-width: 600px) {
   .phone-entry {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+    flex: 1 1 100%; /* En pantallas pequeñas, los campos de teléfono estarán en una columna */
   }
-  
-  .phone-entry mat-form-field {
-    flex: 1;
-  }
-  
-  .phone-entry button {
-    margin-left: 8px;
-    background-color: transparent; 
-    color: var(--green); 
-    border: none;
-    cursor: pointer; 
-  }
-  
-  .phone-entry button:hover {
-    color: #ff4d4d; 
-  }
-  
-  .form h1 {
-    margin-bottom: 10px;
-    color: var(--text);
-  }
-  
-  .form hr {
-    margin: 10px 0;
-  }
-  
-  .form mat-form-field {
-    width: 100%;
-    margin-bottom: 20px;
-    color: var(--text);
-  }
-  
-  .form mat-form-field input,
-  .form mat-form-field textarea {
-    color: var(--text);
-  }
-  
-  .form mat-form-field .mat-input-element::placeholder {
-    color: var(--text);
-  }
-  
-  .form mat-form-field .mat-icon {
-    color: var(--text);
-  }
-  
-  .password-toggle-button {
-    background-color: #fff;
-    color: #000;
-    border-radius: 50%;
-    border: none;
-    height: 40px;
-    width: 40px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 20px;
-  }
-  
-  .password-toggle-button .mat-icon {
-    color: #000;
-  }
-  
-  .password-toggle-button:hover {
-    background-color: #f0f0f0;
-  }
-  
-  
-  .link-style {
-    color: var(--green);
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  
-  
-  .forgot-password {
-    text-align: left;
-    margin-top: 10px;
-  }
-  
-  
-  .button-container {
-    display: flex;
-    justify-content: center; 
-    margin-top: 20px; 
-  }
-  
-  .go-back-button {
-    position: absolute; 
-    top: 16px; 
-    left: 16px; 
-    background-color: #fff; 
-    color: #000; 
-    border-radius: 50%; 
-    border: none; 
-    width: 40px;
-    height: 40px;
-    padding: 0; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    cursor: pointer; 
-    font-size: 24px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
-    transition: background-color 0.3s ease; 
-  }
-  
-  .go-back-button:hover {
-    background-color: #f0f0f0; 
-  }
-  
-  .small-text {
-    font-size: 14px;
-    display: block;
-    text-align: center;
-    color: var(--text);
-  }
-  
-  .small-text.providers {
-    margin-bottom: 30px;
-  }
-  
-  .small-text.log-in-redirect {
-    margin-top: 30px;
-  }
-  
-  .professor-checkbox {
-    font-size: 16px; 
-    color: #333; 
-    margin-top: 20px; 
-  }
-  
-  
-  .professor-checkbox:hover {
-    cursor: pointer; 
-  }
-  
-  .professor-checkbox.mat-checkbox-checked .mat-checkbox-label {
-    color: #4caf50; 
-  }
-  
-  
-  .mat-checkbox {
-    margin-right: 10px; 
-  }
-  
-  
-  .small-text.log-in-redirect a {
-    color: var(--green);
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  
-  .text-center {
-    text-align: center;
-    margin-top: 20px; 
-  }
-  
+}
+
+.form mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.password-toggle-button {
+  background-color: transparent;
+  color: #000;
+  height: 50px;
+  width: 50px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.password-toggle-button .mat-icon {
+  font-size: 25px;
+}
+
+.add-phone-button button {
+  display: block;
+  margin-top: 15px;
+}
+
+.submit-button {
+  width: 100%;
+}

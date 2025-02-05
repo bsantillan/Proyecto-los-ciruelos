@@ -6,7 +6,7 @@ import { ApplicationConfig } from '@angular/core';
 
 export const firebaseProviders: ApplicationConfig = {
   providers: [
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth())
   ]
 };

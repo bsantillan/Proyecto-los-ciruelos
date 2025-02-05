@@ -1,18 +1,28 @@
+.button-container {
+  display: flex;
+  justify-content: center;  /* Centra horizontalmente */
+  align-items: center;  /* Centra verticalmente */
+}
+
 .google-signin-btn {
   display: flex;
-  align-items: center;
+  width: 300px;
+  font-size: 18px;
+  font-family: "Open Sans";
+  font-weight: 400;
   background-color: #fff; 
-  color: #000;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: 500;
+  color: black;
+  border: 1px solid black;
+  border-radius: 100px;
+  padding-right: 40px;
+  padding-left: 40px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   cursor: pointer;
-  text-align: center;
   outline: none;
-  box-shadow: none; 
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  margin-bottom: 30px;
+  align-items: center;  /* Centra verticalmente */
+  justify-content: center;  /* Centra horizontalmente */
 }
 
 .google-signin-btn:hover {
@@ -31,7 +41,3 @@
   margin-right: 10px;
 }
 
-.google-signin-btn span {
-  display: inline-block;
-  vertical-align: middle;
-}

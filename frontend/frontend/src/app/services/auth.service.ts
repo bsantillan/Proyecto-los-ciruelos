@@ -19,7 +19,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { applyActionCode, getAuth } from 'firebase/auth';
+import { applyActionCode, getAuth, getRedirectResult, signInWithRedirect } from 'firebase/auth';
 
 
 export interface Credential {
@@ -67,17 +67,11 @@ export class AuthService {
             name: this.form.get('names')?.value,
             lastName: this.form.get('lastName')?.value,
           };
-          console.log('Datos del usuario:', userData);
-          this.toastr.success('Registro exitoso. Verifica tu correo electrónico');
+          alert('Registro exitoso. Verifica tu correo electrónico');
         }
         return userCredential;
-      })
+      })  
       .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          alert('El correo ya está registrado. Por favor, inicia sesión.');
-        } else {
-          alert('El correo ya está registrado. Por favor, inicia sesión.');
-        }
         throw error;
       });
   }
@@ -92,32 +86,28 @@ export class AuthService {
       throw error; 
     }
   }
-  
-  
-  
 
   loginWithEmailAndPassword(credential: Credential): Promise<UserCredential> {
     return signInWithEmailAndPassword(this.auth, credential.email, credential.password)
-      .then(async (userCredential) => { 
-          if (!userCredential.user?.emailVerified) {
-
-              await sendEmailVerification(userCredential.user); 
-              throw {
-                  code: 'auth/email-not-verified',
-                  message: 'No puedes iniciar sesión aún. Debes verificar tu correo electrónico. Revisa tu bandeja de entrada y haz clic en el enlace de confirmación. ¿No recibiste el correo? Haz clic aquí para reenviar el correo.'
-              };
-          }
-          return userCredential;
+      .then(async (userCredential) => {
+        // Verificar si el correo está verificado
+        if (!userCredential.user?.emailVerified) {
+          // Enviar nuevamente el correo de verificación
+          await sendEmailVerification(userCredential.user);
+          
+          // Lanzar un error con el código 'auth/email-not-verified'
+          const error: any = new Error('Correo no verificado');
+          error.code = 'auth/email-not-verified'; // Definir el código de error Firebase
+          throw error;
+        }
+  
+        return userCredential;
       })
-      .catch(error => {
-          if (error.code === 'auth/user-not-found') {
-              throw new Error('El usuario no existe.');
-          }
-          throw error; 
+      .catch((error) => {
+        // Dejar que FirebaseErrorService maneje el error
+        throw error;
       });
-}
-
-
+  }
 
   async getToken(): Promise<string> {
     const user = this.auth.currentUser;
@@ -127,100 +117,73 @@ export class AuthService {
     throw new Error('No hay usuario conectado');
   }
   
-  async loginWithGoogleProvider(): Promise<User | null> {
+  async loginWithGoogleProvider(): Promise<UserCredential> {
     const provider = new GoogleAuthProvider();
   
     try {
+      return await signInWithPopup(this.auth, provider);
+
+    } catch (error: any) {
+      return error;
+    }
+  }  
+
+  async sendEmailVerification(userCredential: UserCredential): Promise<void> {
+    const user = userCredential.user;
+    if (user && !user.emailVerified) {
+      try {
+        alert('Enviando correo de verificación...');
+        const actionCodeSettings = {
+          url: 'https://proyecto-los-ciruelos.firebaseapp.com/__/auth/action',  
+          handleCodeInApp: true,
+        };
+      
+        await sendEmailVerification(user, actionCodeSettings);
+        alert('Correo de verificación enviado.');
+      } catch (error) {
+        console.error('Error al enviar el correo de verificación:', error);
+        alert('Hubo un error al enviar el correo de verificación.');
+      }
+    } else {
+      alert('No se encontró al usuario o el correo ya está verificado.');
+    }
+  }
+
+  async signInWithGoogleProvider(): Promise<{ name: string; lastName: string; email: string } | null> {
+    const provider = new GoogleAuthProvider();
+    try {
       const result = await signInWithPopup(this.auth, provider);
       const user = result.user;
-  
+
       if (user) {
         const email = user.email || '';
-  
+
         // Verificamos si el correo ya está registrado
         const signInMethods = await fetchSignInMethodsForEmail(this.auth, email);
         if (signInMethods.length > 0) {
-          // Si el correo está registrado, iniciamos sesión
+          // Si el correo está registrado, mostramos un mensaje y no continuamos
           alert('Este correo ya está registrado. Por favor, inicia sesión.');
-          if (this.router.url !== '/home') {
-            this.router.navigate(['/home']);
-          }
-        } else {  
-          alert('Le solicitamos que se registre');
-          this.router.navigate(['/register']);
+          this.router.navigate(['/login']); // Navegamos a la página de inicio de sesión
+          return null; // Devolvemos null para que no continúe el registro
         }
-        return user;
+
+        // Si no está registrado, mandamos correo de verificación
+        await sendEmailVerification(user);
+        const [name, ...lastNameParts] = (user.displayName || 'Sin nombre').split(' ');
+        const lastName = lastNameParts.join(' ');
+
+        alert('Registro exitoso. Verifica tu correo electrónico para completar la validación.');
+        this.router.navigate(['/postregister']);
+        return { name, lastName, email };
       }
-    } catch (error: any) {
+
+      throw new Error('No se pudieron obtener los datos del usuario de Google.');
+    } catch (error) {
       console.error("Error en el inicio de sesión con Google:", error);
       alert('Hubo un error al iniciar sesión con Google. Por favor, intenta de nuevo.');
+      return null; // Devolvemos null en caso de error
     }
-  
-    return null;
   }
-  
-
-
-async sendEmailVerification(userCredential: UserCredential): Promise<void> {
-  const user = userCredential.user;
-  if (user && !user.emailVerified) {
-    try {
-      alert('Enviando correo de verificación...');
-      const actionCodeSettings = {
-        url: 'https://proyecto-los-ciruelos.firebaseapp.com/__/auth/action',  
-        handleCodeInApp: true,
-      };
-      
-
-
-      await sendEmailVerification(user, actionCodeSettings);
-      alert('Correo de verificación enviado.');
-    } catch (error) {
-      console.error('Error al enviar el correo de verificación:', error);
-      alert('Hubo un error al enviar el correo de verificación.');
-    }
-  } else {
-    alert('No se encontró al usuario o el correo ya está verificado.');
-  }
-}
-
-
-
-
-async signInWithGoogleProvider(): Promise<{ name: string; lastName: string; email: string } | null> {
-  const provider = new GoogleAuthProvider();
-  try {
-    const result = await signInWithPopup(this.auth, provider);
-    const user = result.user;
-
-    if (user) {
-      const email = user.email || '';
-
-
-      const signInMethods = await fetchSignInMethodsForEmail(this.auth, email);
-      if (signInMethods.length > 0) {
-        alert('Este correo ya está registrado. Por favor, inicia sesión.');
-        throw new Error('Este correo ya está registrado. Por favor, inicia sesión.');
-      }
-
-
-      await sendEmailVerification(user);
-      const [name, ...lastNameParts] = (user.displayName || 'Sin nombre').split(' ');
-      const lastName = lastNameParts.join(' ');
-
-      alert('Registro exitoso. Verifica tu correo electrónico para completar la validación.');
-      this.router.navigate(['/postregister']);
-      return { name, lastName, email };
-    }
-
-    throw new Error('No se pudieron obtener los datos del usuario de Google.');
-  } catch (error) {
-    console.error("Error en el inicio de sesión con Google:", error);
-    alert('Ya estás registrado, te solicitamos que inicies sesión.');
-    throw error; 
-  }
-}
-
 
   async resetPassword(email: string): Promise<void> {
     await sendPasswordResetEmail(this.auth, email);
@@ -229,23 +192,14 @@ async signInWithGoogleProvider(): Promise<{ name: string; lastName: string; emai
   async isEmailRegistered(email: string): Promise<boolean> {
     try {
       const signInMethods = await fetchSignInMethodsForEmail(this.auth, email);
-
-      return signInMethods.length > 0;
-    }catch (error: any) {
-      if (error.code === 'auth/wrong-password' || error.code === 'auth/too-many-requests') {
-        return true; 
-      }
-      if (error.code === 'auth/user-not-found') {
-        return false; 
-      }
-
-      console.error('Error al intentar iniciar sesión:', error);
-      throw error; 
+      return signInMethods.length > 0; // 🔹 Si hay métodos de inicio de sesión, el email está registrado
+    } catch (error) {
+      console.error('Error verificando email en Firebase:', error);
+      return false; // 🔹 Si hay un error, asumimos que no está registrado
     }
   }
-  
 
-  getRoleBasedOnEmail(email: string): { role: string; esProfesor?: boolean; esDueño?: boolean } {
+  /*getRoleBasedOnEmail(email: string): { role: string; esProfesor?: boolean; esDueño?: boolean } {
     if (email) {
       if (email.endsWith('@jugador.com.ar')) {
         return { role: 'jugador', esProfesor: email.startsWith('profesor') };
@@ -254,5 +208,5 @@ async signInWithGoogleProvider(): Promise<{ name: string; lastName: string; emai
       }
     }
     return { role: 'desconocido' };
-  }
+  }*/
 }
