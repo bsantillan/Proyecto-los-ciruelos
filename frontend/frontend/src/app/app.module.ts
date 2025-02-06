@@ -37,6 +37,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire/compat';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { environment } from '../environments/environment';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 
 
@@ -53,7 +54,8 @@ import { environment } from '../environments/environment';
     HomeComponent,
     PostRegisterComponent,
     ReestablecerContraseniaComponent,
-    VerificarCorreoComponent
+    VerificarCorreoComponent,
+    NavbarComponent
 
   ],
   imports: [

@@ -1,0 +1,15 @@
+<!-- Barra de navegación -->
+<nav class="navbar">
+    <div class="navbar__container">
+        <button (click)="navigateOrScroll('sobre-nosotros')" type="button">
+            Sobre Nosotros
+        </button>
+        <button (click)="navigateOrScroll('contactos')" type="button">
+            Contacto
+        </button>    
+        <button (click)="navigateOrScroll('services')" type="button">
+            Servicios
+        </button>
+        <button routerLink="/login" type="button">Iniciar Sesion</button>
+    </div>
+</nav>
