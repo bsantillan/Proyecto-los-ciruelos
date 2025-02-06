@@ -20,13 +20,14 @@
 /* 🌍 ESTILOS GLOBALES */
 /* ==================== */
 html, body {
-    height: 100%; /* Asegura que la altura del body cubra toda la pantalla */
+    min-height: 100vh; /* Permite que la página crezca */
     margin: 0;
     font-family: 'Roboto', sans-serif;
     color: black;
     background: var(--background-accent);
     font-size: 14px;
-    overflow: hidden; /* Evita el scroll */
+    overflow-x: hidden; /* Evita el scroll horizontal */
+    overflow-y: auto; /* Habilita el scroll vertical */
 }
 
 /* ==================== */
@@ -36,9 +37,10 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh; /* Utiliza el 100% de la altura de la ventana */
+    min-height: 100vh; /* Permite que el formulario use al menos el 100% del viewport */
     text-align: center; 
     width: 100%;
+    padding: 40px 0; /* Agrega espacio arriba y abajo */
 }
 
 .form__container {

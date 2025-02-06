@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
 
       this.authService.loginWithEmailAndPassword(credential)
         .then((user) => {
+          //Verificar que el mail este registrado en el Backend sino no lo esta Mandar al PostRegister
           this.router.navigate(['/home']);
         })
         .catch((error) => {

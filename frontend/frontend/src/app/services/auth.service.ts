@@ -189,16 +189,6 @@ export class AuthService {
     await sendPasswordResetEmail(this.auth, email);
   }
 
-  async isEmailRegistered(email: string): Promise<boolean> {
-    try {
-      const signInMethods = await fetchSignInMethodsForEmail(this.auth, email);
-      return signInMethods.length > 0; // 🔹 Si hay métodos de inicio de sesión, el email está registrado
-    } catch (error) {
-      console.error('Error verificando email en Firebase:', error);
-      return false; // 🔹 Si hay un error, asumimos que no está registrado
-    }
-  }
-
   /*getRoleBasedOnEmail(email: string): { role: string; esProfesor?: boolean; esDueño?: boolean } {
     if (email) {
       if (email.endsWith('@jugador.com.ar')) {

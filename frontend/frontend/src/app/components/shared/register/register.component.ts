@@ -75,15 +75,11 @@ export class RegisterComponent implements OnInit {
     if (email && password) {
       const credential: Credential = { email, password };
       try {
-        // Validación del correo electrónico solo cuando el usuario presiona "Registrar"
-        const isRegistered = await this.authService.isEmailRegistered(email);
-        console.log('¿Email registrado?:', isRegistered);
-
-        if (isRegistered) {
-          this.form.get('email')?.setErrors({ emailTaken: true });
-          console.log('Se establece el error en el campo email');
-          return; // 🔹 No continuar con el registro si el correo ya está registrado
-        }
+        /* Validar que el email no exista en el Backend
+        
+        console.log('¿Email registrado?:');
+        this.form.get('email')?.setErrors({ emailTaken: true });
+        console.log('Se establece el error en el campo email');*/
 
         this.authService.registerWithEmailAndPassword(credential)
         // Mandar informacion al Backend para registrar al jugador

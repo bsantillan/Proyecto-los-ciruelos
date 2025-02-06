@@ -34,7 +34,7 @@ export class ButtonProviders {
         const email = userData.user.email;
         const name = userData.user.displayName;
 
-        //Verificar si el emai esta registrado en el Backend, si lo esta redireccionar al home, sino al postregister
+        //Verificar si el email esta registrado en el Backend, si lo esta redireccionar al home, sino al postregister
         this.router.navigate(['/home'], {
           queryParams: {  email: email, name: name  }
         });
