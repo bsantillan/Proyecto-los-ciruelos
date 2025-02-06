@@ -1,27 +1,32 @@
-/* Centralizar la tabla */
+/* Centralizar la tabla del calendario */
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Ajusta según tu layout */
+  /* height: 100vh; Eliminado para permitir que el contenido crezca según sea necesario */
 }
 
 .calendar-container {
   position: relative;
   padding: 20px;
+  margin-top: 30px; /* Asegura que haya un margen superior si es necesario */
+  background-color: var(--background-accent); /* Fondo semitransparente */
+  border-radius: 12px; /* Bordes redondeados */
+  box-shadow: 0 4px 12px var(--title-shadow); /* Sombra suave */
 }
 
 .table {
   border-collapse: collapse; /* Asegura que las líneas divisorias se mantengan */
   width: 100%; /* Asegura que la tabla ocupe el espacio disponible */
+  border-radius: 12px; /* Bordes redondeados */
+  overflow: hidden; /* Evitar que los bordes se salgan */
 }
 
 .table th, .table td {
-  border: 1px solid #ddd; /* Añade un borde claro a las celdas */
+  border: 1px solid var(--background-muted); /* Añade un borde claro a las celdas */
   padding: 10px;
   text-align: center;
   background-color: var(--background-accent); /* Uso de la variable de fondo */
-  position: relative; /* Necesario para el posicionamiento de pseudo-elementos */
 }
 
 /* Estilo para las cabeceras de la tabla */
@@ -56,7 +61,9 @@
 
 /* Estilo general para las celdas de la tabla */
 .table td {
+  position: relative; /* Asegura que el pseudoelemento ::after se posicione dentro de la celda */
   cursor: pointer;
+  border: 1px solid #dee2e6;
 }
 
 /* Resaltar bordes de las celdas durante la interacción */
@@ -69,22 +76,44 @@
   bottom: 0;
   border: 2px solid transparent;
   pointer-events: none;
+  z-index: 1; /* Asegura que el pseudoelemento no ocupe más espacio del necesario */
 }
 
-.table td:hover::after {
-  border-color: var(--text); /* Resaltar el borde en hover */
+/* Efecto hover para celdas disponibles */
+.table td:not(.past-time):not(.table-danger):hover::after {
+  border-color: var(--text); /* Resaltar el borde en hover solo si es interactiva */
+  z-index: 2; /* Asegura que el borde hover se mantenga visible sin afectar la tabla completa */
+}
+
+/* Evitar que el número de cancha cambie de color */
+.table tr > td:first-child {
+  cursor: default;
+  background-color: var(--background-accent); /* Mantener el fondo original */
+  position: relative; /* Necesario para ::after en las primeras celdas */
+}
+
+.table tr > td:first-child:hover::after {
+  border-color: transparent; /* Prevenir borde hover en las celdas de cancha */
 }
 
 /* Estilo adicional para las celdas cuando el mouse pasa sobre ellas */
 .table td:hover {
-  background-color: #f8f9fa;
+  background-color: var(--button-color-secondary);
 }
+
+@keyframes colorTransition {
+  0% {
+    background-color: var(--background); 
+  }
+  100% {
+    background-color: var(--pass-time); 
+}}
 
 /* Celdas deshabilitadas por ser horas pasadas */
 .past-time {
-  position: relative;
-  background-color: var(--background-accent); /* Color de fondo para horas pasadas */
-  color: var(--text); /* Color del texto */
+  background-color: var(--pass-time) !important; /* Color para horas pasadas */
+  pointer-events: none; /* Desactiva la interacción con la celda */
+  border: none; /* Eliminar las divisiones entre las celdas */
 }
 
 .past-time::before {
@@ -94,16 +123,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.1) 0px,
-    rgba(0, 0, 0, 0.1) 10px,
-    transparent 10px,
-    transparent 20px
-  );
+  background-color: var(--background); /* Color verde inicial */
   pointer-events: none;
   z-index: 1; /* Asegúrate de que esté encima del contenido */
-  opacity: 1; /* Ajusta la intensidad del rayado si es necesario */
+  opacity: 0.5; /* Ajusta la intensidad del color si es necesario */
 }
 
 /* Celdas resaltadas completas */
