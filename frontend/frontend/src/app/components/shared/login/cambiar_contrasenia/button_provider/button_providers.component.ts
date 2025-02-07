@@ -2,6 +2,7 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../../../../../services/auth.service';
 import { Router } from '@angular/router'; // Importa Router
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-button-providers',
@@ -16,7 +17,12 @@ export class ButtonProviders {
   isGoogleSignInInProgress: boolean = false; 
   errorMessages: string[] = []; 
 
-  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) { 
+  constructor(
+    private authService: AuthService, 
+    private fb: FormBuilder, 
+    private router: Router, 
+    private toastrService: ToastrService
+  ) { 
     this.form = this.fb.group({
       name: [''],
       email: ['']
@@ -35,9 +41,11 @@ export class ButtonProviders {
         const name = userData.user.displayName;
 
         //Verificar si el email esta registrado en el Backend, si lo esta redireccionar al home, sino al postregister
+
         this.router.navigate(['/home'], {
           queryParams: {  email: email, name: name  }
         });
+        this.toastrService.success("Bienvenido de nuevo! Nos alegra verte otra vez.", "Exito");
       }
     })
     .catch((error) => {

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService, Credential } from '../../../services/auth.service';
 import { FirebaseErrorService } from '../../../services/firebase-error.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sign-up',
@@ -29,7 +30,8 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private firebaseError: FirebaseErrorService
+    private firebaseError: FirebaseErrorService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -87,7 +89,7 @@ export class RegisterComponent implements OnInit {
 
       } catch (error: any) {
         console.error('Error en signUp:', error);
-        alert(this.firebaseError.codeError(error.code));
+        this.toastrService.error(this.firebaseError.codeError(error.code), "Error");
       }
     }
   }

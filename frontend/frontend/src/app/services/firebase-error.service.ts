@@ -14,7 +14,7 @@ export class FirebaseErrorService {
       'auth/user-not-found': 'El usuario no está registrado.',
       'auth/wrong-password': 'Contraseña incorrecta.',
       'auth/email-already-in-use': 'El email ya está registrado.',
-      'auth/email-not-verified': 'Debe verificar su correo antes de iniciar sesión, ya se le renvio un email para confirmar su correo electronico',
+      'auth/email-not-verified':   'Debe verificar su correo antes de iniciar sesión.<br>Correo de verificación enviado.<br>Revisa tu correo electrónico.',
       'auth/too-many-requests': 'Demasiados intentos fallidos. Intente más tarde.',
     };
   

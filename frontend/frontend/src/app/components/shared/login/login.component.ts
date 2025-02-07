@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AuthService, Credential } from '../../../services/auth.service';
 import { FirebaseErrorService } from '../../../services/firebase-error.service';
+import { ToastrService } from 'ngx-toastr';
 
 interface LoginForm {
   email: FormControl<string>;
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private firebaseError: FirebaseErrorService
+    private firebaseError: FirebaseErrorService,
+    private toastrService: ToastrService
   ) {
     this.form = this.formBuilder.group({
       email: this.formBuilder.control('', { validators: [Validators.required], nonNullable: true }),
@@ -53,7 +55,7 @@ export class LoginComponent implements OnInit {
         .catch((error) => {
           console.error('Código de error de Firebase:', error.code); // Verifica qué código está devolviendo Firebase
           this.errorMessage = this.firebaseError.codeError(error.code); // Muestra error en pantalla
-          alert(this.errorMessage); // Notificación con Toastr
+          this.toastrService.error(this.errorMessage, "Error");
         });
     }
   }

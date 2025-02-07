@@ -37,7 +37,7 @@ export class AuthService {
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService) {
+  constructor(private fb: FormBuilder, private toastrService: ToastrService) {
     this.form = this.fb.group({
       names: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -59,7 +59,7 @@ export class AuthService {
     return createUserWithEmailAndPassword(this.auth, credential.email, credential.password)
       .then(async (userCredential) => {
         if (userCredential.user) {
-          await sendEmailVerification(userCredential.user);
+          this.enviarEmailVerification(userCredential);
           const userData = {
             uid: userCredential.user.uid,
             email: credential.email,
@@ -67,7 +67,6 @@ export class AuthService {
             name: this.form.get('names')?.value,
             lastName: this.form.get('lastName')?.value,
           };
-          alert('Registro exitoso. Verifica tu correo electrónico');
         }
         return userCredential;
       })  
@@ -93,13 +92,14 @@ export class AuthService {
         // Verificar si el correo está verificado
         if (!userCredential.user?.emailVerified) {
           // Enviar nuevamente el correo de verificación
-          await sendEmailVerification(userCredential.user);
+          sendEmailVerification(userCredential.user);
           
           // Lanzar un error con el código 'auth/email-not-verified'
           const error: any = new Error('Correo no verificado');
           error.code = 'auth/email-not-verified'; // Definir el código de error Firebase
           throw error;
         }
+        this.toastrService.success("Bienvenido de nuevo! Nos alegra verte otra vez.", "Exito");
   
         return userCredential;
       })
@@ -122,30 +122,30 @@ export class AuthService {
   
     try {
       return await signInWithPopup(this.auth, provider);
+      
 
     } catch (error: any) {
       return error;
     }
   }  
 
-  async sendEmailVerification(userCredential: UserCredential): Promise<void> {
+  async enviarEmailVerification(userCredential: UserCredential): Promise<void> {
     const user = userCredential.user;
     if (user && !user.emailVerified) {
       try {
-        alert('Enviando correo de verificación...');
         const actionCodeSettings = {
           url: 'https://proyecto-los-ciruelos.firebaseapp.com/__/auth/action',  
           handleCodeInApp: true,
         };
       
         await sendEmailVerification(user, actionCodeSettings);
-        alert('Correo de verificación enviado.');
+        this.toastrService.info("Correo de verificación enviado. Revisa tu correo electronico.", "Verificación requerida");
       } catch (error) {
         console.error('Error al enviar el correo de verificación:', error);
-        alert('Hubo un error al enviar el correo de verificación.');
+        this.toastrService.error("Error al enviar el correo de verificación. Inténtalo nuevamente.", "Error");
       }
     } else {
-      alert('No se encontró al usuario o el correo ya está verificado.');
+      this.toastrService.warning("No pudimos encontrar tu cuenta o ya verificaste tu correo.", "Atención");
     }
   }
 

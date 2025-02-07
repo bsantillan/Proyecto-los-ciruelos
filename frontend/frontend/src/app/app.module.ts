@@ -63,7 +63,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
@@ -72,16 +71,14 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     MatSelectModule,
     NgOptimizedImage,
     MatCheckboxModule,
+    BrowserAnimationsModule, // Asegúrate de importar esto
     ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
-      preventDuplicates: true,
-      timeOut: 5000, // Aumenta el tiempo de permanencia del toast
-      progressBar: true, // Si deseas agregar una barra de progreso
-      closeButton: true, // Botón de cierre
-      enableHtml: true, // Habilita el uso de HTML en los mensajes
-      extendedTimeOut: 1000, // Aumenta el tiempo de animación al cerrarse
-      easeTime: 300, // Agrega más tiempo para la animación
-    }),    
+      positionClass: 'toast-top-right', // Coloca la notificación arriba a la derecha
+      timeOut: 3000, // Duración en milisegundos
+      closeButton: true, // Muestra un botón de cierre
+      progressBar: true, // Muestra una barra de progreso
+      enableHtml: true
+    }),  
     FormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig), // Asegúrate de importar esto
   ],
