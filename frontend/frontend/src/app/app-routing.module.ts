@@ -5,8 +5,11 @@ import { LoginComponent } from './components/shared/login/login.component';
 import { CambiarContraseniaComponent } from './components/shared/login/cambiar_contrasenia/cambiar-contrasenia.component';
 import { RegisterComponent } from './components/shared/register/register.component';
 import { HomeComponent } from './components/home/home.component';
-import { AsociarseComponent } from './components/shared/socios/asociarse/asociarse.component';
-import { DesasociarseComponent } from './components/shared/socios/desasociarse/desasociarse.component';
+import { PostRegisterComponent } from './components/shared/register/postregister/postregister.component';
+import { ReestablecerContraseniaComponent } from './components/shared/reestablecer_contrasenia/reestalecer_contrasenia.component';
+import { VerificarCorreoComponent } from './components/shared/verificar-correo/verificar-correo.component';
+import { AuthActionComponent } from './handle-action.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -14,9 +17,11 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'cambiar-contrasenia', component: CambiarContraseniaComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'postregister', component: PostRegisterComponent},
   { path: 'mercadopago', component: MercadopagoComponent },
-  { path: 'asociarse', component: AsociarseComponent }, 
-  { path: 'desasociarse', component: DesasociarseComponent },
+  { path: 'reestablecer-contrasenia', component: ReestablecerContraseniaComponent },
+  { path: 'verificar-correo', component: VerificarCorreoComponent},
+  { path: 'action/:actionType/:oobCode', component: AuthActionComponent }, 
   { path: '**', redirectTo: 'home' }
 ];
 

@@ -1,41 +1,78 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ButtonProviders } from './cambiar_contrasenia/button_provider/button-providers.component'
+import { AuthService, Credential } from '../../../services/auth.service';
+import { FirebaseErrorService } from '../../../services/firebase-error.service';
+import { ToastrService } from 'ngx-toastr';
 
+interface LoginForm {
+  email: FormControl<string>;
+  password: FormControl<string>;
+}
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
-  form: FormGroup;
-  hide= true;
-  constructor(private fb: FormBuilder, private router: Router) {
-    // Inicializamos el formulario
-    this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+export class LoginComponent implements OnInit {
+  hide = true;
+  form: FormGroup<LoginForm>;
+  errorMessage: string | null = null;
+  isGoogleSignInInProgress = false;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private authService: AuthService,
+    private firebaseError: FirebaseErrorService,
+    private toastrService: ToastrService
+  ) {
+    this.form = this.formBuilder.group({
+      email: this.formBuilder.control('', { validators: [Validators.required], nonNullable: true }),
+      password: this.formBuilder.control('', { validators: [Validators.required], nonNullable: true }),
     });
   }
 
-  ngOnInit(): void {
-    // Cualquier inicialización adicional
-  }
+  ngOnInit() {}
 
   login(): void {
-    // Verificar si el formulario es válido
-    if (this.form.valid) {
-      console.log('Login exitoso:', this.form.value);
-      // Navegar al home después de login exitoso
-      this.router.navigate(['/home']);
-    } else {
-      console.log('Formulario inválido');
+    if (this.form.invalid) {
+      this.form.markAllAsTouched(); // Marca todos los campos como tocados
+      return;
+    }
+
+    const { email, password } = this.form.value;
+
+    if (email && password) {
+      const credential: Credential = { email, password };
+
+      this.authService.loginWithEmailAndPassword(credential)
+        .then((user) => {
+          //Verificar que el mail este registrado en el Backend sino no lo esta Mandar al PostRegister
+          this.router.navigate(['/home']);
+        })
+        .catch((error) => {
+          console.error('Código de error de Firebase:', error.code); // Verifica qué código está devolviendo Firebase
+          this.errorMessage = this.firebaseError.codeError(error.code); // Muestra error en pantalla
+          this.toastrService.error(this.errorMessage, "Error");
+        });
     }
   }
 
-  goHome(): void {
-    this.router.navigate(['/home']); 
+  get isEmailValid(): string | boolean {
+    const control = this.form.get('email');
+    if (control?.invalid && control.touched && control.hasError('required')) {
+      return 'Este campo es obligatorio';
+    }
+    return false;
+  }
+
+  get isPasswordValid(): string | boolean {
+    const control = this.form.get('password');
+    if (control?.invalid && control.touched && control.hasError('required')) {
+      return 'Este campo es obligatorio';
+    }
+    return false;
   }
 }

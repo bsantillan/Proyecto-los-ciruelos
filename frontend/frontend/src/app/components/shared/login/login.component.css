@@ -1,165 +1,49 @@
-/* Global styles */
-html, body {
-    height: 100%;
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    color: var(--text);
-    background: var(--background);
-}
-
-:root {
-    --background: #060b10;
-    --green: #45d8b4;
-    --dark-text: rgba(12, 42, 42);
-    --text: #fff;
-}
-
 .form {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    padding: 20px; /* Añadido padding para evitar que el formulario esté pegado al borde de la pantalla */
+    height: 100vh;  /* Toma toda la altura de la pantalla */
 }
 
-.form__container {
-    width: 100%;
-    max-width: 400px;
-    background: #fff; /* Fondo blanco para el contenedor del formulario */
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-    padding: 20px; /* Espacio interno del contenedor */
-}
-
-.form h1 {
-    margin-bottom: 30px;
-    color: var(--text);
-}
-
-.form hr {
-    margin: 30px 0;
-}
-
-.form mat-form-field {
-    width: 100%;
-    margin-bottom: 20px; /* Espacio entre los campos del formulario */
-    color: var(--text); /* Asegura que el texto del label y errores sea blanco */
-}
-
-.form mat-form-field input,
-.form mat-form-field textarea {
-    color: var(--text); /* Establece el color del texto al escribir */
-}
-
-.form mat-form-field .mat-input-element::placeholder {
-    color: var(--text); /* Asegura que el placeholder sea blanco */
-}
-
-.form mat-form-field .mat-icon {
-    color: var(--text); /* Asegura que los íconos sean blancos */
-}
-
-/* Estilo específico para el botón de mostrar/ocultar contraseña */
-.password-toggle-button {
-    background-color: #fff; /* Fondo blanco del botón */
-    color: #000; /* Color negro para el ícono */
-    border-radius: 50%; /* Opcional: para hacer el botón redondo */
-    border: none; /* Elimina el borde predeterminado del botón */
-    height: 40px; /* Ajusta la altura del botón */
-    width: 40px; /* Ajusta el ancho del botón */
-    padding: 0; /* Elimina el padding para ajustar el tamaño */
-    display: flex; /* Centra el ícono dentro del botón */
-    align-items: center; /* Centra verticalmente */
-    justify-content: center; /* Centra horizontalmente */
-    cursor: pointer; /* Cursor de puntero */
-    font-size: 20px; /* Tamaño de fuente adecuado para el ícono */
-}
-
-.password-toggle-button .mat-icon {
-    color: #000; /* Asegura que el ícono sea negro */
-}
-
-.password-toggle-button:hover {
-    background-color: #f0f0f0; /* Color más claro al pasar el cursor */
-}
-
-/* Estilo para los enlaces */
-.link-style {
-    color: var(--green); /* Color verde agua para los enlaces */
-    text-decoration: underline; /* Subrayado */
-    cursor: pointer; /* Cursor de puntero */
-}
-
-/* Ubicación del enlace "Olvidé mi contraseña" */
-.forgot-password {
-    text-align: left; /* Alinea el texto a la izquierda */
-    margin-top: 10px; /* Ajusta este valor según el espacio deseado */
-}
-
-/* Estilo de los botones en el formulario */
-.button-container {
-    display: flex;
-    justify-content: center; 
-    margin-top: 20px; 
-}
-
-.go-back-button {
-    position: absolute; 
-    top: 16px; 
-    left: 16px; 
-    background-color: #fff; 
-    color: #000; 
-    border-radius: 50%; 
-    border: none; 
-    width: 40px;
-    height: 40px;
-    padding: 0; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    cursor: pointer; 
-    font-size: 24px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
-    transition: background-color 0.3s ease; 
-}
-
-.go-back-button:hover {
-    background-color: #f0f0f0; 
-}
-
-/* Ajustes generales para los textos pequeños */
-.small-text {
-    font-size: 14px;
+.submit-button {
     display: block;
+    margin: 20px auto; /* Centra horizontalmente */
     text-align: center;
-    color: var(--text);
+}
+  
+.forgot-password {
+    display: flex; /* Convertir el contenedor en flexbox */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
 }
 
-.small-text.providers {
-    margin-bottom: 30px;
+/* ✅ Centramos los campos de Email y Contraseña */
+.custom-field {
+    width: 80%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar */
+    margin: 0 auto 20px auto; /* Centrar con margen inferior */
 }
 
-.small-text.log-in-redirect {
-    margin-top: 30px;
-}
-
-.small-text.log-in-redirect a {
-    color: var(--green);
-    text-decoration: underline;
+/* ✅ Ajustar el botón de mostrar contraseña (hacerlo más grande) */
+.password-toggle-button {
+    background-color: transparent;
+    color: #000;
+    height: 50px; /* Aumentar tamaño */
+    width: 50px; /* Aumentar tamaño */
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    margin-right: 10px; /* Ajustar su posición */
 }
 
-.button-providers-container {
-    margin-top: 1rem;
+/* ✅ Ajustar el icono del botón */
+.password-toggle-button .mat-icon {
+    font-size: 25px; /* Hacer el icono más grande */
 }
 
-.button-providers button {
-    width: 100%;
-    text-align: center;
-}
 
-/* Asegura que el div con clase text-center esté centrado */
-.text-center {
-    text-align: center;
-    margin-top: 20px; 
-}

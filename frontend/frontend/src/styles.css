@@ -1,138 +1,76 @@
-html, body {
-    height: 100%;
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    color: var(--text);
-    background: var(--background);
-    font-size: 14px;
-}
+@import 'ngx-toastr/toastr';
 
+/* ==================== */
+/* 🎨 VARIABLES GLOBALES */
+/* ==================== */
 :root {
-    --background: #E0F3EA;
+    --background: #060b10;
     --background-accent: #EBFFF5;
     --white-text: #F4F9F6;
-    --text: #041A0F;
+    --text: black;
+    --dark-text: rgba(12, 42, 42);
     --button-color-primary: #2BDA79;
     --button-hover-color: #21ad60;
     --button-color-secondary: #8CE3B9;
     --accent: #E45355;
     --pass-time: #ced4da;
     --title-shadow: rgba(0, 0, 0, 0.2);
-    --background-muted: rgba(255, 255, 255, 0.2)
+    --background-muted: rgba(255, 255, 255, 0.2);
+    --green: #45d8b4;
 }
 
+/* ==================== */
+/* 🌍 ESTILOS GLOBALES */
+/* ==================== */
+html, body {
+    min-height: 100vh; /* Permite que la página crezca */
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+    background: var(--background-accent);
+    font-size: 14px;
+    overflow-x: hidden; /* Evita el scroll horizontal */
+    overflow-y: auto; /* Habilita el scroll vertical */
+}
+
+/* ==================== */
+/* 📦 FORMULARIO Y CENTRADO */
+/* ==================== */
 .form {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    padding: 1rem;
-    box-sizing: border-box;
-}
-
-.form h1 {
-    margin-bottom: 1.5rem;
-    font-size: 2rem;
-    font-weight: 700;
-    font-family: 'Playfair Display', serif;
-    background: linear-gradient(135deg, #4caf50, #a3d9a5);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    border-bottom: 2px solid var(--title-border-color);
-    padding-bottom: 0.5rem;
-    text-align: center;
-    background-clip: text;
+    min-height: 100vh; /* Permite que el formulario use al menos el 100% del viewport */
+    text-align: center; 
+    width: 100%;
+    padding: 40px 0; /* Agrega espacio arriba y abajo */
 }
 
 .form__container {
     width: 100%;
-    max-width: 340px;
+    max-width: 600px;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     padding: 1.5rem;
     border: 1px solid var(--green);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+    margin: 40px auto;
 }
 
-.form hr {
-    margin: 1.5rem 0;
-    border: 0;
-    border-top: 1px solid var(--green);
-}
-
-.form mat-form-field {
-    width: 100%;
-    margin-bottom: 1rem;
-}
-
-.form mat-form-field input,
-.form mat-form-field textarea {
-    color: var(--text);
-    background-color: #f9f9f9;
-    border-radius: 6px;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-}
-
-.form mat-form-field .mat-input-element::placeholder {
-    color: var(--dark-text);
-}
-
-.form mat-form-field .mat-icon {
-    color: var(--dark-text);
-}
-
-.form button {
-    width: 100%;
-    background: var(--button-color);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0.75rem;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 0.875rem;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-}
-
-.form button:hover {
-    background-color: var(--button-hover-color);
-    transform: translateY(-1px);
-}
-
-.small-text {
-    font-size: 0.75rem;
-    display: block;
+.form h1 {
+    font-weight: 500;
+    margin: 30px 0;
+    font-family: 'Roboto', serif;
     text-align: center;
-    color: var(--dark-text);
-    margin: 1rem 0;
+    color: black;
 }
 
-.small-text.providers {
-    margin-bottom: 1.5rem;
-}
-
-.small-text.log-in-redirect {
-    margin-top: 1.5rem;
-}
-
-.small-text.log-in-redirect a {
-    color: var(--green);
-    text-decoration: underline;
-    cursor: pointer;
-    font-weight: bold;
-}
-
+/* Asegúrate que el formulario se adapte bien en pantallas más pequeñas */
 @media (max-width: 600px) {
-    .form {
-        padding: 0.5rem;
-    }
     .form__container {
         max-width: 100%;
-        padding: 0.5rem;
+        padding: 1rem;
     }
     .form h1 {
         font-size: 1.5rem;
@@ -143,20 +81,79 @@ html, body {
     }
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* ========================== */
+/* 🔘 BOTONES Y ACCIONES */
+/* ========================== */
+.submit-button {
+    display: block;
+    width: 100%;
+    max-width: 250px;
+    background-color: var(--button-color-primary) !important;
+    color: black;
+    font-size: 18px !important;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.submit-button:hover {
+    background-color: var(--button-hover-color);
+    transform: translateY(-2px);
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.submit-button:active {
+    background-color: #1e8c5a;
+    transform: translateY(0);
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* 🔙 Botón de volver */
+.go-back-button {
+    position: absolute; 
+    top: 16px; 
+    left: 16px; 
+    background-color: #fff !important; 
+    color: #000; 
+    border-radius: 50%; 
+    border: none; 
+    width: 40px;
+    height: 40px;
+    padding: 0; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    cursor: pointer; 
+    font-size: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
+    transition: background-color 0.3s ease; 
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.go-back-button:hover {
+    background-color: #f0f0f0; 
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* ======================= */
+/* 🔒 CAMPOS DE CONTRASEÑA */
+/* ======================= */
+.password-toggle-button {
+    background-color: transparent;
+    color: #000;
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.password-toggle-button .mat-icon {
+    font-size: 25px;
+}
+
+/* Mostrar los requisitos cuando el usuario está escribiendo */
+.form-group input:focus + .password-requirements-container {
+    opacity: 1;
+    visibility: visible;
+}
