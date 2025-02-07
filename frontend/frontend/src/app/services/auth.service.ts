@@ -19,7 +19,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { applyActionCode, getAuth, getRedirectResult, signInWithRedirect } from 'firebase/auth';
+import { applyActionCode, getAuth, getRedirectResult, signInWithRedirect, signOut } from 'firebase/auth';
 
 
 export interface Credential {
@@ -44,6 +44,20 @@ export class AuthService {
 
     });
 
+  }
+
+   // Método para hacer logout
+   logout(): Promise<void> {
+    return signOut(this.auth)
+      .then(() => {
+        this.toastrService.success('Has cerrado sesión correctamente', 'Logout');
+        this.router.navigate(['/login']); // Redirige al login después de hacer logout
+      })
+      .catch((error) => {
+        console.error('Error al cerrar sesión', error);
+        this.toastrService.error('Hubo un error al cerrar sesión', 'Error');
+        throw error;  // Lanza error si ocurre algún problema al hacer logout
+      });
   }
   
   async updatePassword(newPassword: string): Promise<void> {
@@ -188,6 +202,7 @@ export class AuthService {
   async resetPassword(email: string): Promise<void> {
     await sendPasswordResetEmail(this.auth, email);
   }
+  
 
   /*getRoleBasedOnEmail(email: string): { role: string; esProfesor?: boolean; esDueño?: boolean } {
     if (email) {
