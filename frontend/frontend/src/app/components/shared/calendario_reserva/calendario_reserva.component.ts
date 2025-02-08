@@ -1,13 +1,13 @@
-
-
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 
 export interface Reservation {
   courtId: number;
-  timeSlot: string;
+  startTime: string;  // Hora de inicio
+  endTime: string;    // Hora de finalización
   price: number;
   date: string;
 }
+
 
 export interface Court {
   id: number;
@@ -39,11 +39,14 @@ export class CalendarioReservaComponent implements OnInit {
   ];
 
   reservations: Reservation[] = [
-    { courtId: 1, timeSlot: '08:00', price: 20000, date: '2024-08-21' },
-    { courtId: 1, timeSlot: '11:00', price: 20000, date: '2024-08-21' },
-    { courtId: 2, timeSlot: '14:00', price: 20000, date: '2024-08-22' },
-    { courtId: 3, timeSlot: '20:00', price: 20000, date: '2024-08-22' },
-    { courtId: 3, timeSlot: '21:00', price: 20000, date: '2024-08-22' },
+    { courtId: 1, startTime: '18:00', endTime: '19:30', price: 20000, date: '2025-02-08' },
+    { courtId: 1, startTime: '20:00', endTime: '21:00', price: 20000, date: '2025-02-08' },  
+    { courtId: 1, startTime: '21:30', endTime: '23:00', price: 20000, date: '2025-02-08' }, 
+    { courtId: 2, startTime: '18:00', endTime: '19:30', price: 20000, date: '2025-02-08' },
+    { courtId: 2, startTime: '19:30', endTime: '20:30', price: 20000, date: '2025-02-08' },    
+    { courtId: 2, startTime: '21:00', endTime: '22:30', price: 20000, date: '2025-02-08' }, 
+    { courtId: 4, startTime: '21:00', endTime: '22:30', price: 20000, date: '2025-02-08' },   
+  
   ];
 
   showOptionsMenu = false;
@@ -55,7 +58,6 @@ export class CalendarioReservaComponent implements OnInit {
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit() {
-    this.loadReservations(this.selectedDate);
   }
 
   getMinDate(): string {
@@ -66,12 +68,13 @@ export class CalendarioReservaComponent implements OnInit {
     return `${yyyy}-${mm}-${dd}`;
   }
 
-  loadReservations(date: string) {}
+  loadReservations(date: string) {
+    this.reservations = this.reservations.filter(res => res.date === date);
+  }  
 
   onDateChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.selectedDate = input.value;
-    this.minDate = this.getMinDate();
     this.loadReservations(this.selectedDate);
     this.clearSelectedCells();
     this.hideOptionsMenu();
@@ -87,63 +90,97 @@ export class CalendarioReservaComponent implements OnInit {
     this.clearSelectedCells(); // Limpia la selección si el menú se cierra sin elegir
   }
   
-
   showTimeOptions(court: Court, slot: string, event: MouseEvent) {
     this.highlightedCells = []; // Limpiar selección previa
+    this.showOptionsMenu=false;
+  
+    // Verificar si la celda está ocupada (reservada)
+    if (this.isReserved(court.id, slot)) {
+      return;  // No hacer nada si está reservada
+    }
   
     const slotIndex = this.timeSlots.indexOf(slot);
-  
+    
     if (slotIndex !== -1) {
-      this.highlightedCells.push({ courtId: court.id, slot });
-  
-      // Verificar si hay un siguiente slot disponible y resaltarlo también
-      if (slotIndex + 1 < this.timeSlots.length) {
-        this.highlightedCells.push({ courtId: court.id, slot: this.timeSlots[slotIndex + 1] });
+      // Verificar si la celda tiene conflicto de tiempo
+      if (this.isNotEnoughTimeBetweenReservations(court.id, slot)) {
+        // Si hay conflicto de tiempo, solo bloqueamos visualmente (no hacemos nada)
+        return;
       }
-    }
   
-    // Obtener posición del menú
-    const target = event.target as HTMLTableCellElement;
-    const rect = target.getBoundingClientRect();
+      // Ahora calculamos las celdas hasta la hora de finalización
+      const endTime = this.getEndTime(slot); // Obtener el tiempo de finalización
+      let endSlotIndex = this.timeSlots.indexOf(endTime);
   
-    this.optionsMenuPosition = {
-      top: rect.top + window.scrollY + target.offsetHeight,
-      left: rect.left + window.scrollX + rect.width / 2 - 100
-    };
-  
-    this.showOptionsMenu = true;
-  }  
+      if (endSlotIndex !== -1) {
+        // Resaltar todas las celdas entre start y end
+        if (slotIndex == endSlotIndex){
+          return
+        }else{
 
-  previewOption(duration: number) {
-    const courtId = this.highlightedCells.length > 0 ? this.highlightedCells[0].courtId : null;
-    if (!courtId) return;
-  
-    const slotIndex = this.timeSlots.indexOf(this.highlightedCells[0].slot);
-    if (slotIndex === -1) return;
-  
-    this.clearHighlightedCells(); // Limpia la selección previa
-  
-    let slotsToHighlight = 0;
-  
-    if (duration === 90) {
-      slotsToHighlight = 2; // 2 celdas
-    } else if (duration === 120) {
-      slotsToHighlight = 3; // 3 celdas
-    } else if (duration === 150) {
-      slotsToHighlight = 4; // 4 celdas
-    }
-  
-    for (let i = 0; i < slotsToHighlight; i++) {
-      if (this.timeSlots[slotIndex + i]) {
-        this.highlightedCells.push({ courtId, slot: this.timeSlots[slotIndex + i] });
+          let cantidad_celdas_sin_rojo = 0;
+          for (let i = slotIndex ; i <= endSlotIndex; i++) {
+            if (this.isReserved(court.id, this.timeSlots[i])!=='red') {
+              cantidad_celdas_sin_rojo=cantidad_celdas_sin_rojo+1;
+              if((cantidad_celdas_sin_rojo==4)){
+                this.highlightedCells.push({ courtId: court.id, slot: this.timeSlots[i] });
+                this.highlightedCells.push({ courtId: court.id, slot: this.timeSlots[i-1] });
+                this.highlightedCells.push({ courtId: court.id, slot: this.timeSlots[i-2] });
+                this.highlightedCells.push({ courtId: court.id, slot: this.timeSlots[i-3] });
+                this.showOptionsMenu = true;
+              }else{
+                this.showOptionsMenu = false;
+              }
+            }
+          }
+          // Obtener posición del menú
+          const target = event.target as HTMLTableCellElement;
+          const rect = target.getBoundingClientRect();
+        
+          this.optionsMenuPosition = {
+            top: rect.top + window.scrollY + target.offsetHeight,
+            left: rect.left + window.scrollX + rect.width / 2 - 100
+          };
+        }
       }
     }
   
-    // Marca la última celda resaltada
-    if (this.highlightedCells.length > 0) {
-      this.lastHighlightedCell = this.highlightedCells[this.highlightedCells.length - 1];
+  }
+  
+  isNotEnoughTimeBetweenReservations(courtId: number, slot: string): boolean {
+    const selectedTimeInMinutes = this.timeToMinutes(slot); // Convertir la celda a minutos
+    const minGap = 90; // 90 minutos de diferencia mínima
+  
+    // Filtrar las reservas de la cancha seleccionada
+    const courtReservations = this.reservations.filter(res => res.courtId === courtId);
+  
+    // Verificar las reservas en el mismo court
+    for (const reservation of courtReservations) {
+      const startTimeInMinutes = this.timeToMinutes(reservation.startTime);
+      const endTimeInMinutes = this.timeToMinutes(reservation.endTime);
+  
+      // Verificar si la celda seleccionada está en conflicto con la reserva actual
+      if (Math.abs(selectedTimeInMinutes - endTimeInMinutes) < minGap || 
+          Math.abs(startTimeInMinutes - selectedTimeInMinutes) < minGap) {
+        return false;  // Cambié para permitir el clic, pero podrían ser marcadas de alguna forma
+      }
     }
-  }  
+  
+    return false; // Si no hay conflictos, retornar false, es decir, no está bloqueada
+  }   
+
+  getEndTime(startTime: string): string {
+    const [hour, minute] = startTime.split(':').map(Number);
+    let endHour = hour;
+    let endMinute = minute + 90;  // Duración estándar de 1h30min
+  
+    if (endMinute >= 60) {
+      endHour += Math.floor(endMinute / 60);
+      endMinute = endMinute % 60;
+    }
+  
+    return `${String(endHour).padStart(2, '0')}:${String(endMinute).padStart(2, '0')}`;
+  }
 
   clearHighlightedCells(): void {
     // Limpia las celdas resaltadas y la media celda resaltada
@@ -153,20 +190,10 @@ export class CalendarioReservaComponent implements OnInit {
 
   isHighlighted(courtId: number, slot: string): boolean {
     return this.highlightedCells.some(cell => cell.courtId === courtId && cell.slot === slot);
-  }
+  }  
   
   isHalfHighlighted(courtId: number, slot: string): boolean {
     return this.halfHighlightedCell !== null && this.halfHighlightedCell.courtId === courtId && this.halfHighlightedCell.slot === slot;
-  }
-  
-  isFirstHighlighted(courtId: number, slot: string): boolean {
-    const firstCell = this.highlightedCells[0];
-    return firstCell && firstCell.courtId === courtId && firstCell.slot === slot;
-  }
-  
-  isLastHighlighted(courtId: number, slot: string): boolean {
-    const lastCell = this.highlightedCells[this.highlightedCells.length - 1];
-    return lastCell && lastCell.courtId === courtId && lastCell.slot === slot;
   }
 
   isPastTime(slot: string, ): boolean {
@@ -186,47 +213,32 @@ export class CalendarioReservaComponent implements OnInit {
     return false;
   }
 
-  isFirstPastTime(slot: string): boolean {
-    // Aquí puedes calcular la primera fecha pasada
-    return this.isPastTime(slot) && this.timeSlots.indexOf(slot) === 0;
+  // Función para convertir una hora en formato HH:mm a minutos desde las 00:00
+  timeToMinutes(time: string): number {
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours * 60 + minutes;
   }
 
-  isLastPastTime(slot: string): boolean {
-    const [hour, minute] = slot.split(':').map(Number);
-    const now = new Date();
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
-  
-    // Si la fecha seleccionada es anterior a la fecha actual, cualquier hora es pasada
-    if (this.selectedDate < this.minDate) {
-      return true;
+  isReserved(courtId: number, slot: string): string {
+    const slotMinutes = this.timeToMinutes(slot); // Convertir la celda a minutos
+    // Recorremos todas las reservas de la cancha
+    for (const reservation of this.reservations) {
+        if (reservation.courtId === courtId) {
+            const startMinutes = this.timeToMinutes(reservation.startTime);
+            const endMinutes = this.timeToMinutes(reservation.endTime);
+            
+            // Verificamos si el slot está dentro del rango de la reserva, incluyendo el final
+            if (slotMinutes >= startMinutes && slotMinutes <= endMinutes) {
+                const duration = endMinutes - startMinutes;
+                if (duration < 90) {
+                    return 'blue'; // Si la reserva es menor a 90 minutos, pintamos en azul
+                }
+                return 'red'; // Si está dentro del rango de la reserva y tiene 90 o más minutos, la celda es roja
+            }
+        }
     }
-  
-    // Si la fecha seleccionada es hoy, verificamos si el slot ya es pasado
-    if (this.selectedDate === this.minDate) {
-      const isPast = hour < currentHour || (hour === currentHour && minute <= currentMinute);
-      if (isPast) {
-        // Filtrar los slots pasados
-        const pastSlots = this.timeSlots.filter(t => {
-          const [tHour, tMinute] = t.split(':').map(Number);
-          return tHour < currentHour || (tHour === currentHour && tMinute <= currentMinute);
-        });
-  
-        // Obtener el último slot pasado de la lista
-        const lastPastSlot = pastSlots[pastSlots.length - 1];
-  
-        // Si el slot actual es el último slot pasado
-        return slot === lastPastSlot;
-      }
-    }
-  
-    return false;
-  }
 
-  isReserved(courtId: number, slot: string): boolean {
-    return this.reservations.some(
-      res => res.courtId === courtId && res.timeSlot === slot && res.date === this.selectedDate
-    );
+    return ''; // Si no está en ninguna reserva, no pintamos la celda
   }
 
   // Detectar clics en todo el documento y cerrar el menú si se hace clic fuera
