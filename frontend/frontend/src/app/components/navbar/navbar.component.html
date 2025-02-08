@@ -1,0 +1,25 @@
+<!-- Barra de navegación -->
+<nav class="navbar">
+    <div class="navbar__container">
+      <button (click)="navigateOrScroll('sobre-nosotros')" type="button">
+        Sobre Nosotros
+      </button>
+      <button (click)="navigateOrScroll('contactos')" type="button">
+        Contacto
+      </button>
+      <button (click)="navigateOrScroll('services')" type="button">
+        Servicios
+      </button>
+  
+      <!-- Mostrar el botón 'Iniciar sesión' si el usuario no está logueado -->
+      <button *ngIf="!(user | async)" routerLink="/login" type="button">
+        Iniciar Sesión
+      </button>
+  
+      <!-- Mostrar el botón 'Cerrar sesión' si el usuario está logueado -->
+      <button *ngIf="user | async" (click)="logout()" type="button">
+        Cerrar Sesión
+      </button>
+    </div>
+  </nav>
+  

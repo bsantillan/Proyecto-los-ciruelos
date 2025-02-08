@@ -1,0 +1,26 @@
+<div class="desasociarse">
+    <div class="encabezado">
+   
+   
+       <h2>Ya no queres formar parte de nuestra comunidad?</h2>
+       <p>Te recordamos los beneficio que perderias:</p>
+   
+  
+       <ul>
+        <li>Descuentos exclusivos al momento de seleccionar tu reserva</li>
+        <li>Prioridad en reservas durante horarios pico.</li>
+        <li>Acceso a eventos y torneos exclusivos solo para miembros.</li>
+        <li>Descuentos en el alquiler de equipos deportivos.</li>
+        <li>Acceso a clases y entrenadores profesionales a precios reducidos.</li>
+        <li>Acceso anticipado a promociones y ofertas especiales.</li>
+        <li>Estadísticas sobre tu rendimiento y uso de las canchas.</li>
+      </ul>
+      
+       <form [formGroup]="desasociarseForm" (ngSubmit)="onSubmit()">
+         <div class="button-container">
+          <button mat-raised-button color="primary" type="button" (click)="confirmDesasociar()">Deseo desasociarme</button>
+         </div>
+       </form>
+     </div>
+   </div>
+  

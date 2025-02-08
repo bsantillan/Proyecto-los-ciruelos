@@ -1,0 +1,81 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff; /* Cambiado a blanco */
+  background: var(--background);
+  overflow-x: hidden; /* Evita el desbordamiento horizontal en el cuerpo */
+}
+
+.encabezado {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alineación a la izquierda */
+  padding: 80px 20px 20px 60px; /* Aumenta el padding-left para dejar más margen */
+  min-height: 100vh; /* Asegura que ocupe al menos toda la altura de la ventana */
+  background-image: url('../../../assets/images/socios.jpg');
+  background-size: cover; /* Asegura que la imagen cubra todo el contenedor */
+  background-position: center; /* Centra la imagen tanto horizontal como verticalmente */
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Fija la imagen de fondo para un efecto de paralaje */
+  overflow: hidden; /* Evita el desbordamiento horizontal */
+  width: 100%; /* Asegura que el encabezado ocupe el 100% del ancho */
+  box-sizing: border-box; /* Incluye el padding en el cálculo del ancho total */
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: 50px;
+  text-align: left; /* Alineación del texto a la izquierda */
+  color: #ffffff;
+  font-weight: bold; /* Negrita para el encabezado */
+  max-width: 100%; /* Evita desbordamientos */
+  overflow-wrap: break-word; /* Permite que el texto largo se divida */
+}
+
+li {
+  list-style-type: disc; /* Estilo de lista con viñetas */
+  padding-left: 20px; /* Espacio a la izquierda de la lista */
+  margin-bottom: 20px;
+  color: #ffffff; /* Color oscuro para los elementos de la lista */
+  font-size: 16px; /* Tamaño de fuente para la lista */
+  max-width: 100%; /* Evita desbordamientos */
+  overflow-wrap: break-word; /* Permite que el texto largo se divida */
+}
+
+p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  text-align: left; /* Alineación del texto a la izquierda */
+  color: #ffffff;
+  font-weight: bold; /* Negrita para el párrafo */
+  max-width: 100%; /* Evita desbordamientos */
+  overflow-wrap: break-word; /* Permite que el texto largo se divida */
+}
+
+.full-width {
+  max-width: 800px; /* Ajusta este valor según sea necesario */
+  width: 100%; /* Asegura que ocupe el 100% de su contenedor padre */
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-start; /* Alinea a la izquierda */
+  width: 100%;
+  position: absolute;
+  bottom: 60px; /* Mueve el botón un poco más arriba */
+  left: 60px; /* Mantiene el margen izquierdo */
+}
+
+button {
+  width: 420px; /* Ancho del botón */
+  height: 59px; /* Alto del botón */
+  background-color: #4CAF50; /* Color verde */
+  color: #ffffff; /* Cambiado a blanco para el texto del botón */
+  font-size: 18px; /* Tamaño de fuente */
+  font-weight: bold; /* Texto en negrita */
+  border: none;
+  border-radius: 100px; /* Bordes redondeados */
+  cursor: pointer;
+}

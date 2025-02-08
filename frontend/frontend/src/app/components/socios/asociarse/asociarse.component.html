@@ -1,0 +1,22 @@
+<div class="asociarse">
+  <div class="encabezado">
+    <h2>Formando parte de nuestra comunidad</h2>
+    <p>Podrías obtener los siguientes beneficios:</p>
+    
+    <ul>
+      <li>Descuentos exclusivos al momento de seleccionar tu reserva</li>
+      <li>Prioridad en reservas durante horarios pico.</li>
+      <li>Acceso a eventos y torneos exclusivos solo para miembros.</li>
+      <li>Descuentos en el alquiler de equipos deportivos.</li>
+      <li>Acceso a clases y entrenadores profesionales a precios reducidos.</li>
+      <li>Acceso anticipado a promociones y ofertas especiales.</li>
+      <li>Estadísticas sobre tu rendimiento y uso de las canchas.</li>
+    </ul>
+
+    <form [formGroup]="asociarseForm" (ngSubmit)="onSubmit()">
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="button" (click)="navigateToMercadoPago()">Deseo asociarme</button>
+      </div>
+    </form>
+  </div>
+</div>
