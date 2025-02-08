@@ -1,177 +1,146 @@
-/* Centralizar la tabla del calendario */
-.container {
+/* Contenedor principal del calendario */
+.calendar-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* height: 100vh; Eliminado para permitir que el contenido crezca según sea necesario */
-}
-
-.calendar-container {
-  position: relative;
-  padding: 20px;
-  margin-top: 30px; /* Asegura que haya un margen superior si es necesario */
-  background-color: var(--background-accent); /* Fondo semitransparente */
-  border-radius: 12px; /* Bordes redondeados */
-  box-shadow: 0 4px 12px var(--title-shadow); /* Sombra suave */
-}
-
-.table {
-  border-collapse: collapse; /* Asegura que las líneas divisorias se mantengan */
-  width: 100%; /* Asegura que la tabla ocupe el espacio disponible */
-  border-radius: 12px; /* Bordes redondeados */
-  overflow: hidden; /* Evitar que los bordes se salgan */
-}
-
-.table th, .table td {
-  border: 1px solid var(--background-muted); /* Añade un borde claro a las celdas */
   padding: 10px;
-  text-align: center;
-  background-color: var(--background-accent); /* Uso de la variable de fondo */
+  background-color: var(--background-accent);
+  border-radius: 15px;
+  box-shadow: 0 4px 10px black;
+  font-family: "Roboto";
+  width: 100%;
+  max-width: 100vw; /* Asegura que no sea más ancha que el viewport */
+  height: 100%;
+  overflow-x: auto; /* Permite desplazamiento horizontal si es necesario */
+  flex-wrap: wrap;
 }
 
-/* Estilo para las cabeceras de la tabla */
-.table thead th {
-  background-color: var(--background-accent); /* Uso del color de fondo de acento */
-  border-bottom: 2px solid #dee2e6;
-  color: var(--text); /* Color del texto */
+/* Estilizar la tabla */
+.calendar-table {
+  border-collapse: collapse;
+  font-size: 14px; /* Tamaño del texto más compacto */
+  max-width: 100%;
+  min-width: 600px; /* Evitar que se haga demasiado pequeña */
 }
 
-/* Celdas disponibles */
-.table-success {
-  background-color: var(--background-accent) !important; /* Color para celdas disponibles */
+/* Encabezado de la tabla */
+.calendar-table thead th {
+  padding: 4px; /* Reducido el padding */
+  font-size: 16px;
+  white-space: nowrap; /* Evita que el texto se divida */
 }
 
-/* Celdas deshabilitadas por estar ocupadas */
-.table-danger.disabled {
-  background-color: var(--background-accent) !important; /* Color de fondo para celdas deshabilitadas */
-  cursor: not-allowed; /* Cursor para indicar que no se puede interactuar con la celda */
-  background-image: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.2) 25%,
-    transparent 25%,
-    transparent 50%,
-    rgba(0, 0, 0, 0.2) 50%,
-    rgba(0, 0, 0, 0.2) 75%,
-    transparent 75%,
-    transparent
-  );
-  background-size: 20px 20px;
-  pointer-events: none; /* Desactiva la interacción con la celda */
+/* Selector de fecha */
+.date-picker-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Estilo general para las celdas de la tabla */
-.table td {
-  position: relative; /* Asegura que el pseudoelemento ::after se posicione dentro de la celda */
-  cursor: pointer;
-  border: 1px solid #dee2e6;
+.date-picker {
+  width: 100%;
+  padding: 4px;
+  font-size: 12px;
 }
 
-/* Resaltar bordes de las celdas durante la interacción */
-.table td::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 2px solid transparent;
-  pointer-events: none;
-  z-index: 1; /* Asegura que el pseudoelemento no ocupe más espacio del necesario */
-}
-
-/* Efecto hover para celdas disponibles */
-.table td:not(.past-time):not(.table-danger):hover::after {
-  border-color: var(--text); /* Resaltar el borde en hover solo si es interactiva */
-  z-index: 2; /* Asegura que el borde hover se mantenga visible sin afectar la tabla completa */
-}
-
-/* Evitar que el número de cancha cambie de color */
-.table tr > td:first-child {
-  cursor: default;
-  background-color: var(--background-accent); /* Mantener el fondo original */
-  position: relative; /* Necesario para ::after en las primeras celdas */
-}
-
-.table tr > td:first-child:hover::after {
-  border-color: transparent; /* Prevenir borde hover en las celdas de cancha */
-}
-
-/* Estilo adicional para las celdas cuando el mouse pasa sobre ellas */
-.table td:hover {
-  background-color: var(--button-color-secondary);
-}
-
-@keyframes colorTransition {
-  0% {
-    background-color: var(--background); 
-  }
-  100% {
-    background-color: var(--pass-time); 
-}}
-
-/* Celdas deshabilitadas por ser horas pasadas */
-.past-time {
-  background-color: var(--pass-time) !important; /* Color para horas pasadas */
-  pointer-events: none; /* Desactiva la interacción con la celda */
-  border: none; /* Eliminar las divisiones entre las celdas */
-}
-
-.past-time::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--background); /* Color verde inicial */
-  pointer-events: none;
-  z-index: 1; /* Asegúrate de que esté encima del contenido */
-  opacity: 0.5; /* Ajusta la intensidad del color si es necesario */
-}
-
-/* Celdas resaltadas completas */
-.highlight {
-  background-color: var(--button-color-secondary) !important; /* Usando el color secundario */
-}
-
-/* Celdas resaltadas a la mitad */
 .half-highlight {
-  background: linear-gradient(to right, var(--button-color-secondary) 50%, transparent 50%);
+  background: linear-gradient(to right, var(--button-color-primary) 50%, transparent 50%);
 }
 
-/* Estilo para el menú de opciones */
+
+/* Nombre de la cancha */
+.court-name {
+  text-align: center;
+  background-color: var(--background-accent);
+  font-size: 16px;
+  padding: 4px;
+}
+
+/* Estilizar celdas de tiempo */
+.cell {
+  border-bottom: 2px solid var(--background-accent);
+  height: 60px; /* Más pequeño */
+  width: 50px; /* Más compacto */
+  cursor: pointer;
+  transition: var(--button-color-primary) 0.3s;
+  text-align: center;
+}
+
+/* Celdas resaltadas */
+.highlight {
+  background-color: var(--button-color-primary) !important;
+}
+
+/* Primera celda resaltada */
+.first-highlight {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background-color: var(--button-color-primary) !important;
+}
+
+/* Última celda resaltada */
+.last-highlight {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: var(--button-color-primary) !important;
+}
+
+/* Celdas de tiempo pasado */
+.past-time {
+  background-color: var(--pass-time);
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Primera fecha pasada */
+.first-past-time {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background-color: var(--pass-time) !important;
+}
+
+/* Última fecha pasada */
+.last-past-time {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: var(--pass-time) !important;
+  border-right: 2px solid var(--background-accent);
+}
+
+/* Celdas reservadas */
+.reserved {
+  background-color: var(--background-muted) !important;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Menú de opciones */
 .options-menu {
   position: absolute;
-  background-color: var(--background); /* Fondo usando la variable principal */
-  border: 1px solid var(--background); /* Borde usando el color de fondo */
-  border-radius: 0.25rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px; /* Más compacto */
+  background-color: var(--background-accent);
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
   z-index: 1000;
+  padding: 8px; /* Reducido */
+  transition: all 0.3s ease;
 }
 
-.options-menu .option {
-  padding: 8px 12px;
-  cursor: pointer;
-  border-bottom: 1px solid #ced4da;
+/* Información dentro del menú */
+.info-box {
+  font-size: 12px;
+  color: #555;
+  margin-bottom: 6px;
+  font-weight: 500;
 }
 
-.options-menu .option:last-child {
-  border-bottom: none;
-}
-
-.options-menu .option:hover {
-  background-color: #f1f3f5;
-}
-
-/* Tooltip con información */
-.tooltip-content {
-  position: absolute;
-  background-color: rgba(51, 51, 51, 0.9); /* Fondo oscuro con transparencia */
-  color: var(--white-text); /* Texto blanco */
+/* Opciones dentro del menú */
+.option {
   padding: 8px;
+  margin: 3px 0;
+  background-color: #f8f9fa;
   border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
-  white-space: nowrap;
-  font-size: 0.875rem;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }

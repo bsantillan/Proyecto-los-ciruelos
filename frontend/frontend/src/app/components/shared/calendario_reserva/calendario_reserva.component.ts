@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+
+
+import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 
 export interface Reservation {
   courtId: number;
@@ -21,15 +23,14 @@ export class CalendarioReservaComponent implements OnInit {
   selectedDate: string = new Date().toISOString().split('T')[0];
   minDate: string = this.getMinDate();
   currentHour: number = new Date().getHours();
+  price: number = 15000;
 
-  // Intervalos de tiempo disponibles
   timeSlots = [
-    '08:00', '09:00', '10:00', '11:00', '12:00',
-    '13:00', '14:00', '15:00', '16:00', '17:00',
-    '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'
+    '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
+    '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30',
+    '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00'
   ];
 
-  // Canchas disponibles
   courts: Court[] = [
     { id: 1, name: 'Cancha 1' },
     { id: 2, name: 'Cancha 2' },
@@ -37,7 +38,6 @@ export class CalendarioReservaComponent implements OnInit {
     { id: 4, name: 'Cancha 4' }
   ];
 
-  // Reservas existentes
   reservations: Reservation[] = [
     { courtId: 1, timeSlot: '08:00', price: 20000, date: '2024-08-21' },
     { courtId: 1, timeSlot: '11:00', price: 20000, date: '2024-08-21' },
@@ -46,18 +46,13 @@ export class CalendarioReservaComponent implements OnInit {
     { courtId: 3, timeSlot: '21:00', price: 20000, date: '2024-08-22' },
   ];
 
-  // Tooltip
-  tooltipVisible = false;
-  tooltipCourt: Court | null = null;
-  tooltipSlot: string = '';
-  tooltipPrice: string = '';
-  tooltipPosition = { top: 0, left: 0 };
-
-  // Menú de opciones
   showOptionsMenu = false;
   optionsMenuPosition = { top: 0, left: 0 };
   highlightedCells: { courtId: number, slot: string }[] = [];
   halfHighlightedCell: { courtId: number, slot: string } | null = null;
+  lastHighlightedCell: { courtId: number, slot: string } | null = null; // Nueva propiedad para la última celda resaltada
+
+  constructor(private elementRef: ElementRef) {}
 
   ngOnInit() {
     this.loadReservations(this.selectedDate);
@@ -71,117 +66,175 @@ export class CalendarioReservaComponent implements OnInit {
     return `${yyyy}-${mm}-${dd}`;
   }
 
-  loadReservations(date: string) {
-    // Implementar lógica de carga de reservas según la fecha
-  }
-
-  makeReservation(courtId: number, timeSlot: string, date: string, price: number): void {
-    // Implementar el envío de la reserva al backend
-  }
+  loadReservations(date: string) {}
 
   onDateChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.selectedDate = input.value;
-    this.minDate = this.getMinDate(); // Actualiza la fecha mínima
+    this.minDate = this.getMinDate();
     this.loadReservations(this.selectedDate);
-  
-    // Limpiar las celdas seleccionadas al cambiar de fecha
     this.clearSelectedCells();
     this.hideOptionsMenu();
   }
-  
+
   clearSelectedCells(): void {
     this.highlightedCells = [];
     this.halfHighlightedCell = null;
-    
   }
 
   hideOptionsMenu(): void {
     this.showOptionsMenu = false;
+    this.clearSelectedCells(); // Limpia la selección si el menú se cierra sin elegir
   }
-
-  showTooltip(event: MouseEvent, court: Court, slot: string) {
-    this.tooltipCourt = court;
-    this.tooltipSlot = slot;
-    this.tooltipPrice = '20000'; // Ejemplo de precio fijo, puede variar según la lógica
-    this.tooltipPosition.top = event.clientY + 15;
-    this.tooltipPosition.left = event.clientX + 15;
-    this.tooltipVisible = true;
-  }
-
-  hideTooltip() {
-    this.tooltipVisible = false;
-  }
+  
 
   showTimeOptions(court: Court, slot: string, event: MouseEvent) {
-    this.highlightedCells = [{ courtId: court.id, slot }];
-    this.halfHighlightedCell = null;
-
-    const target = event.target as HTMLTableCellElement;
-    this.optionsMenuPosition.top = target.offsetTop + target.offsetHeight;
-    this.optionsMenuPosition.left = target.offsetLeft;
-    this.showOptionsMenu = true;
-  }
-
-//  opciones tiempo
-  selectOption(duration: number) {
-    const courtId = this.highlightedCells[0].courtId;
-    const slotIndex = this.timeSlots.indexOf(this.highlightedCells[0].slot);
-
-    this.highlightedCells = [];
-    this.halfHighlightedCell = null;
-
-    if (duration === 90) {
-      this.highlightedCells.push({ courtId, slot: this.timeSlots[slotIndex] });
-      if (this.timeSlots[slotIndex + 1]) {
-        this.halfHighlightedCell = { courtId, slot: this.timeSlots[slotIndex + 1] };
-      }
-    } else if (duration === 120) {
-      this.highlightedCells.push({ courtId, slot: this.timeSlots[slotIndex] });
-      if (this.timeSlots[slotIndex + 1]) {
-        this.highlightedCells.push({ courtId, slot: this.timeSlots[slotIndex + 1] });
-      }
-    } else if (duration === 150) {
-      this.highlightedCells.push({ courtId, slot: this.timeSlots[slotIndex] });
-      if (this.timeSlots[slotIndex + 1]) {
-        this.highlightedCells.push({ courtId, slot: this.timeSlots[slotIndex + 1] });
-      }
-      if (this.timeSlots[slotIndex + 2]) {
-        this.halfHighlightedCell = { courtId, slot: this.timeSlots[slotIndex + 2] };
+    this.highlightedCells = []; // Limpiar selección previa
+  
+    const slotIndex = this.timeSlots.indexOf(slot);
+  
+    if (slotIndex !== -1) {
+      this.highlightedCells.push({ courtId: court.id, slot });
+  
+      // Verificar si hay un siguiente slot disponible y resaltarlo también
+      if (slotIndex + 1 < this.timeSlots.length) {
+        this.highlightedCells.push({ courtId: court.id, slot: this.timeSlots[slotIndex + 1] });
       }
     }
+  
+    // Obtener posición del menú
+    const target = event.target as HTMLTableCellElement;
+    const rect = target.getBoundingClientRect();
+  
+    this.optionsMenuPosition = {
+      top: rect.top + window.scrollY + target.offsetHeight,
+      left: rect.left + window.scrollX + rect.width / 2 - 100
+    };
+  
+    this.showOptionsMenu = true;
+  }  
 
-    this.showOptionsMenu = false;
-  }
+  previewOption(duration: number) {
+    const courtId = this.highlightedCells.length > 0 ? this.highlightedCells[0].courtId : null;
+    if (!courtId) return;
+  
+    const slotIndex = this.timeSlots.indexOf(this.highlightedCells[0].slot);
+    if (slotIndex === -1) return;
+  
+    this.clearHighlightedCells(); // Limpia la selección previa
+  
+    let slotsToHighlight = 0;
+  
+    if (duration === 90) {
+      slotsToHighlight = 2; // 2 celdas
+    } else if (duration === 120) {
+      slotsToHighlight = 3; // 3 celdas
+    } else if (duration === 150) {
+      slotsToHighlight = 4; // 4 celdas
+    }
+  
+    for (let i = 0; i < slotsToHighlight; i++) {
+      if (this.timeSlots[slotIndex + i]) {
+        this.highlightedCells.push({ courtId, slot: this.timeSlots[slotIndex + i] });
+      }
+    }
+  
+    // Marca la última celda resaltada
+    if (this.highlightedCells.length > 0) {
+      this.lastHighlightedCell = this.highlightedCells[this.highlightedCells.length - 1];
+    }
+  }  
+
+  clearHighlightedCells(): void {
+    // Limpia las celdas resaltadas y la media celda resaltada
+    this.highlightedCells = [];
+    this.halfHighlightedCell = null;
+  }  
 
   isHighlighted(courtId: number, slot: string): boolean {
     return this.highlightedCells.some(cell => cell.courtId === courtId && cell.slot === slot);
   }
-
+  
   isHalfHighlighted(courtId: number, slot: string): boolean {
     return this.halfHighlightedCell !== null && this.halfHighlightedCell.courtId === courtId && this.halfHighlightedCell.slot === slot;
   }
+  
+  isFirstHighlighted(courtId: number, slot: string): boolean {
+    const firstCell = this.highlightedCells[0];
+    return firstCell && firstCell.courtId === courtId && firstCell.slot === slot;
+  }
+  
+  isLastHighlighted(courtId: number, slot: string): boolean {
+    const lastCell = this.highlightedCells[this.highlightedCells.length - 1];
+    return lastCell && lastCell.courtId === courtId && lastCell.slot === slot;
+  }
 
-  isPastTime(slot: string): boolean {
+  isPastTime(slot: string, ): boolean {
     const [hour, minute] = slot.split(':').map(Number);
     const now = new Date();
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
-    
+
     if (this.selectedDate < this.minDate) {
-      return true; // Si la fecha seleccionada es antes de la fecha mínima, marcar como pasada.
+      return true;
     }
 
     if (this.selectedDate === this.minDate) {
       return hour < currentHour || (hour === currentHour && minute <= currentMinute);
     }
 
-    return false; 
+    return false;
+  }
+
+  isFirstPastTime(slot: string): boolean {
+    // Aquí puedes calcular la primera fecha pasada
+    return this.isPastTime(slot) && this.timeSlots.indexOf(slot) === 0;
+  }
+
+  isLastPastTime(slot: string): boolean {
+    const [hour, minute] = slot.split(':').map(Number);
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+  
+    // Si la fecha seleccionada es anterior a la fecha actual, cualquier hora es pasada
+    if (this.selectedDate < this.minDate) {
+      return true;
+    }
+  
+    // Si la fecha seleccionada es hoy, verificamos si el slot ya es pasado
+    if (this.selectedDate === this.minDate) {
+      const isPast = hour < currentHour || (hour === currentHour && minute <= currentMinute);
+      if (isPast) {
+        // Filtrar los slots pasados
+        const pastSlots = this.timeSlots.filter(t => {
+          const [tHour, tMinute] = t.split(':').map(Number);
+          return tHour < currentHour || (tHour === currentHour && tMinute <= currentMinute);
+        });
+  
+        // Obtener el último slot pasado de la lista
+        const lastPastSlot = pastSlots[pastSlots.length - 1];
+  
+        // Si el slot actual es el último slot pasado
+        return slot === lastPastSlot;
+      }
+    }
+  
+    return false;
   }
 
   isReserved(courtId: number, slot: string): boolean {
     return this.reservations.some(
       res => res.courtId === courtId && res.timeSlot === slot && res.date === this.selectedDate
     );
+  }
+
+  // Detectar clics en todo el documento y cerrar el menú si se hace clic fuera
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.hideOptionsMenu();
+    }
   }
 }
