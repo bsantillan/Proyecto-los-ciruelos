@@ -1,0 +1,76 @@
+<div class="center-wrapper">    
+    <div class="ticket-container">
+        <h1 class="ticket-title">Los Ciruelos Padel Club</h1>
+        <p class="ticket-address">Calle 34 entre 25 y 26, La Plata, Provincia de Buenos Aires. Argentina</p>
+
+        <div class="ticket-info" *ngIf="isReservation">
+            <div class="ticket-item">
+                <span>
+                    <mat-icon class="calendario-icon">calendar_today</mat-icon>
+                    Fecha
+                </span>
+                <span class="ticket-detail">{{ date }}</span>
+            </div>
+            <div class="ticket-item">
+                <span>
+                    <mat-icon class="reloj-icon">access_time</mat-icon>
+                    Turno
+                </span>
+                <span class="ticket-detail">{{ duracion }}hs</span>
+            </div>
+            <div class="ticket-item">
+                <span>
+                    <mat-icon class="paleta-icon">sports_tennis</mat-icon>
+                    Cancha
+                </span>
+                <span class="ticket-detail">{{ court }}</span>
+            </div>
+            <div class="ticket-item">
+                <span>
+                    <mat-icon class="transparent-icon">info</mat-icon>
+                    Información
+                </span>
+                <span class="ticket-detail">Detalles sobre la cancha</span>
+            </div>
+            <div class="ticket-item">
+                <span>
+                    <mat-icon class="peso-icon">attach_money</mat-icon>
+                    Precio
+                </span>
+                <span class="ticket-detail">${{ price }}</span>
+            </div>
+            <div class="ticket-item">
+                <span>
+                    <mat-icon class="seña-icon">payment</mat-icon>
+                    Seña
+                </span>
+                <span class="ticket-detail">${{ senia }}</span>
+            </div>
+        </div>
+
+        <div class="ticket-info" *ngIf="!isReservation">
+            <div class="ticket-item">
+                <span>
+                    <mat-icon class="calendario-icon">calendar_today</mat-icon>
+                    Fecha
+                </span>
+                <span class="ticket-detail">{{ date }}</span>
+            </div>
+            <div class="ticket-item">
+                <span>
+                    <mat-icon class="transparent-icon">info</mat-icon>
+                    Información
+                </span>
+                <span class="ticket-detail">Detalles sobre la cancha</span>
+            </div>
+            <div class="ticket-item">
+                <span>
+                    <mat-icon class="peso-icon">attach_money</mat-icon>
+                    Precio
+                </span>
+                <span class="ticket-detail">${{ price }}</span>
+            </div>
+        </div>
+    <app-mercadopago></app-mercadopago>
+    </div>
+</div>
