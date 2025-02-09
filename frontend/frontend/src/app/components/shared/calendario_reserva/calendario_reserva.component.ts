@@ -1,13 +1,7 @@
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
-
-export interface Reservation {
-  courtId: number;
-  startTime: string;  // Hora de inicio
-  endTime: string;    // Hora de finalización
-  price: number;
-  date: string;
-}
-
+import { AuthService } from '../../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { ApiService, Reserva, TurnoDTO } from '../../../api.service';
 
 export interface Court {
   id: number;
@@ -31,6 +25,12 @@ export class CalendarioReservaComponent implements OnInit {
     '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00'
   ];
 
+  timeSlotsDisplay = [
+    '8', '8:30', '9', '9:30', '10', '10:30', '11', '11:30', '12', '12:30', 
+    '13', '13:30', '14', '14:30', '15', '15:30', '16', '16:30', '17', '17:30', 
+    '18', '18:30', '19', '19:30', '20', '20:30', '21', '21:30', '22', '22:30', '23'
+  ];
+
   courts: Court[] = [
     { id: 1, name: 'Cancha 1' },
     { id: 2, name: 'Cancha 2' },
@@ -38,16 +38,7 @@ export class CalendarioReservaComponent implements OnInit {
     { id: 4, name: 'Cancha 4' }
   ];
 
-  reservations: Reservation[] = [
-    { courtId: 1, startTime: '18:00', endTime: '19:30', price: 20000, date: '2025-02-08' },
-    { courtId: 1, startTime: '20:00', endTime: '21:00', price: 20000, date: '2025-02-08' },  
-    { courtId: 1, startTime: '21:30', endTime: '23:00', price: 20000, date: '2025-02-08' }, 
-    { courtId: 2, startTime: '18:00', endTime: '19:30', price: 20000, date: '2025-02-08' },
-    { courtId: 2, startTime: '19:30', endTime: '20:30', price: 20000, date: '2025-02-08' },    
-    { courtId: 2, startTime: '21:00', endTime: '22:30', price: 20000, date: '2025-02-08' }, 
-    { courtId: 4, startTime: '21:00', endTime: '22:30', price: 20000, date: '2025-02-08' },   
-  
-  ];
+  reservations: Reserva[] = [];
 
   showOptionsMenu = false;
   optionsMenuPosition = { top: 0, left: 0 };
@@ -55,9 +46,76 @@ export class CalendarioReservaComponent implements OnInit {
   halfHighlightedCell: { courtId: number, slot: string } | null = null;
   lastHighlightedCell: { courtId: number, slot: string } | null = null; // Nueva propiedad para la última celda resaltada
 
-  constructor(private elementRef: ElementRef) {}
+  selectedCourt: Court | null = null; // Guardar la cancha seleccionada
+  selectedSlot: string | null = null; // Guardar el horario seleccionado
+
+  constructor(
+    private elementRef: ElementRef, 
+    private authService: AuthService, 
+    private toastrService: ToastrService,
+    private api: ApiService,  
+  ) {}
 
   ngOnInit() {
+    this.cargarRerservaciones();
+    console.log(this.reservations)
+  }
+
+  // Función que maneja el clic en el botón
+  onButtonClick() {
+    // Verificar si el usuario está logueado
+    this.authService.authState$.subscribe((user) => {
+      if (user) {
+
+        console.log(this.selectedCourt?.id);
+        console.log(this.selectedDate);
+        console.log(this.selectedSlot);
+        const selectedDate = this.selectedDate; // Fecha seleccionada en el calendario
+        const startTime = this.selectedSlot ?? ""; // El horario de inicio es el slot donde el usuario hace click
+        const endTime = this.getEndTime(startTime); // El horario de fin será 90 minutos después
+        console.log(endTime);
+
+        const turnoDTO: TurnoDTO = {
+          id_cancha: this.selectedCourt?.id ?? 0, // Reemplaza con el ID de la cancha
+          fecha: selectedDate, // Fecha en formato adecuado
+          horario_inicio_ocupado: startTime ?? "", // Horario inicio en formato HH:mm
+          horario_fin_ocupado: endTime // Horario fin en formato HH:mm
+        };
+
+        this.api.bloquearTurno(turnoDTO).subscribe({
+          next: (response) => {
+            console.log('Respuesta del servidor:', response);
+            alert('Turno bloqueado con éxito!');
+          },
+          error: (err) => {
+            console.error('Error al bloquear el turno:', err);
+            alert('Hubo un error al bloquear el turno.');
+          }
+        });
+        // Aquí tu lógica para lo que ocurre al hacer clic si está logueado
+      } else {
+        // Si el usuario no está logueado, muestra un alert
+        this.toastrService.info('Debes iniciar sesión para usar esta opción.', 'Reservar');
+      }
+    });
+  }
+
+  // Método para cargar los turnos desde el backend
+  cargarRerservaciones() {
+    this.api.getTurnos().subscribe(
+      (turnos) => {
+        this.reservations = turnos.map(turno => ({
+          id_cancha: turno.id_cancha,
+          horario_inicio_ocupado: turno.horario_inicio_ocupado,
+          horario_fin_ocupado: turno.horario_fin_ocupado,
+          fecha: turno.fecha
+        }));
+        console.log(this.reservations);  // Para verificar que los turnos se han cargado correctamente
+      },
+      (error) => {
+        console.error('Error al cargar los turnos', error);
+      }
+    );
   }
 
   getMinDate(): string {
@@ -69,7 +127,7 @@ export class CalendarioReservaComponent implements OnInit {
   }
 
   loadReservations(date: string) {
-    this.reservations = this.reservations.filter(res => res.date === date);
+    this.reservations = this.reservations.filter(res => res.fecha === date);
   }  
 
   onDateChange(event: Event): void {
@@ -91,12 +149,15 @@ export class CalendarioReservaComponent implements OnInit {
   }
   
   showTimeOptions(court: Court, slot: string, event: MouseEvent) {
-    this.highlightedCells = []; // Limpiar selección previa
+    this.highlightedCells = []; 
     this.showOptionsMenu=false;
   
+    this.selectedCourt = court;
+    this.selectedSlot = slot; 
+
     // Verificar si la celda está ocupada (reservada)
     if (this.isReserved(court.id, slot)) {
-      return;  // No hacer nada si está reservada
+      return; 
     }
   
     const slotIndex = this.timeSlots.indexOf(slot);
@@ -152,12 +213,12 @@ export class CalendarioReservaComponent implements OnInit {
     const minGap = 90; // 90 minutos de diferencia mínima
   
     // Filtrar las reservas de la cancha seleccionada
-    const courtReservations = this.reservations.filter(res => res.courtId === courtId);
+    const courtReservations = this.reservations.filter(res => res.id_cancha === courtId);
   
     // Verificar las reservas en el mismo court
     for (const reservation of courtReservations) {
-      const startTimeInMinutes = this.timeToMinutes(reservation.startTime);
-      const endTimeInMinutes = this.timeToMinutes(reservation.endTime);
+      const startTimeInMinutes = this.timeToMinutes(reservation.horario_inicio_ocupado);
+      const endTimeInMinutes = this.timeToMinutes(reservation.horario_fin_ocupado);
   
       // Verificar si la celda seleccionada está en conflicto con la reserva actual
       if (Math.abs(selectedTimeInMinutes - endTimeInMinutes) < minGap || 
@@ -223,9 +284,9 @@ export class CalendarioReservaComponent implements OnInit {
     const slotMinutes = this.timeToMinutes(slot); // Convertir la celda a minutos
     // Recorremos todas las reservas de la cancha
     for (const reservation of this.reservations) {
-        if (reservation.courtId === courtId) {
-            const startMinutes = this.timeToMinutes(reservation.startTime);
-            const endMinutes = this.timeToMinutes(reservation.endTime);
+        if (reservation.id_cancha === courtId) {
+            const startMinutes = this.timeToMinutes(reservation.horario_inicio_ocupado);
+            const endMinutes = this.timeToMinutes(reservation.horario_fin_ocupado);
             
             // Verificamos si el slot está dentro del rango de la reserva, incluyendo el final
             if (slotMinutes >= startMinutes && slotMinutes <= endMinutes) {

@@ -1,6 +1,7 @@
 package Grupo11.Seminario.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -37,11 +38,16 @@ public class ConsultarTurnosService {
         List<Cancha> canchas = (List<Cancha>) i_cancha_repository.findAll();
         ConfiguracionGeneral configuracion_general = configuracion_general_service.get_configuracion_general();
         LocalDate fechaActual = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
 
         // Iteramos por cada cancha
         for (Cancha cancha: canchas){
             // Obtenemos los turnos por cada cancha, ordenados por fecha y por horario de inicio
-            List<Turno> turnos_por_cancha = i_turno_repository.findByCanchaAndFechaGreaterThanEqualOrderByFechaAscHorarioInicioAsc(cancha, fechaActual);
+            List<Turno> turnos_por_cancha = i_turno_repository.findByCanchaAndFechaGreaterThanEqualOrderByFechaAscHorarioInicioAsc(cancha, fechaActual)
+            .stream()
+            .filter(turno -> turno.getFecha().isAfter(fechaActual) || 
+                     (turno.getFecha().isEqual(fechaActual) && turno.getHorarioInicio().isAfter(horaActual)))
+            .collect(Collectors.toList());
             
             // Revisar los espacios entre turnos ocupados
             for (int i = 0; i < turnos_por_cancha.size(); i++) {

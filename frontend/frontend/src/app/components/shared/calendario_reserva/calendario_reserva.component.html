@@ -17,7 +17,7 @@
             />
           </div>
         </th>
-        <th *ngFor="let slot of timeSlots">{{ slot }}</th>
+        <th *ngFor="let slot of timeSlotsDisplay ">{{ slot }}</th>
       </tr>
     </thead>
     <tbody>
@@ -47,6 +47,6 @@
   <div class="info-box">
     <span>Blindex y sintético | Con iluminación | Techada</span><br />
   </div>
-  <div class="option">1h 30min ${{price}}</div>
+  <div class="option" (click)="onButtonClick()">1h 30min ${{price}}</div>
 
 </div>
