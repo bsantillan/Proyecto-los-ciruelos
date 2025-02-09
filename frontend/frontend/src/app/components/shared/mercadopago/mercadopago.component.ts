@@ -7,23 +7,46 @@ import { MercadopagoService } from '../../../services/mercadopago.service';
   styleUrls: ['./mercadopago.component.css']
 })
 export class MercadopagoComponent {
+  constructor(private mercadopagoService: MercadopagoService) {}
+
   ngOnInit(): void {
-    // Inicializa Mercado Pago con tu clave pública 
-    const mp = new (window as any).MercadoPago('APP_USR-e221c611-71c8-4c31-aa97-fbdc91b11784', {
+    this.createPreference();
+  }
+
+  createPreference() {
+    const preference = {
+      items: [
+        {
+          title: 'Reserva cancha - Los Ciruelos Padel Club',
+          quantity: 1,
+          unit_price: 100.0,
+          currency_id: 'ARS'
+        }
+      ],
+      back_urls: {
+        success: 'http://localhost:4200/home',
+        failure: 'http://localhost:4200/ticket',
+        pending: 'http://localhost:4200/ticket'
+      },
+      auto_return: 'approved'
+    };
+
+    this.mercadopagoService.createPreference(preference).subscribe(response => {
+      this.loadMercadoPago(response.id); // Usa la nueva preferenceId
+    }, error => {
+      console.error('Error creando la preferencia:', error);
+    });
+  }
+
+  loadMercadoPago(preferenceId: string) {
+    const mp = new (window as any).MercadoPago('APP_USR-762225fb-73cd-4033-b1ad-4b16b6f579da', {
       locale: 'es-AR'
     });
 
-    // Configura el contenedor donde se mostrará el botón
     const bricksBuilder = mp.bricks();
     bricksBuilder.create("wallet", "wallet_container", {
-      initialization: {
-        preferenceId: "1954862914-072c78f8-c150-4d0b-9bc9-79df0b8528e7", // Reemplaza con tu ID de preferencia es del back
-      },
-      customization: {
-        texts: {
-          valueProp: 'smart_option',
-        },
-      },
+      initialization: { preferenceId: preferenceId },
+      customization: { texts: { valueProp: 'smart_option' } },
     });
   }
 }
