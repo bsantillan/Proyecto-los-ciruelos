@@ -20,7 +20,7 @@ import Grupo11.Seminario.Service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(path = "/private")
+@RequestMapping(path = "/public")
 public class PerfilController {
 
     @Autowired

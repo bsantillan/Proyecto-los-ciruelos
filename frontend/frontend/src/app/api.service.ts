@@ -44,21 +44,9 @@ export class ApiService {
   }
 
   bloquearTurno(turnoDTO: TurnoDTO): Observable<any> {
-
-    // Obtener el token de autenticación
-    const token = this.authService.getToken();
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-
     // Realizar la solicitud PUT a la API con el token en los headers y el cuerpo en turnoDTO
-    return this.http.put<string>(this.apiUrl + 'private/bloquear/turno', turnoDTO, { headers })
-    .pipe(
-      catchError(this.handleHttpError)
-    );
-  }
+    return this.http.put<string>(this.apiUrl + 'public/bloquear/turno', turnoDTO);
+  }  
 
   async getProtectedData() {
     try {

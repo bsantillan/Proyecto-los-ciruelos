@@ -35,31 +35,13 @@ import Grupo11.Seminario.Service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(path = "/private")
+@RequestMapping(path = "/public")
 public class ReservaController {
 
     @Autowired
     ReservaService reserva_service;
     @Autowired
     UsuarioService usuarioService;
-    @Autowired
-    TurnoService turnoService;
-
-    @PutMapping(path = "/bloquear/turno")
-    ResponseEntity<String> bloquear_turno(HttpServletRequest request, @RequestBody TurnoDTO turnoDTO){
-        String email = (String) request.getAttribute("email");
-        Integer id_accionar = usuarioService.buscar_usuario(email).get().getId();
-
-        Turno turno = new Turno();
-        turno.setCancha(reserva_service.buscar_cancha(turnoDTO.getId_cancha()));
-        turno.setFecha(turnoDTO.getFecha());
-        turno.setHorarioInicio(turnoDTO.getHorario_inicio_ocupado());
-        turno.setHorario_fin(turnoDTO.getHorario_fin_ocupado());
-        turno.setEstado(EstadoTurno.Bloqueado);
-        turno.setHorarioBloqueo(LocalTime.now());
-        turnoService.guardar_turno(turno);
-        return ResponseEntity.ok("Se bloqueo el turno");
-    }
     
     @PostMapping(path = "/reservas/reservar_turno")
     public ResponseEntity<?> reservar_turno

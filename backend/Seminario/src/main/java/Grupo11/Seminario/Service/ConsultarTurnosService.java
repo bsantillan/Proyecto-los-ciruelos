@@ -43,11 +43,7 @@ public class ConsultarTurnosService {
         // Iteramos por cada cancha
         for (Cancha cancha: canchas){
             // Obtenemos los turnos por cada cancha, ordenados por fecha y por horario de inicio
-            List<Turno> turnos_por_cancha = i_turno_repository.findByCanchaAndFechaGreaterThanEqualOrderByFechaAscHorarioInicioAsc(cancha, fechaActual)
-            .stream()
-            .filter(turno -> turno.getFecha().isAfter(fechaActual) || 
-                     (turno.getFecha().isEqual(fechaActual) && turno.getHorarioInicio().isAfter(horaActual)))
-            .collect(Collectors.toList());
+            List<Turno> turnos_por_cancha = i_turno_repository.findByCanchaAndFechaGreaterThanEqualOrderByFechaAscHorarioInicioAsc(cancha, fechaActual);
             
             // Revisar los espacios entre turnos ocupados
             for (int i = 0; i < turnos_por_cancha.size(); i++) {
