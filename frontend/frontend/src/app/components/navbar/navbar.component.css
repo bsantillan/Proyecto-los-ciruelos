@@ -1,35 +1,46 @@
 .navbar {
-    position: fixed; /* Fija el navbar en la parte superior */
+    position: fixed;
+    /* Fija el navbar en la parte superior */
     top: 0;
     left: 0;
     width: 100%;
     height: 50px;
     background-color: var(--background-accent);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5); /* 📌 Sombra más intensa y difusa */
-    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+    /* 📌 Sombra más intensa y difusa */
+    z-index: 1000;
+    /* Asegura que esté sobre otros elementos */
     padding: 10px 0;
     display: flex;
     justify-content: center;
-    border-bottom-left-radius: 30px;  /* 🔹 Esquina inferior izquierda redonda */
-    border-bottom-right-radius: 30px; /* 🔹 Esquina inferior derecha redonda */
-    transition: box-shadow 0.3s ease-in-out; /* Transición suave */
+    border-bottom-left-radius: 30px;
+    /* 🔹 Esquina inferior izquierda redonda */
+    border-bottom-right-radius: 30px;
+    /* 🔹 Esquina inferior derecha redonda */
+    transition: box-shadow 0.3s ease-in-out;
+    /* Transición suave */
 }
 
 /* Sombra más pronunciada al hacer scroll */
 .navbar.scrolled {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* 📌 Sombra más fuerte al hacer scroll */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    /* 📌 Sombra más fuerte al hacer scroll */
 }
 
 .navbar__container {
     display: flex;
-    gap: 100px; /* Espaciado entre botones */
+    gap: 100px;
+    /* Espaciado entre botones */
 }
 
 .navbar__container button {
-    background-color: transparent; /* Botón transparente */
-    color: black; /* Color del texto */
+    background-color: transparent;
+    /* Botón transparente */
+    color: black;
+    /* Color del texto */
     font-size: 20px;
-    border: none; /* Sin bordes */
+    border: none;
+    /* Sin bordes */
     border-radius: 30px;
     cursor: pointer;
     padding: 10px 15px;
@@ -40,10 +51,14 @@
 
 /* Efecto hover: similar a .submit-button */
 .navbar__container button:hover {
-    background-color: var(--button-color-primary); /* Color de fondo al pasar el mouse */
-    color: black; /* Mantiene el color del texto */
-    border-radius: 30px; /* Bordes redondeados */
-    transform: translateY(-2px); /* Efecto de levantamiento */
+    background-color: var(--button-color-primary);
+    /* Color de fondo al pasar el mouse */
+    color: black;
+    /* Mantiene el color del texto */
+    border-radius: 30px;
+    /* Bordes redondeados */
+    transform: translateY(-2px);
+    /* Efecto de levantamiento */
 }
 
 /* Efecto al hacer clic */

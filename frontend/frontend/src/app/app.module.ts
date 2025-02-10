@@ -38,6 +38,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { environment } from '../environments/environment';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { ProfesoresComponent } from './components/shared/profesores/profesores.component';
 
 
 
@@ -55,7 +56,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     PostRegisterComponent,
     ReestablecerContraseniaComponent,
     VerificarCorreoComponent,
-    NavbarComponent
+    NavbarComponent,
+    ProfesoresComponent
 
   ],
   imports: [
