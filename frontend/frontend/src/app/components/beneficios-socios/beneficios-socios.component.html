@@ -14,10 +14,18 @@
                 <li>Acceso anticipado a promociones y ofertas especiales.</li>
                 <li>Estadísticas sobre tu rendimiento y uso de las canchas.</li>
             </ul>
-
-            <button (click)="iniciarAsociacion()" class="btn-asociarse">
-                {{ isLoggedIn ? 'Deseo Asociarme' : 'Deseo Asociarme' }}
+            <!-- Botón de asociarse -->
+            <button (click)="iniciarAsociacion()" class="btn-asociarse" [disabled]="!isLoggedIn" [ngClass]="{'disabled': !isLoggedIn}" >
+                Deseo Asociarme
             </button>
+
+            <!-- Mensaje de advertencia si el usuario no ha iniciado sesión -->
+            <p *ngIf="!isLoggedIn" class="mensaje-advertencia">
+                *Debes iniciar sesión para asociarte.
+            </p>
+
+
+
         </div>
 
         <!-- Sección de testimonios -->

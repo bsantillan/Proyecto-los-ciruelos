@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 export class BeneficiosSociosComponent implements OnInit{
   isLoggedIn: boolean = false;
 
+
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -21,16 +22,23 @@ export class BeneficiosSociosComponent implements OnInit{
     });
   }
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.authService.authState$.subscribe(user => {
+      this.isLoggedIn = !!user; // true si hay usuario, false si no
+    });
   }
 
   iniciarAsociacion(): void {
-    if (!this.isLoggedIn) {
-      this.toastrService.warning('Debes iniciar sesión para asociarte', 'Atención');
-      this.router.navigate(['/login']);
-    } else {
-      this.router.navigate(['/ticket']);
-    }
+    const formattedDate = new Date().toLocaleDateString('es-AR');
+
+this.router.navigate(['/ticket'], { 
+  queryParams: { 
+    asociacion: true, 
+    fecha: formattedDate, 
+    precio: 5000 
+  } 
+});
+
+
   }
 
   testimonials = [

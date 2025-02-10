@@ -125,3 +125,30 @@ ul li {
     color: #555;
     text-align: right;
 }
+
+.mensaje-advertencia {
+    color: #e0e0e0;
+    font-size: 14px;
+    margin-top: 8px;
+    font-weight:lighter;
+}
+
+/* Botón de asociarse */
+.btn-asociarse {
+    padding: 12px 24px;
+    font-size: 1em;
+    background: var(--button-color-primary);
+    color: var(--text);
+    border: none;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
+}
+
+/* Botón deshabilitado (gris) */
+.btn-asociarse.disabled {
+    background: #b0b0b0 !important;  /* Color gris */
+    cursor: not-allowed;             /* Cursor de "no permitido" */
+    opacity: 0.6;                    /* Hacerlo más tenue */
+}
+

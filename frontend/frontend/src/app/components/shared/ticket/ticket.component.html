@@ -11,27 +11,7 @@
                 </span>
                 <span class="ticket-detail">{{ date }}</span>
             </div>
-            <div class="ticket-item">
-                <span>
-                    <mat-icon class="reloj-icon">access_time</mat-icon>
-                    Turno
-                </span>
-                <span class="ticket-detail">{{horario_inicio_ocupado}} - {{horario_fin_ocupado}} hs</span>
-            </div>
-            <div class="ticket-item">
-                <span>
-                    <mat-icon class="paleta-icon">sports_tennis</mat-icon>
-                    Cancha
-                </span>
-                <span class="ticket-detail">{{ court }}</span>
-            </div>
-            <div class="ticket-item">
-                <span>
-                    <mat-icon class="transparent-icon">info</mat-icon>
-                    Información
-                </span>
-                <span class="ticket-detail">Detalles sobre la cancha</span>
-            </div>
+
             <div class="ticket-item">
                 <span>
                     <mat-icon class="peso-icon">attach_money</mat-icon>
@@ -39,18 +19,47 @@
                 </span>
                 <span class="ticket-detail">${{ price }}</span>
             </div>
+
             <div class="ticket-item">
                 <span>
-                    <mat-icon class="seña-icon">payment</mat-icon>
-                    Seña
+                    <mat-icon class="transparent-icon">info</mat-icon>
+                    Información
                 </span>
-                <span class="ticket-detail">
-                    <mat-icon *ngIf="senia === 'seña'" class="check-icon">check</mat-icon>
-                    <mat-icon *ngIf="senia === 'total'" class="cross-icon">close</mat-icon>
-                </span>
+                <span class="ticket-detail">{{ informacion }}</span>
             </div>
-            
+
+            <!-- Solo mostrar estos campos si NO es asociación -->
+            <ng-container *ngIf="!esAsociacion">
+                <div class="ticket-item">
+                    <span>
+                        <mat-icon class="reloj-icon">access_time</mat-icon>
+                        Turno
+                    </span>
+                    <span class="ticket-detail">{{horario_inicio_ocupado}} - {{horario_fin_ocupado}} hs</span>
+                </div>
+
+                <div class="ticket-item">
+                    <span>
+                        <mat-icon class="paleta-icon">sports_tennis</mat-icon>
+                        Cancha
+                    </span>
+                    <span class="ticket-detail">{{ court }}</span>
+                </div>
+
+                <div class="ticket-item">
+                    <span>
+                        <mat-icon class="seña-icon">payment</mat-icon>
+                        Seña
+                    </span>
+                    <span class="ticket-detail">
+                        <mat-icon *ngIf="senia === 'seña'" class="check-icon">check</mat-icon>
+                        <mat-icon *ngIf="senia === 'total'" class="cross-icon">close</mat-icon>
+                    </span>
+                </div>
+            </ng-container>
         </div>
-    <app-mercadopago></app-mercadopago>
+
+        <!-- MercadoPago solo si NO es asociación -->
+        <app-mercadopago></app-mercadopago>
     </div>
 </div>
