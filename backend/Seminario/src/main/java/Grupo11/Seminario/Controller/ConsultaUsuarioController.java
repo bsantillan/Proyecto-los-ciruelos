@@ -14,7 +14,7 @@ import Grupo11.Seminario.Service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(path = "/private/consultar")
+@RequestMapping(path = "/public/consultar")
 public class ConsultaUsuarioController {
 
     @Autowired
@@ -25,13 +25,11 @@ public class ConsultaUsuarioController {
     // Endpoint para buscar usuarios y devolver DTOs
     @GetMapping("/usuarios/buscar")
     public ResponseEntity<?> buscar_usuarios(
-        HttpServletRequest request,
         @RequestParam Optional<String> nombre,
         @RequestParam Optional<String> apellido,
-        @RequestParam Optional<String> email
+        @RequestParam Optional<String> email,
+        @RequestParam String email_usuario
     ) {
-
-        String email_usuario = (String) request.getAttribute("email");
     
         Integer id_empleado = usuarioService.buscar_usuario(email_usuario).get().getId();
 

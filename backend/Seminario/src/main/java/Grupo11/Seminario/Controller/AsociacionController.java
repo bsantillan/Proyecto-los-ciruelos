@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -27,7 +28,7 @@ import Grupo11.Seminario.Service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(path = "/private")
+@RequestMapping(path = "/public")
 public class AsociacionController {
 
     @Autowired
@@ -40,9 +41,7 @@ public class AsociacionController {
     UsuarioService usuarioService;
     
     @PutMapping(path = "/asociar_jugador")
-    public ResponseEntity<?> asociar_jugador(HttpServletRequest request, @RequestBody AsociacionDTO asociacionDTO) throws JsonMappingException, JsonProcessingException{
-        
-        String email = (String) request.getAttribute("email");
+    public ResponseEntity<?> asociar_jugador(@RequestParam String email ,HttpServletRequest request, @RequestBody AsociacionDTO asociacionDTO) throws JsonMappingException, JsonProcessingException{
     
         Integer id_duenio = usuarioService.buscar_usuario(email).get().getId();
 
@@ -106,4 +105,57 @@ public class AsociacionController {
         return ResponseEntity.badRequest().body("No existe el empleado");
     }
 
+    @PutMapping(path = "/asociarse")
+    public ResponseEntity<?> asociarse(@RequestParam String email , @RequestParam Long id_mp) throws JsonMappingException, JsonProcessingException{
+    
+        Integer id_jugador = usuarioService.buscar_usuario(email).get().getId();
+
+            if (asociacion_service.existe_jugador(id_jugador)) {
+                // Se verifica que el jugador no este asociado
+                if (asociacion_service.verificar_asociacion(id_jugador)) {
+                    ResponseEntity<String> response = pago_service.buscar_pago(id_mp);
+
+                    // Se valida que este realizado el pago
+                    if (response.getStatusCode() == HttpStatus.OK) {
+                        Jugador jugador = asociacion_service.buscar_jugador(id_jugador);
+                        jugador.setSocio(true);
+
+                        ConfiguracionGeneral configuracion_general = configuracion_general_service.get_configuracion_general();
+                        PagoMercadoPagoDTO pago_mpDTO = pago_service.pagar(response);
+
+                        Cuenta cuenta = new Cuenta();
+                        cuenta.setEmail(pago_mpDTO.getEmail_pagador());
+                        cuenta.setApellido(pago_mpDTO.getApellido_pagador());
+                        cuenta.setNombre(pago_mpDTO.getNombre_pagador());
+                        cuenta.setTipo_identificacion(pago_mpDTO.getTipo_identificacion());
+                        cuenta.setNumero_identificacion(pago_mpDTO.getNumero_identificacion());
+
+                        Pago pago = new Pago();
+                        pago.setFecha(pago_mpDTO.getFecha());
+                        pago.setHora(pago_mpDTO.getHora());
+                        pago.setMetodo(pago_mpDTO.getMetodo_pago());
+                        pago.setMotivo(pago_mpDTO.getMotivo());
+                        pago.setEstado(pago_mpDTO.getEstado());
+                        pago.setCuenta(cuenta);
+                        pago.setMonto(configuracion_general.getMonto_asociacion());
+                        pago.setDescuento(0f);
+
+                        Asociacion asociacion = new Asociacion();
+                        asociacion.setFecha(LocalDate.now());
+                        asociacion.setHora(LocalTime.now());
+                        asociacion.setPrecio(configuracion_general.getMonto_asociacion());
+
+                        asociacion.setJugador(jugador);
+                        asociacion.setDuenio(null);
+                        asociacion.setPago(pago);
+
+                        asociacion_service.guardar_asociacion(asociacion);
+                        return ResponseEntity.ok().body("Asociacion Exitosa");
+                    }   
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el pago");
+                }
+                return ResponseEntity.badRequest().body("El jugador ya es un socio");
+            }
+            return ResponseEntity.badRequest().body("No existe el jugador");
+        } 
 }

@@ -1,16 +1,23 @@
 package Grupo11.Seminario.Controller;
 
+import java.lang.StackWalker.Option;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,12 +33,12 @@ import Grupo11.Seminario.Entities.Pago;
 import Grupo11.Seminario.Entities.Reserva;
 import Grupo11.Seminario.Entities.Turno;
 import Grupo11.Seminario.Entities.Enum.EstadoReserva;
+import Grupo11.Seminario.Entities.Enum.EstadoTurno;
 import Grupo11.Seminario.Service.ReservaService;
 import Grupo11.Seminario.Service.UsuarioService;
-import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(path = "/private/")
+@RequestMapping(path = "/public")
 public class ReservaController {
 
     @Autowired
@@ -41,12 +48,10 @@ public class ReservaController {
     
     @PostMapping(path = "/reservas/reservar_turno")
     public ResponseEntity<?> reservar_turno
-    (HttpServletRequest request, @RequestBody ReservaDTO reservaDTO) throws JsonMappingException, JsonProcessingException{
+    (@RequestParam String email, @RequestBody ReservaDTO reservaDTO) throws JsonMappingException, JsonProcessingException{
         
         Integer id_jugador=0;
         Integer id_empleado=0;
-
-        String email = (String) request.getAttribute("email");
     
         Integer id_accionar = usuarioService.buscar_usuario(email).get().getId();
 
@@ -96,6 +101,7 @@ public class ReservaController {
                     turno.setFecha(reservaDTO.getFecha());
                     turno.setHorarioInicio(reservaDTO.getHorario_inicio());
                     turno.setHorario_fin(reservaDTO.getHorario_fin());
+                    turno.setEstado(EstadoTurno.Reservado);
 
                     reserva.setTurno(turno);
                     reserva.setFecha(LocalDate.now());
@@ -148,5 +154,29 @@ public class ReservaController {
             return ResponseEntity.badRequest().body("No se encontro el jugador o al empleado");
         }
         return ResponseEntity.badRequest().body("No se encontro la cancha con ese numero");
+    }
+
+    @GetMapping(path = "/consultar/reservas")
+    public ResponseEntity<?> consultarReservas(@RequestParam String email){
+        Integer id_accionar = usuarioService.buscar_usuario(email).get().getId();
+        if (reserva_service.existe_jugador(id_accionar) | reserva_service.existe_empleado(id_accionar)){
+            return ResponseEntity.ok(reserva_service.buscar_reservas(id_accionar));
+        }
+        return ResponseEntity.badRequest().body("No se encontro al usuario");
+    }
+
+    @PutMapping(path = "/cancelar/reserva")
+    public ResponseEntity<Map<String, String>> cancelarReserva(@RequestParam String email, Integer reserva_id){
+        Integer id_accionar = usuarioService.buscar_usuario(email).get().getId();
+        Map<String, String> response = new HashMap<>();
+        if (reserva_service.existe_jugador(id_accionar) | reserva_service.existe_empleado(id_accionar)){
+            Optional<Reserva> optReserva = reserva_service.buscar_reserva(reserva_id);
+            if (optReserva.isPresent()) {
+                response.put("message", "Se cancelo la reserva");
+                return ResponseEntity.ok(response);
+            }
+        }
+        response.put("message", "No se encontro al usuario");
+        return ResponseEntity.badRequest().body(response);
     }
 }
