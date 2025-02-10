@@ -168,4 +168,9 @@ export class AuthService {
       map((user) => user?.email || null) // Si el usuario está autenticado, devuelve el email; si no, devuelve null
     );
   }
+
+  getUsuario(): Observable<User | null> {
+    return this.authState$; // Devuelve el estado actual del usuario autenticado
+  }
+  
 }

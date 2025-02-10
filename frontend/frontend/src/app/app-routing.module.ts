@@ -14,6 +14,7 @@ import { ReservaComponent } from './components/shared/reserva/reserva.component'
 import { authGuard } from './auth/auth.guard'; // Importar el guard
 import { noAuthGuard } from './auth/no-auth.guard';
 import { ProcesarPagoComponent } from './components/shared/procesar-pago/procesar-pago.component';
+import { MisReservasComponent } from './components/shared/mis-reservas/mis-reservas.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'ticket', component: TicketComponent, canActivate: [authGuard] },
   { path: 'reserva', component: ReservaComponent, canActivate: [authGuard] },
   { path: 'procesar-pago', component: ProcesarPagoComponent, canActivate: [authGuard] },
+  { path: 'mis-reservas', component: MisReservasComponent },
   { path: '**', redirectTo: 'home' }
 ];
 

@@ -1,0 +1,72 @@
+.contenedor {
+    max-width: 800px;
+    margin: 60px auto; /* Agrega espacio para que no esté pegado arriba */
+    padding: 20px;
+    background: var(--background-accent);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px var(--title-shadow);
+    text-align: center;
+}
+
+.titulo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text);
+    margin-bottom: 20px;
+}
+
+.filtros {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filtros input,
+.filtros select {
+    padding: 10px;
+    border: 1px solid var(--pass-time);
+    border-radius: 8px;
+    font-size: 1em;
+    background: white;
+    color: var(--text);
+}
+
+.lista-reservas {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.reserva-card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--title-shadow);
+    text-align: left;
+}
+
+.reserva-card p {
+    margin: 5px 0;
+    color: var(--dark-text);
+}
+
+.mensaje-vacio {
+    color: var(--dark-text);
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.boton-cancelar {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .boton-cancelar:hover {
+    background-color: #c73e3e;
+  }

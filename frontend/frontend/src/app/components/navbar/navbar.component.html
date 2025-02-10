@@ -19,6 +19,11 @@
       <button *ngIf="!isLoggedIn" routerLink="/login" type="button">
         Iniciar Sesión
       </button>
+
+      <!-- Mostrar el botón 'Cerrar sesión' si el usuario está logueado -->
+      <button *ngIf="isLoggedIn"  routerLink="/mis-reservas" type="button">
+        Mis reservas
+      </button>
   
       <!-- Mostrar el botón 'Cerrar sesión' si el usuario está logueado -->
       <button *ngIf="isLoggedIn" (click)="logout()" type="button">
