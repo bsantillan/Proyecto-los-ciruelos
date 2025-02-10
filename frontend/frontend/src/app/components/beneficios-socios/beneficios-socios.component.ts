@@ -33,8 +33,6 @@ export class BeneficiosSociosComponent implements OnInit{
 this.router.navigate(['/ticket'], { 
   queryParams: { 
     asociacion: true, 
-    fecha: formattedDate, 
-    precio: 5000 
   } 
 });
 
