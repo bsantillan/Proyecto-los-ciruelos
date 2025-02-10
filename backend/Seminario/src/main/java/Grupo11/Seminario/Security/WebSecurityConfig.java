@@ -27,7 +27,6 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita CORS
             .csrf(csrf->csrf.disable()) // Opcional: desactiva CSRF si no es necesario
             .authorizeHttpRequests(authorizeRequests -> 
                 authorizeRequests
@@ -37,6 +36,8 @@ public class WebSecurityConfig {
                 .requestMatchers("/configuracion_general/private/**").authenticated()
             )
             .addFilterBefore(new FirebaseAuthFilter(usuarioService), CorsFilter.class);
+            http.cors(cors -> cors.configurationSource(corsConfigurationSource())); // Habilita CORS
+
         return http.build();
     }
 
