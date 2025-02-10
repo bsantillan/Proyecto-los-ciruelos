@@ -1,0 +1,71 @@
+.perfil-container {
+    max-width: 450px;
+    margin: 60px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px var(--title-shadow);
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    color: var(--text);
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+    color: var(--text);
+    text-align: left;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid var(--pass-time);
+    border-radius: 8px;
+    font-size: 14px;
+    background: var(--white-text);
+    color: var(--dark-text);
+    transition: all 0.3s ease-in-out;
+}
+
+input:focus {
+    border-color: var(--button-color-primary);
+    outline: none;
+    box-shadow: 0 0 5px var(--green);
+}
+
+input[readonly] {
+    background: var(--background-muted);
+    cursor: not-allowed;
+}
+
+/* Botón mejorado con variables */
+button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    background-color: var(--button-color-primary);
+    color: var(--text);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: var(--button-hover-color);
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(1);
+}

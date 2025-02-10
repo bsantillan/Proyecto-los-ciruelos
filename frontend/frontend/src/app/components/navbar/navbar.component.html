@@ -15,7 +15,10 @@
       <button *ngIf="!(user | async)" routerLink="/login" type="button">
         Iniciar Sesión
       </button>
-  
+        <!-- Mostrar el botón 'Cerrar sesión' si el usuario está logueado -->
+        <button *ngIf="user | async" routerLink="/perfil" type="button">
+          Mi perfil
+        </button>
       <!-- Mostrar el botón 'Cerrar sesión' si el usuario está logueado -->
       <button *ngIf="user | async" (click)="logout()" type="button">
         Cerrar Sesión

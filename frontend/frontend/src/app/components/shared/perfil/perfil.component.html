@@ -1,0 +1,28 @@
+<div class="perfil-container">
+    <h1>Hola, {{ perfilForm.get('nombre')?.value }}</h1>
+
+    <form [formGroup]="perfilForm">
+        <label>Nombre:</label>
+        <input type="text" formControlName="nombre" [readonly]="!modoEdicion" maxlength="25" />
+
+        <label>Apellido:</label>
+        <input type="text" formControlName="apellido" [readonly]="!modoEdicion" maxlength="30" />
+
+        <label>Email:</label>
+        <input type="email" formControlName="email" [readonly]="!modoEdicion" maxlength="50" />
+
+        <label>Número de Teléfono:</label>
+        <input type="number" formControlName="telefono" [readonly]="!modoEdicion" />
+
+        <label>Código de Área:</label>
+        <input type="number" formControlName="codigoArea" [readonly]="!modoEdicion" />
+
+        <label>Nivel de juego:</label>
+        <input type="text" formControlName="nivelJuego" [readonly]="!modoEdicion" />
+
+        <!-- Botón con diseño mejorado -->
+        <button type="button" (click)="toggleEdicion()">
+            {{ modoEdicion ? 'Guardar Cambios' : 'Modificar Perfil' }}
+        </button>
+    </form>
+</div>

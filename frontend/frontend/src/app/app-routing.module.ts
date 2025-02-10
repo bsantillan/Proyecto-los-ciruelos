@@ -9,6 +9,7 @@ import { PostRegisterComponent } from './components/shared/register/postregister
 import { ReestablecerContraseniaComponent } from './components/shared/reestablecer_contrasenia/reestalecer_contrasenia.component';
 import { VerificarCorreoComponent } from './components/shared/verificar-correo/verificar-correo.component';
 import { AuthActionComponent } from './handle-action.component';
+import { PerfilComponent } from './components/shared/perfil/perfil.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'reestablecer-contrasenia', component: ReestablecerContraseniaComponent },
   { path: 'verificar-correo', component: VerificarCorreoComponent},
   { path: 'action/:actionType/:oobCode', component: AuthActionComponent }, 
+  { path: 'perfil', component: PerfilComponent }, 
   { path: '**', redirectTo: 'home' }
 ];
 
