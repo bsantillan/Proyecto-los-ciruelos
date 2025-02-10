@@ -40,6 +40,7 @@ import { environment } from '../environments/environment';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { TicketComponent } from './components/shared/ticket/ticket.component';
 import { ReservaComponent } from './components/shared/reserva/reserva.component';
+import { ProcesarPagoComponent } from './components/shared/procesar-pago/procesar-pago.component';
 
 
 
@@ -59,7 +60,8 @@ import { ReservaComponent } from './components/shared/reserva/reserva.component'
     VerificarCorreoComponent,
     NavbarComponent,
     TicketComponent,
-    ReservaComponent
+    ReservaComponent,
+    ProcesarPagoComponent
 
   ],
   imports: [
