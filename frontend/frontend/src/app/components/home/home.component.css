@@ -173,6 +173,14 @@
         line-height: 1.6; /* Altura de línea para mejorar la legibilidad */
     }
 
+    .map-container {
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
 /* ---------------------------------------- INFORMACION SOBRE EL CLUB ----------------------------------------------- */
 
     .informacion {
