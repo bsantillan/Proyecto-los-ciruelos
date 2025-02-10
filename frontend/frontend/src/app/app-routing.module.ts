@@ -10,6 +10,7 @@ import { ReestablecerContraseniaComponent } from './components/shared/reestablec
 import { VerificarCorreoComponent } from './components/shared/verificar-correo/verificar-correo.component';
 import { AuthActionComponent } from './handle-action.component';
 import { TicketComponent } from './components/shared/ticket/ticket.component';
+import { ReservaComponent } from './components/shared/reserva/reserva.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,8 @@ const routes: Routes = [
   { path: 'verificar-correo', component: VerificarCorreoComponent},
   { path: 'ticket', component: TicketComponent },
   { path: 'action/:actionType/:oobCode', component: AuthActionComponent }, 
+  { path: 'reserva', component: ReservaComponent }, 
+
   { path: '**', redirectTo: 'home' }
 ];
 

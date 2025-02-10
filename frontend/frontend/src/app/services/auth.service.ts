@@ -15,7 +15,7 @@ import {
   sendEmailVerification,
   fetchSignInMethodsForEmail,
 } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -43,7 +43,6 @@ export class AuthService {
       lastName: ['', Validators.required],
 
     });
-
   }
 
    // Método para hacer logout
@@ -202,16 +201,10 @@ export class AuthService {
   async resetPassword(email: string): Promise<void> {
     await sendPasswordResetEmail(this.auth, email);
   }
-  
 
-  /*getRoleBasedOnEmail(email: string): { role: string; esProfesor?: boolean; esDueño?: boolean } {
-    if (email) {
-      if (email.endsWith('@jugador.com.ar')) {
-        return { role: 'jugador', esProfesor: email.startsWith('profesor') };
-      } else if (email.endsWith('@empleado.com')) {
-        return { role: 'empleado', esDueño: email.startsWith('dueño') };
-      }
-    }
-    return { role: 'desconocido' };
-  }*/
+  getUserEmail(): Observable<string | null> {
+    return this.authState$.pipe(
+      map((user) => user?.email || null) // Si el usuario está autenticado, devuelve el email; si no, devuelve null
+    );
+  }
 }

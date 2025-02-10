@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, switchMap, throwError } from 'rxjs';
 
 export interface Reserva {
   id_cancha: number;
@@ -25,19 +25,20 @@ export class ApiService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  private handleHttpError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage = 'Ocurrió un error en la solicitud HTTP';
-    if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
-      errorMessage = `Error del lado del cliente: ${error.error.message}`;
-    } else {
-      // El backend retornó un código de estado fallido
-      errorMessage = `Código de error: ${error.status}\nMensaje: ${error.message}`;
-    }
-    console.error(errorMessage);
-    return throwError(errorMessage);
+  // Método para obtener los turnos
+  getPerfil(): Observable<any> {
+    return this.authService.getUserEmail().pipe(
+      switchMap(email => {
+        if (!email) {
+          console.error("Error: No se encontró un email válido.");
+          return throwError(() => new Error("No hay usuario autenticado"));
+        }
+        const url = `${this.apiUrl}public/consultar_perfil?email=${encodeURIComponent(email)}`;
+        return this.http.get<any>(url);
+      })
+    );
   }
-
+  
   // Método para obtener los turnos
   getTurnos(): Observable<Reserva[]> {
     return this.http.get<Reserva[]>(this.apiUrl+"public/consultar_turnos")

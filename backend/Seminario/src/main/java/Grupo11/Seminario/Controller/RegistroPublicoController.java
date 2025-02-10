@@ -1,6 +1,8 @@
 package Grupo11.Seminario.Controller;
 
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +33,7 @@ public class RegistroPublicoController {
     TurnoService turnoService;
 
     @PutMapping(path = "/bloquear/turno")
-    ResponseEntity<String> bloquear_turno(HttpServletRequest request, @RequestBody TurnoDTO turnoDTO){
+    ResponseEntity<Map<String, String>> bloquear_turno(HttpServletRequest request, @RequestBody TurnoDTO turnoDTO){
         String email = (String) request.getAttribute("email");
 
         Turno turno = new Turno();
@@ -42,7 +44,10 @@ public class RegistroPublicoController {
         turno.setEstado(EstadoTurno.Bloqueado);
         turno.setHorarioBloqueo(LocalTime.now());
         turnoService.guardar_turno(turno);
-        return ResponseEntity.ok("Se bloqueo el turno");
+        // Responder con un JSON que contenga un mensaje
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Se bloqueo el turno");
+        return ResponseEntity.ok(response);
     }
 
     // Controlador publico para registrarse como jugador en la aplicacion

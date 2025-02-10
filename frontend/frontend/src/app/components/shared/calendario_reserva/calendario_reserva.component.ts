@@ -2,6 +2,8 @@ import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService, Reserva, TurnoDTO } from '../../../api.service';
+import { Router } from '@angular/router';
+import { ConfiguracionGeneral, ConfiguracionService } from '../../../services/configuracion-general.service';
 
 export interface Court {
   id: number;
@@ -17,7 +19,6 @@ export class CalendarioReservaComponent implements OnInit {
   selectedDate: string = new Date().toISOString().split('T')[0];
   minDate: string = this.getMinDate();
   currentHour: number = new Date().getHours();
-  price: number = 15000;
 
   timeSlots = [
     '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
@@ -39,6 +40,8 @@ export class CalendarioReservaComponent implements OnInit {
   ];
 
   reservations: Reserva[] = [];
+  isLoggedIn: boolean = false;
+  isSocio: boolean = false;
 
   showOptionsMenu = false;
   optionsMenuPosition = { top: 0, left: 0 };
@@ -49,24 +52,44 @@ export class CalendarioReservaComponent implements OnInit {
   selectedCourt: Court | null = null; // Guardar la cancha seleccionada
   selectedSlot: string | null = null; // Guardar el horario seleccionado
 
+  configuracion: ConfiguracionGeneral | null = null;
+
   constructor(
     private elementRef: ElementRef, 
     private authService: AuthService, 
     private toastrService: ToastrService,
     private api: ApiService,  
-  ) {}
+    private router: Router,
+    private configuracionService: ConfiguracionService,
+  ) {
+    this.authService.authState$.subscribe(user => {
+      this.isLoggedIn = !!user; // Si hay un usuario, isLoggedIn es true
+    });
+    this.api.getPerfil().subscribe((perfil) => {
+      console.log(perfil.socio);
+      this.isSocio = perfil?.socio ?? false; // Si el campo "socio" es true, se guarda en isSocio
+    });
+  }
 
   ngOnInit() {
     this.cargarRerservaciones();
-    console.log(this.reservations)
+    // Primero revisamos si ya tenemos la configuración almacenada
+    this.configuracion = this.configuracionService.getStoredConfiguracion();
+
+    // Si no la tenemos, la obtenemos del backend
+    if (!this.configuracion) {
+      this.configuracionService.getConfiguracion().subscribe(config => {
+        // Guardamos la configuración para poder usarla más tarde
+        this.configuracionService.setConfiguracion(config);
+        this.configuracion = config;
+      });
+    }
   }
 
-  // Función que maneja el clic en el botón
   onButtonClick() {
     // Verificar si el usuario está logueado
     this.authService.authState$.subscribe(async (user) => {
       if (user) {
-
         console.log(this.selectedCourt?.id);
         console.log(this.selectedDate);
         console.log(this.selectedSlot);
@@ -74,44 +97,61 @@ export class CalendarioReservaComponent implements OnInit {
         const startTime = this.selectedSlot ?? ""; // El horario de inicio es el slot donde el usuario hace click
         const endTime = this.getEndTime(startTime); // El horario de fin será 90 minutos después
         console.log(endTime);
-
+  
         const turnoDTO: TurnoDTO = {
           id_cancha: this.selectedCourt?.id ?? 0, // Reemplaza con el ID de la cancha
           fecha: selectedDate, // Fecha en formato adecuado
           horario_inicio_ocupado: startTime ?? "", // Horario inicio en formato HH:mm
           horario_fin_ocupado: endTime // Horario fin en formato HH:mm
         };
-
-        (this.api.bloquearTurno(turnoDTO)).subscribe({
+  
+        // Bloquear el turno a través de la API
+        this.api.bloquearTurno(turnoDTO).subscribe({
           next: (response) => {
-            this.toastrService.success('Turno Bloqueado con exito', 'Reservar');
+            // Si la respuesta es exitosa, redirige a la página de ticket
+            console.log('Respuesta de la API:', response); // Verifica que la respuesta sea correcta
+            if (response?.message === "Se bloqueo el turno") {
+
+              this.router.navigate(['/reserva'], {
+                queryParams: {
+                  id_cancha: turnoDTO.id_cancha,
+                  fecha: turnoDTO.fecha,
+                  horario_inicio_ocupado: turnoDTO.horario_inicio_ocupado,
+                  horario_fin_ocupado: turnoDTO.horario_fin_ocupado,
+                }
+              });
+            }
+          },
+          error: (err) => {
+            // Si ocurre algún error en el bloqueo, muestra un mensaje de error
+            console.error('Error al bloquear el turno', err);
+            this.toastrService.error('Hubo un error al intentar bloquear el turno.', 'Error');
           }
         });
-        // Aquí tu lógica para lo que ocurre al hacer clic si está logueado
       } else {
-        // Si el usuario no está logueado, muestra un alert
+        // Si el usuario no está logueado, muestra un mensaje de info
         this.toastrService.info('Debes iniciar sesión para usar esta opción.', 'Reservar');
       }
     });
-  }
+  }  
 
-  // Método para cargar los turnos desde el backend
   cargarRerservaciones() {
     this.api.getTurnos().subscribe(
       (turnos) => {
-        this.reservations = turnos.map(turno => ({
+        this.reservations = turnos.filter(turno => turno.fecha === this.selectedDate).map(turno => ({
           id_cancha: turno.id_cancha,
           horario_inicio_ocupado: turno.horario_inicio_ocupado,
           horario_fin_ocupado: turno.horario_fin_ocupado,
           fecha: turno.fecha
         }));
-        console.log(this.reservations);  // Para verificar que los turnos se han cargado correctamente
+        console.log('Reservas cargadas:', this.reservations);
       },
       (error) => {
         console.error('Error al cargar los turnos', error);
       }
     );
   }
+  
 
   getMinDate(): string {
     const today = new Date();
@@ -121,17 +161,13 @@ export class CalendarioReservaComponent implements OnInit {
     return `${yyyy}-${mm}-${dd}`;
   }
 
-  loadReservations(date: string) {
-    this.reservations = this.reservations.filter(res => res.fecha === date);
-  }  
-
   onDateChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.selectedDate = input.value;
-    this.loadReservations(this.selectedDate);
+    this.cargarRerservaciones(); // Volver a cargar las reservas del backend
     this.clearSelectedCells();
     this.hideOptionsMenu();
-  }
+  }  
 
   clearSelectedCells(): void {
     this.highlightedCells = [];
@@ -279,23 +315,23 @@ export class CalendarioReservaComponent implements OnInit {
     const slotMinutes = this.timeToMinutes(slot); // Convertir la celda a minutos
     // Recorremos todas las reservas de la cancha
     for (const reservation of this.reservations) {
-        if (reservation.id_cancha === courtId) {
-            const startMinutes = this.timeToMinutes(reservation.horario_inicio_ocupado);
-            const endMinutes = this.timeToMinutes(reservation.horario_fin_ocupado);
-            
-            // Verificamos si el slot está dentro del rango de la reserva, incluyendo el final
-            if (slotMinutes >= startMinutes && slotMinutes <= endMinutes) {
-                const duration = endMinutes - startMinutes;
-                if (duration < 90) {
-                    return 'blue'; // Si la reserva es menor a 90 minutos, pintamos en azul
-                }
-                return 'red'; // Si está dentro del rango de la reserva y tiene 90 o más minutos, la celda es roja
-            }
+      if (reservation.id_cancha === courtId) {
+        const startMinutes = this.timeToMinutes(reservation.horario_inicio_ocupado);
+        const endMinutes = this.timeToMinutes(reservation.horario_fin_ocupado);
+        
+        // Verificamos si el slot está dentro del rango de la reserva, incluyendo el final
+        if (slotMinutes >= startMinutes && slotMinutes <= endMinutes) {
+          const duration = endMinutes - startMinutes;
+          if (duration >= 90) {
+            return 'red'; // Solo devolver 'red' si la duración es de 90 minutos o más
+          }
         }
+      }
     }
-
-    return ''; // Si no está en ninguna reserva, no pintamos la celda
+  
+    return ''; // Si no está en ninguna reserva o no tiene 90 minutos, no pintamos la celda
   }
+  
 
   // Detectar clics en todo el documento y cerrar el menú si se hace clic fuera
   @HostListener('document:click', ['$event'])

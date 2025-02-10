@@ -10,14 +10,17 @@ import { User } from 'firebase/auth';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  user: Observable<User | null>;  // Observable que contiene el estado del usuario
   currentUrl: string = '';
+  isLoggedIn: boolean = false;
 
   constructor(private router: Router, private authService: AuthService) {
-    this.user = this.authService.authState$;  // Observa el estado del usuario
+    this.authService.authState$.subscribe(user => {
+      this.isLoggedIn = !!user; // Si hay un usuario, isLoggedIn es true
+    });
   }
 
   ngOnInit() {
+    
     // Detecta cambios en la URL
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {

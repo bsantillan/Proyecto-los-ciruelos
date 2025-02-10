@@ -39,6 +39,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { environment } from '../environments/environment';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { TicketComponent } from './components/shared/ticket/ticket.component';
+import { ReservaComponent } from './components/shared/reserva/reserva.component';
 
 
 
@@ -57,7 +58,8 @@ import { TicketComponent } from './components/shared/ticket/ticket.component';
     ReestablecerContraseniaComponent,
     VerificarCorreoComponent,
     NavbarComponent,
-    TicketComponent
+    TicketComponent,
+    ReservaComponent
 
   ],
   imports: [

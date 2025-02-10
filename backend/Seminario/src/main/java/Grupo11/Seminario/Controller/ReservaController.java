@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import Grupo11.Seminario.DTO.PagoMercadoPagoDTO;
 import Grupo11.Seminario.DTO.ReservaDTO;
-import Grupo11.Seminario.DTO.TurnoDTO;
 import Grupo11.Seminario.Entities.Cancha;
 import Grupo11.Seminario.Entities.Cuenta;
 import Grupo11.Seminario.Entities.Empleado;
@@ -30,9 +29,7 @@ import Grupo11.Seminario.Entities.Turno;
 import Grupo11.Seminario.Entities.Enum.EstadoReserva;
 import Grupo11.Seminario.Entities.Enum.EstadoTurno;
 import Grupo11.Seminario.Service.ReservaService;
-import Grupo11.Seminario.Service.TurnoService;
 import Grupo11.Seminario.Service.UsuarioService;
-import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(path = "/public")
@@ -45,12 +42,10 @@ public class ReservaController {
     
     @PostMapping(path = "/reservas/reservar_turno")
     public ResponseEntity<?> reservar_turno
-    (HttpServletRequest request, @RequestBody ReservaDTO reservaDTO) throws JsonMappingException, JsonProcessingException{
+    (@RequestParam String email, @RequestBody ReservaDTO reservaDTO) throws JsonMappingException, JsonProcessingException{
         
         Integer id_jugador=0;
         Integer id_empleado=0;
-
-        String email = (String) request.getAttribute("email");
     
         Integer id_accionar = usuarioService.buscar_usuario(email).get().getId();
 

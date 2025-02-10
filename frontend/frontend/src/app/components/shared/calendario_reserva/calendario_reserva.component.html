@@ -31,7 +31,6 @@
           'past-time': isPastTime(slot),
           'reserved': isReserved(court.id, slot) === 'red',
           'blocked': isNotEnoughTimeBetweenReservations(court.id, slot),
-          'blue': isReserved(court.id, slot) === 'blue',
         }"
         (click)="!isPastTime(slot) && !isReserved(court.id, slot) && !isNotEnoughTimeBetweenReservations(court.id, slot) && showTimeOptions(court, slot, $event)">
       </td>
@@ -47,6 +46,10 @@
   <div class="info-box">
     <span>Blindex y sintético | Con iluminación | Techada</span><br />
   </div>
-  <div class="option" (click)="onButtonClick()">1h 30min ${{price}}</div>
+  <div class="option" (click)="onButtonClick()">1h 30min $
+    {{ isLoggedIn && isSocio
+      ? (configuracion?.monto_reserva ?? 0) - ((configuracion?.monto_reserva ?? 0) * (configuracion?.descuento_socio ?? 0))
+      : (configuracion?.monto_reserva ?? 0) }}  
+  </div>
 
 </div>

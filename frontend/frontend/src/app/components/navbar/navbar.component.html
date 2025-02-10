@@ -16,12 +16,12 @@
       </button>
   
       <!-- Mostrar el botón 'Iniciar sesión' si el usuario no está logueado -->
-      <button *ngIf="!(user | async)" routerLink="/login" type="button">
+      <button *ngIf="!isLoggedIn" routerLink="/login" type="button">
         Iniciar Sesión
       </button>
   
       <!-- Mostrar el botón 'Cerrar sesión' si el usuario está logueado -->
-      <button *ngIf="user | async" (click)="logout()" type="button">
+      <button *ngIf="isLoggedIn" (click)="logout()" type="button">
         Cerrar Sesión
       </button>
     </div>

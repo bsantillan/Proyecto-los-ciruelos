@@ -7,25 +7,24 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './ticket.component.css'
 })
 export class TicketComponent {
-  isReservation: boolean = true; // Cambiar según la lógica de tu aplicación
   date!: string;
-  time!: number;
   court!: string;
   price!: number;
-  senia!: number;
-  duracion!: number;
+  senia!: string;
+  horario_inicio_ocupado!: string;
+  horario_fin_ocupado!: string;
 
   constructor(private route: ActivatedRoute,  private router: Router,) {}
 
   ngOnInit(): void {
     // Obteniendo parámetros de la URL
     this.route.queryParams.subscribe(params => {
-      this.date = params['date'];
-      this.time = params['time'];
-      this.court = params['court'];
-      this.price = params['price'];
+      this.date = params['fecha'];
+      this.court = params['id_cancha'];
+      this.price = params['precio'];
       this.senia = params['senia'];
-      this.duracion=params['duracion'];
+      this.horario_inicio_ocupado=params['horario_inicio_ocupado'];
+      this.horario_fin_ocupado=params['horario_fin_ocupado'];
     });
   }
 
