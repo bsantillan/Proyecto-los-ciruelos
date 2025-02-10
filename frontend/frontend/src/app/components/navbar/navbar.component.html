@@ -14,6 +14,10 @@
       <button (click)="navigateOrScroll('services')" type="button">
         Servicios
       </button>
+
+      <button routerLink="/profesores" type="button">
+        Nuestros Profesores
+      </button>
   
       <!-- Mostrar el botón 'Iniciar sesión' si el usuario no está logueado -->
       <button *ngIf="!isLoggedIn" routerLink="/login" type="button">

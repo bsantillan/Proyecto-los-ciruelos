@@ -47,6 +47,7 @@ public class ConsultaUsuarioController {
         @RequestParam Optional<String> email
     ) {
         List<Object> profesores = consultaUsuarioService.buscar_profesores(nombre, apellido, email);
+        System.out.println("MANDANDO PROFESORES");
         return ResponseEntity.ok(profesores);
     }
 }

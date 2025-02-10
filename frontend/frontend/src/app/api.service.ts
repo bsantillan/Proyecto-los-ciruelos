@@ -50,6 +50,19 @@ export class ApiService {
       })
     );
   }
+
+  getProfesores(email?: string, nombre?: string, apellido?: string): Observable<any[]> {
+    let url = `${this.apiUrl}public/consultar/usuarios/buscar_profesor?`;
+    const params = [];
+
+    if (email) params.push(`email=${email}`);
+    if (nombre) params.push(`nombre=${nombre}`);
+    if (apellido) params.push(`apellido=${apellido}`);
+
+    url += params.join("&");
+
+    return this.http.get<any[]>(url , { responseType: 'json' });
+  }
   
   // Método para obtener los turnos
   getTurnos(): Observable<Reserva[]> {
@@ -73,18 +86,5 @@ export class ApiService {
         return this.http.post<any>(url, reservaDTO);
       })
     );
-  }
-
-  async getProtectedData() {
-    try {
-      const token = await this.authService.getToken();
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`
-      });
-      return await this.http.get(this.apiUrl, { headers }).toPromise();
-    } catch (error) {
-      console.error('Error al obtener datos protegidos:', error);
-      throw error; 
-    }
   }
 }

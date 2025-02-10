@@ -8,7 +8,6 @@ import { HomeComponent } from './components/home/home.component';
 import { PostRegisterComponent } from './components/shared/register/postregister/postregister.component';
 import { ReestablecerContraseniaComponent } from './components/shared/reestablecer_contrasenia/reestalecer_contrasenia.component';
 import { VerificarCorreoComponent } from './components/shared/verificar-correo/verificar-correo.component';
-import { AuthActionComponent } from './handle-action.component';
 import { TicketComponent } from './components/shared/ticket/ticket.component';
 import { ReservaComponent } from './components/shared/reserva/reserva.component';
 import { authGuard } from './auth/auth.guard'; // Importar el guard
@@ -32,7 +31,6 @@ const routes: Routes = [
   { path: 'procesar-pago', component: ProcesarPagoComponent, canActivate: [authGuard] },
   { path: 'mis-reservas', component: MisReservasComponent, canActivate: [authGuard]  },
   { path: 'profesores', component: ProfesoresComponent }, 
-
   { path: '**', redirectTo: 'home' }
 ];
 
