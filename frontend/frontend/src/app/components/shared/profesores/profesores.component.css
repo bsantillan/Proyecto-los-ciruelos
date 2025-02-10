@@ -12,14 +12,14 @@ h1 {
     font-weight: bold;
 }
 
-/* .buscador {
+.buscador {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
     font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 5px;
-  } */
+  }
 
 /* Categorías */
 .categorias {

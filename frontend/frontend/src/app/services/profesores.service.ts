@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ProfesoresService {
 
-  private apiUrl = 'https://tudominio.com/api/profesores'; // Cambia por tu API
+  private apiUrl = 'https://localhots:8080/usuarios/buscar_profesor'; 
 
   constructor(private http: HttpClient) { }
 

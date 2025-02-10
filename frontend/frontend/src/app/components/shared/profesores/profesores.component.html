@@ -2,49 +2,54 @@
     <h1>Profesores</h1>
     <!-- --------------------------------------------------------------------------------------------- -->
     <!-- Buscador -->
-    <!-- <input 
+    <input 
     type="text" 
     placeholder="Buscar por nombre o especialidad..." 
     [(ngModel)]="searchText" 
     (input)="filtrarProfesores()" 
     class="buscador"
-    /> -->
+    />
+    
+<!-- Contenedor de Categorías -->
+<div class="categorias">
+    <button 
+        *ngFor="let categoria of categorias" 
+        [class.active]="categoriaSeleccionada === categoria"
+        (click)="filtrarPorCategoria(categoria)">
+        {{ categoria }}
+    </button>
+</div>
 
-    <!-- Filtro por Categoría -->
-    <!-- <select [(ngModel)]="categoriaSeleccionada" (change)="filtrarProfesores()" class="categorias">
-    <option value="">Todas las categorías</option>
-    <option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</option>
-    </select> -->
 
     <!-- Lista de Profesores -->
-    <!-- <div *ngFor="let profesor of profesoresFiltrados" class="profesor-card">
+    <div *ngFor="let profesor of profesoresFiltrados" class="profesor-card">
     <h2>{{ profesor.nombre }} {{ profesor.apellido }}</h2>
     <p><strong>Especialidad:</strong> {{ profesor.especialidad }}</p>
     <p><strong>Email:</strong> {{ profesor.email }}</p>
     <p><strong>Contacto:</strong> {{ profesor.telefono }}</p>
     </div>
-    </div> -->
+    </div>
 
     <!-- ------------------------------------------------------------------------------------------------ -->
     
     <!-- Categorías -->
-    <div class="categorias">
+    <!-- <div class="categorias">
         <button *ngFor="let categoria of categorias" [class.active]="categoriaSeleccionada === categoria"
             (click)="filtrarPorCategoria(categoria)">
             {{ categoria }}
         </button>
-    </div>
+    </div> -->
 
     <!-- Lista de Profesores -->
-    <div class="profesores-lista">
+    <!-- <div class="profesores-lista">
         <div class="profesor-card" *ngFor="let profesor of profesoresFiltrados" (click)="verDetalles(profesor)">
             <h2>{{ profesor.nombre }} {{ profesor.apellido }}</h2>
             <p><strong>Especialidad:</strong> {{ profesor.especialidad }}</p>
         </div>
-    </div>
+    </div> -->
 
     <!-- Modal de Detalles -->
-    <div *ngIf="profesorSeleccionado" class="modal-overlay">
+    <!-- <div *ngIf="profesorSeleccionado" class="modal-overlay">
         <div class="modal">
             <h2>{{ profesorSeleccionado.nombre }} {{ profesorSeleccionado.apellido }}</h2>
             <p><strong>Especialidad:</strong> {{ profesorSeleccionado.especialidad }}</p>
@@ -52,5 +57,5 @@
             <p><strong>Contacto:</strong> {{ profesorSeleccionado.contacto }}</p>
             <button (click)="cerrarDetalles()">Cerrar</button>
         </div>
-    </div>
-</div>
+    </div> -->
+<!-- </div> -->
