@@ -15,11 +15,11 @@ import {
   sendEmailVerification,
   fetchSignInMethodsForEmail,
 } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { applyActionCode, getAuth, getRedirectResult, signInWithRedirect, signOut } from 'firebase/auth';
+import { applyActionCode, getAuth, getRedirectResult, onAuthStateChanged, signInWithRedirect, signOut } from 'firebase/auth';
 
 
 export interface Credential {
@@ -33,25 +33,26 @@ export interface Credential {
 export class AuthService {
   private auth: Auth = inject(Auth);
   private router: Router = inject(Router);
+  private user: User | null = null;
   readonly authState$: Observable<User | null> = authState(this.auth);
 
-  form: FormGroup;
-
   constructor(private fb: FormBuilder, private toastrService: ToastrService) {
-    this.form = this.fb.group({
-      names: ['', Validators.required],
-      lastName: ['', Validators.required],
-
+    onAuthStateChanged(this.auth, (user) => {
+      this.user = user; // Actualiza el estado del usuario
     });
+  }
 
+  // Método para verificar si el usuario está autenticado
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('user');  // Verifica si el usuario está en localStorage
   }
 
    // Método para hacer logout
    logout(): Promise<void> {
     return signOut(this.auth)
       .then(() => {
-        this.toastrService.success('Has cerrado sesión correctamente', 'Logout');
-        this.router.navigate(['/login']); // Redirige al login después de hacer logout
+        localStorage.removeItem('user'); // Elimina el usuario de localStorage al cerrar sesión
+        this.router.navigate(['/home'], { queryParams: {}, replaceUrl: true }); // Elimina los queryParams
       })
       .catch((error) => {
         console.error('Error al cerrar sesión', error);
@@ -74,13 +75,6 @@ export class AuthService {
       .then(async (userCredential) => {
         if (userCredential.user) {
           this.enviarEmailVerification(userCredential);
-          const userData = {
-            uid: userCredential.user.uid,
-            email: credential.email,
-            role: 'jugador', 
-            name: this.form.get('names')?.value,
-            lastName: this.form.get('lastName')?.value,
-          };
         }
         return userCredential;
       })  
@@ -113,6 +107,8 @@ export class AuthService {
           error.code = 'auth/email-not-verified'; // Definir el código de error Firebase
           throw error;
         }
+        localStorage.setItem('user', JSON.stringify(this.user)); // Guarda el usuario en localStorage
+
         this.toastrService.success("Bienvenido de nuevo! Nos alegra verte otra vez.", "Exito");
   
         return userCredential;
@@ -135,9 +131,9 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
   
     try {
+      localStorage.setItem('user', JSON.stringify(this.user)); // Guarda el usuario en localStorage
       return await signInWithPopup(this.auth, provider);
       
-
     } catch (error: any) {
       return error;
     }
@@ -163,55 +159,18 @@ export class AuthService {
     }
   }
 
-  async signInWithGoogleProvider(): Promise<{ name: string; lastName: string; email: string } | null> {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(this.auth, provider);
-      const user = result.user;
-
-      if (user) {
-        const email = user.email || '';
-
-        // Verificamos si el correo ya está registrado
-        const signInMethods = await fetchSignInMethodsForEmail(this.auth, email);
-        if (signInMethods.length > 0) {
-          // Si el correo está registrado, mostramos un mensaje y no continuamos
-          alert('Este correo ya está registrado. Por favor, inicia sesión.');
-          this.router.navigate(['/login']); // Navegamos a la página de inicio de sesión
-          return null; // Devolvemos null para que no continúe el registro
-        }
-
-        // Si no está registrado, mandamos correo de verificación
-        await sendEmailVerification(user);
-        const [name, ...lastNameParts] = (user.displayName || 'Sin nombre').split(' ');
-        const lastName = lastNameParts.join(' ');
-
-        alert('Registro exitoso. Verifica tu correo electrónico para completar la validación.');
-        this.router.navigate(['/postregister']);
-        return { name, lastName, email };
-      }
-
-      throw new Error('No se pudieron obtener los datos del usuario de Google.');
-    } catch (error) {
-      console.error("Error en el inicio de sesión con Google:", error);
-      alert('Hubo un error al iniciar sesión con Google. Por favor, intenta de nuevo.');
-      return null; // Devolvemos null en caso de error
-    }
-  }
-
   async resetPassword(email: string): Promise<void> {
     await sendPasswordResetEmail(this.auth, email);
   }
-  
 
-  /*getRoleBasedOnEmail(email: string): { role: string; esProfesor?: boolean; esDueño?: boolean } {
-    if (email) {
-      if (email.endsWith('@jugador.com.ar')) {
-        return { role: 'jugador', esProfesor: email.startsWith('profesor') };
-      } else if (email.endsWith('@empleado.com')) {
-        return { role: 'empleado', esDueño: email.startsWith('dueño') };
-      }
-    }
-    return { role: 'desconocido' };
-  }*/
+  getUserEmail(): Observable<string | null> {
+    return this.authState$.pipe(
+      map((user) => user?.email || null) // Si el usuario está autenticado, devuelve el email; si no, devuelve null
+    );
+  }
+
+  getUsuario(): Observable<User | null> {
+    return this.authState$; // Devuelve el estado actual del usuario autenticado
+  }
+  
 }

@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Observable } from 'rxjs';
 import { User } from 'firebase/auth';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-navbar',
@@ -10,14 +11,17 @@ import { User } from 'firebase/auth';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  user: Observable<User | null>;  // Observable que contiene el estado del usuario
   currentUrl: string = '';
+  isLoggedIn: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) {
-    this.user = this.authService.authState$;  // Observa el estado del usuario
+  constructor(private router: Router, private authService: AuthService, private toastrService: ToastrService) {
+    this.authService.authState$.subscribe(user => {
+      this.isLoggedIn = !!user; // Si hay un usuario, isLoggedIn es true
+    });
   }
 
   ngOnInit() {
+    
     // Detecta cambios en la URL
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -41,6 +45,8 @@ export class NavbarComponent implements OnInit {
   // Método para manejar el logout
   logout(): void {
     this.authService.logout();
+    this.toastrService.success('Has cerrado sesión correctamente', 'Logout');
+
   }
 
   private scrollToSection(sectionId: string) {
@@ -49,4 +55,5 @@ export class NavbarComponent implements OnInit {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
+
 }

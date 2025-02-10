@@ -1,6 +1,7 @@
 package Grupo11.Seminario.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -37,6 +38,7 @@ public class ConsultarTurnosService {
         List<Cancha> canchas = (List<Cancha>) i_cancha_repository.findAll();
         ConfiguracionGeneral configuracion_general = configuracion_general_service.get_configuracion_general();
         LocalDate fechaActual = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
 
         // Iteramos por cada cancha
         for (Cancha cancha: canchas){

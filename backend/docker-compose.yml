@@ -31,3 +31,5 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 10s
       retries: 10
+    volumes:
+      - ./Seminario/src/main/resources/data.sql:/docker-entrypoint-initdb.d/data.sql  # Mapea el script SQL
