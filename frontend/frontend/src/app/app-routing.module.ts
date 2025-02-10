@@ -11,24 +11,24 @@ import { VerificarCorreoComponent } from './components/shared/verificar-correo/v
 import { AuthActionComponent } from './handle-action.component';
 import { TicketComponent } from './components/shared/ticket/ticket.component';
 import { ReservaComponent } from './components/shared/reserva/reserva.component';
-
+import { authGuard } from './auth/auth.guard'; // Importar el guard
+import { noAuthGuard } from './auth/no-auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'cambiar-contrasenia', component: CambiarContraseniaComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'postregister', component: PostRegisterComponent},
-  { path: 'mercadopago', component: MercadopagoComponent },
-  { path: 'reestablecer-contrasenia', component: ReestablecerContraseniaComponent },
-  { path: 'verificar-correo', component: VerificarCorreoComponent},
-  { path: 'ticket', component: TicketComponent },
-  { path: 'action/:actionType/:oobCode', component: AuthActionComponent }, 
-  { path: 'reserva', component: ReservaComponent }, 
-
+  { path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
+  { path: 'cambiar-contrasenia', component: CambiarContraseniaComponent, canActivate: [noAuthGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [noAuthGuard] },
+  { path: 'postregister', component: PostRegisterComponent, canActivate: [noAuthGuard] },
+  { path: 'reestablecer-contrasenia', component: ReestablecerContraseniaComponent, canActivate: [noAuthGuard] },
+  { path: 'verificar-correo', component: VerificarCorreoComponent, canActivate: [noAuthGuard] },
+  { path: 'mercadopago', component: MercadopagoComponent, canActivate: [authGuard] },
+  { path: 'ticket', component: TicketComponent, canActivate: [authGuard] },
+  { path: 'reserva', component: ReservaComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'home' }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

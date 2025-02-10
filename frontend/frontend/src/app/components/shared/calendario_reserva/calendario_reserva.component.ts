@@ -87,52 +87,48 @@ export class CalendarioReservaComponent implements OnInit {
   }
 
   onButtonClick() {
-    // Verificar si el usuario está logueado
-    this.authService.authState$.subscribe(async (user) => {
-      if (user) {
-        console.log(this.selectedCourt?.id);
-        console.log(this.selectedDate);
-        console.log(this.selectedSlot);
-        const selectedDate = this.selectedDate; // Fecha seleccionada en el calendario
-        const startTime = this.selectedSlot ?? ""; // El horario de inicio es el slot donde el usuario hace click
-        const endTime = this.getEndTime(startTime); // El horario de fin será 90 minutos después
-        console.log(endTime);
-  
-        const turnoDTO: TurnoDTO = {
-          id_cancha: this.selectedCourt?.id ?? 0, // Reemplaza con el ID de la cancha
-          fecha: selectedDate, // Fecha en formato adecuado
-          horario_inicio_ocupado: startTime ?? "", // Horario inicio en formato HH:mm
-          horario_fin_ocupado: endTime // Horario fin en formato HH:mm
-        };
-  
-        // Bloquear el turno a través de la API
-        this.api.bloquearTurno(turnoDTO).subscribe({
-          next: (response) => {
-            // Si la respuesta es exitosa, redirige a la página de ticket
-            console.log('Respuesta de la API:', response); // Verifica que la respuesta sea correcta
-            if (response?.message === "Se bloqueo el turno") {
+    if (this.isLoggedIn) {
+      console.log(this.selectedCourt?.id);
+      console.log(this.selectedDate);
+      console.log(this.selectedSlot);
+      const selectedDate = this.selectedDate; // Fecha seleccionada en el calendario
+      const startTime = this.selectedSlot ?? ""; // El horario de inicio es el slot donde el usuario hace click
+      const endTime = this.getEndTime(startTime); // El horario de fin será 90 minutos después
+      console.log(endTime);
 
-              this.router.navigate(['/reserva'], {
-                queryParams: {
-                  id_cancha: turnoDTO.id_cancha,
-                  fecha: turnoDTO.fecha,
-                  horario_inicio_ocupado: turnoDTO.horario_inicio_ocupado,
-                  horario_fin_ocupado: turnoDTO.horario_fin_ocupado,
-                }
-              });
-            }
-          },
-          error: (err) => {
-            // Si ocurre algún error en el bloqueo, muestra un mensaje de error
-            console.error('Error al bloquear el turno', err);
-            this.toastrService.error('Hubo un error al intentar bloquear el turno.', 'Error');
+      const turnoDTO: TurnoDTO = {
+        id_cancha: this.selectedCourt?.id ?? 0, // Reemplaza con el ID de la cancha
+        fecha: selectedDate, // Fecha en formato adecuado
+        horario_inicio_ocupado: startTime ?? "", // Horario inicio en formato HH:mm
+        horario_fin_ocupado: endTime // Horario fin en formato HH:mm
+      };
+
+      // Bloquear el turno a través de la API
+      this.api.bloquearTurno(turnoDTO).subscribe({
+        next: (response) => {
+          // Si la respuesta es exitosa, redirige a la página de ticket
+          console.log('Respuesta de la API:', response); // Verifica que la respuesta sea correcta
+          if (response?.message === "Se bloqueo el turno") {
+
+            this.router.navigate(['/reserva'], {
+              queryParams: {
+                id_cancha: turnoDTO.id_cancha,
+                fecha: turnoDTO.fecha,
+                horario_inicio_ocupado: turnoDTO.horario_inicio_ocupado,
+                horario_fin_ocupado: turnoDTO.horario_fin_ocupado,
+              }
+            });
           }
-        });
-      } else {
-        // Si el usuario no está logueado, muestra un mensaje de info
-        this.toastrService.info('Debes iniciar sesión para usar esta opción.', 'Reservar');
-      }
-    });
+        },
+        error: (err) => {
+          // Si ocurre algún error en el bloqueo, muestra un mensaje de error
+          console.error('Error al bloquear el turno', err);
+          this.toastrService.error('Hubo un error al intentar bloquear el turno.', 'Error');
+        }
+      });
+    } else {
+      this.router.navigate(['/login']);
+    }
   }  
 
   cargarRerservaciones() {

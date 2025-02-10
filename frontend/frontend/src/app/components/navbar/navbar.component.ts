@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Observable } from 'rxjs';
 import { User } from 'firebase/auth';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +14,7 @@ export class NavbarComponent implements OnInit {
   currentUrl: string = '';
   isLoggedIn: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(private router: Router, private authService: AuthService, private toastrService: ToastrService) {
     this.authService.authState$.subscribe(user => {
       this.isLoggedIn = !!user; // Si hay un usuario, isLoggedIn es true
     });
@@ -44,6 +45,8 @@ export class NavbarComponent implements OnInit {
   // Método para manejar el logout
   logout(): void {
     this.authService.logout();
+    this.toastrService.success('Has cerrado sesión correctamente', 'Logout');
+
   }
 
   private scrollToSection(sectionId: string) {

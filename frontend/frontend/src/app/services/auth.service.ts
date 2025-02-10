@@ -19,7 +19,7 @@ import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { applyActionCode, getAuth, getRedirectResult, signInWithRedirect, signOut } from 'firebase/auth';
+import { applyActionCode, getAuth, getRedirectResult, onAuthStateChanged, signInWithRedirect, signOut } from 'firebase/auth';
 
 
 export interface Credential {
@@ -33,24 +33,25 @@ export interface Credential {
 export class AuthService {
   private auth: Auth = inject(Auth);
   private router: Router = inject(Router);
+  private user: User | null = null;
   readonly authState$: Observable<User | null> = authState(this.auth);
 
-  form: FormGroup;
-
   constructor(private fb: FormBuilder, private toastrService: ToastrService) {
-    this.form = this.fb.group({
-      names: ['', Validators.required],
-      lastName: ['', Validators.required],
-
+    onAuthStateChanged(this.auth, (user) => {
+      this.user = user; // Actualiza el estado del usuario
     });
+  }
+
+  // Método para verificar si el usuario está autenticado
+  isAuthenticated(): boolean {
+    return this.user !== null; // Si el usuario no es nulo, está autenticado
   }
 
    // Método para hacer logout
    logout(): Promise<void> {
     return signOut(this.auth)
       .then(() => {
-        this.toastrService.success('Has cerrado sesión correctamente', 'Logout');
-        this.router.navigate(['/login']); // Redirige al login después de hacer logout
+        this.router.navigate(['/home'], { queryParams: {}, replaceUrl: true }); // Elimina los queryParams
       })
       .catch((error) => {
         console.error('Error al cerrar sesión', error);
@@ -73,13 +74,6 @@ export class AuthService {
       .then(async (userCredential) => {
         if (userCredential.user) {
           this.enviarEmailVerification(userCredential);
-          const userData = {
-            uid: userCredential.user.uid,
-            email: credential.email,
-            role: 'jugador', 
-            name: this.form.get('names')?.value,
-            lastName: this.form.get('lastName')?.value,
-          };
         }
         return userCredential;
       })  
@@ -136,7 +130,6 @@ export class AuthService {
     try {
       return await signInWithPopup(this.auth, provider);
       
-
     } catch (error: any) {
       return error;
     }
@@ -159,42 +152,6 @@ export class AuthService {
       }
     } else {
       this.toastrService.warning("No pudimos encontrar tu cuenta o ya verificaste tu correo.", "Atención");
-    }
-  }
-
-  async signInWithGoogleProvider(): Promise<{ name: string; lastName: string; email: string } | null> {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(this.auth, provider);
-      const user = result.user;
-
-      if (user) {
-        const email = user.email || '';
-
-        // Verificamos si el correo ya está registrado
-        const signInMethods = await fetchSignInMethodsForEmail(this.auth, email);
-        if (signInMethods.length > 0) {
-          // Si el correo está registrado, mostramos un mensaje y no continuamos
-          alert('Este correo ya está registrado. Por favor, inicia sesión.');
-          this.router.navigate(['/login']); // Navegamos a la página de inicio de sesión
-          return null; // Devolvemos null para que no continúe el registro
-        }
-
-        // Si no está registrado, mandamos correo de verificación
-        await sendEmailVerification(user);
-        const [name, ...lastNameParts] = (user.displayName || 'Sin nombre').split(' ');
-        const lastName = lastNameParts.join(' ');
-
-        alert('Registro exitoso. Verifica tu correo electrónico para completar la validación.');
-        this.router.navigate(['/postregister']);
-        return { name, lastName, email };
-      }
-
-      throw new Error('No se pudieron obtener los datos del usuario de Google.');
-    } catch (error) {
-      console.error("Error en el inicio de sesión con Google:", error);
-      alert('Hubo un error al iniciar sesión con Google. Por favor, intenta de nuevo.');
-      return null; // Devolvemos null en caso de error
     }
   }
 
