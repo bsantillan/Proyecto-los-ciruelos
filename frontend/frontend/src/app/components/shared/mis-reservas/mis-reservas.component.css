@@ -56,3 +56,17 @@
     font-size: 1.1em;
     font-weight: bold;
 }
+
+.boton-cancelar {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .boton-cancelar:hover {
+    background-color: #c73e3e;
+  }
