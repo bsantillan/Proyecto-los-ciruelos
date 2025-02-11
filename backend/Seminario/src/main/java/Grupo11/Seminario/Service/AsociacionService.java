@@ -7,6 +7,7 @@ import Grupo11.Seminario.Entities.Asociacion;
 import Grupo11.Seminario.Entities.Empleado;
 import Grupo11.Seminario.Entities.Jugador;
 import Grupo11.Seminario.Repository.IAsociacionRepository;
+import Grupo11.Seminario.Repository.IJugadorRepository;
 
 @Service
 @Transactional
@@ -18,6 +19,9 @@ public class AsociacionService {
     JugadorService jugador_service;
     @Autowired
     EmpleadoService empleado_service;
+    @Autowired
+    private IJugadorRepository i_jugador_repository;
+
 
     public void guardar_asociacion(Asociacion asociacion){
         i_asociacion_repository.save(asociacion);
@@ -50,4 +54,18 @@ public class AsociacionService {
         }
         return true;
     }
+    
+    public Asociacion buscar_asociacion_por_jugador(Integer id_jugador) {
+        return i_asociacion_repository.findByJugadorId(id_jugador);
+    }
+    
+    public void eliminar_asociacion(Asociacion asociacion) {
+        i_asociacion_repository.delete(asociacion);
+    }
+    
+    // Nueva función para actualizar el jugador
+    public void guardar_jugador(Jugador jugador) {
+        i_jugador_repository.save(jugador);
+    }
+    
 }
