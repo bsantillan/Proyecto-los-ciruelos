@@ -7,4 +7,5 @@ import Grupo11.Seminario.Entities.Asociacion;
 
 @Repository
 public interface IAsociacionRepository extends CrudRepository<Asociacion,Integer>{
+    Asociacion findByJugadorId(Integer idJugador);
 }

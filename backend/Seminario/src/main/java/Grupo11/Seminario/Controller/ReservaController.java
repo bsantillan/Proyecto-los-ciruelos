@@ -1,6 +1,5 @@
 package Grupo11.Seminario.Controller;
 
-import java.lang.StackWalker.Option;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import Grupo11.Seminario.DTO.PagoMercadoPagoDTO;
+import Grupo11.Seminario.DTO.ReservaCancelacionDTO;
 import Grupo11.Seminario.DTO.ReservaDTO;
 import Grupo11.Seminario.Entities.Cancha;
 import Grupo11.Seminario.Entities.Cuenta;
@@ -157,22 +157,25 @@ public class ReservaController {
     }
 
     @GetMapping(path = "/consultar/reservas")
-    public ResponseEntity<?> consultarReservas(@RequestParam String email){
+    public ResponseEntity<List<Reserva>> consultarReservas(@RequestParam String email){
         Integer id_accionar = usuarioService.buscar_usuario(email).get().getId();
         if (reserva_service.existe_jugador(id_accionar) | reserva_service.existe_empleado(id_accionar)){
             return ResponseEntity.ok(reserva_service.buscar_reservas(id_accionar));
         }
-        return ResponseEntity.badRequest().body("No se encontro al usuario");
+            return null;
     }
 
     @PutMapping(path = "/cancelar/reserva")
-    public ResponseEntity<Map<String, String>> cancelarReserva(@RequestParam String email, Integer reserva_id){
-        Integer id_accionar = usuarioService.buscar_usuario(email).get().getId();
+    public ResponseEntity<Map<String, String>> cancelarReserva(@RequestBody ReservaCancelacionDTO request){
+        Integer id_accionar = usuarioService.buscar_usuario(request.getEmail()).get().getId();
         Map<String, String> response = new HashMap<>();
-        if (reserva_service.existe_jugador(id_accionar) | reserva_service.existe_empleado(id_accionar)){
-            Optional<Reserva> optReserva = reserva_service.buscar_reserva(reserva_id);
+        if (reserva_service.existe_jugador(id_accionar)){
+            Optional<Reserva> optReserva = reserva_service.buscar_reserva(request.getId_reserva());
             if (optReserva.isPresent()) {
                 response.put("message", "Se cancelo la reserva");
+                Reserva reserva = optReserva.get();
+                reserva.setEstado(EstadoReserva.Cancelada);
+                reserva_service.guardar_reserva(reserva);
                 return ResponseEntity.ok(response);
             }
         }

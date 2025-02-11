@@ -42,7 +42,6 @@ export class ReservaComponent {
       console.log(perfil.socio);
       this.isSocio = perfil?.socio ?? false; // Si el campo "socio" es true, se guarda en isSocio
       
-      this.obtenerConfiguracion();
     });
   }
 
@@ -52,6 +51,8 @@ export class ReservaComponent {
       pelotas: [0, [Validators.required, Validators.min(0)]], 
       paletas: [0, [Validators.required, Validators.min(0)]],
     });
+
+    this.obtenerConfiguracion();
 
     this.route.queryParams.subscribe(params => {
       this.date = params['fecha'];

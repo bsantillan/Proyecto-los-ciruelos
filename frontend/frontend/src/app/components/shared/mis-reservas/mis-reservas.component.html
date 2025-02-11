@@ -3,28 +3,33 @@
 
     <!-- Filtros -->
     <div class="filtros">
-        <input type="date" [(ngModel)]="filtro.fecha" (change)="filtrarReservas()" placeholder="Selecciona una fecha">
-        <select [(ngModel)]="filtro.cancha" (change)="filtrarReservas()">
-            <option value="">Todas las canchas</option>
-            <option *ngFor="let cancha of canchas" [value]="cancha">{{ cancha }}</option>
-        </select>
-    </div>
-
-    <!-- Lista de reservas -->
-    <div class="lista-reservas" *ngIf="reservasFiltradas.length > 0; else noReservas">
-        <div *ngFor="let reserva of reservasFiltradas" class="reserva-card">
-            <p><strong>Fecha:</strong> {{ reserva.fecha }}</p>
-            <p><strong>Hora:</strong> {{ reserva.hora }}</p>
-            <p><strong>Cancha:</strong> {{ reserva.cancha }}</p>
-            <p><strong>Precio:</strong> ${{ reserva.precio }}</p>
-            <p><strong>Pelotas:</strong> {{ reserva.pelotas }}</p>
-            <p><strong>Paletas:</strong> {{ reserva.paletas }}</p>
-
-            <button class="boton-cancelar">
-                Cancelar Reserva
+        <input type="date" [(ngModel)]="filtro.fecha" (change)="filtrarReservas()">
+        
+        <!-- Botones de filtro de canchas -->
+        <div class="categorias">
+            <button *ngFor="let cancha of canchas" 
+                [class.active]="filtro.cancha === cancha" 
+                (click)="seleccionarCancha(cancha)">
+                {{ cancha }}
             </button>
         </div>
     </div>
+
+    <div class="lista-reservas" *ngIf="reservas.length > 0; else noReservas">
+        <div *ngFor="let reserva of reservas" class="reserva-card">
+            <p><strong>Fecha:</strong> {{ reserva.turno.fecha }}</p>
+            <p><strong>Horario:</strong> {{ reserva.turno.horarioInicio }} - {{ reserva.turno.horario_fin }}</p>
+            <p><strong>Cancha:</strong> N° {{ reserva.turno.cancha.numero }}</p>
+            <p><strong>Pelotas:</strong> {{ reserva.cantidad_pelotas }}</p>
+            <p><strong>Paletas:</strong> {{ reserva.cantidad_paletas }}</p>
+            <p><strong>Estado:</strong> {{ reserva.estado }}</p>
+    
+            <!-- Mostrar botón solo si la reserva NO está cancelada y la fecha NO ha pasado 
+            <button class="boton-cancelar" *ngIf="!esReservaCanceladaOExpirada(reserva)" (click)="cancelarReserva(reserva.id)">
+                Cancelar Reserva
+            </button> -->
+        </div>
+    </div>    
 
     <!-- Mensaje cuando no hay reservas -->
     <ng-template #noReservas>

@@ -30,6 +30,9 @@ import { CalendarioReservaComponent } from './components/shared/calendario_reser
 import { PostRegisterComponent } from './components/shared/register/postregister/postregister.component';
 import { ReestablecerContraseniaComponent } from './components/shared/reestablecer_contrasenia/reestalecer_contrasenia.component'; 
 import { VerificarCorreoComponent } from './components/shared/verificar-correo/verificar-correo.component';
+import { BeneficiosSociosComponent } from './components/beneficios-socios/beneficios-socios.component';
+import { AsociarComponent } from './components/beneficios-socios/asociar/asociar.component';
+import { DesasociarComponent } from './components/beneficios-socios/desasociar/desasociar.component'; 
 
 // Firebase
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -44,6 +47,7 @@ import { ReservaComponent } from './components/shared/reserva/reserva.component'
 import { ProcesarPagoComponent } from './components/shared/procesar-pago/procesar-pago.component';
 import { MisReservasComponent } from './components/shared/mis-reservas/mis-reservas.component';
 import { ProfesoresComponent } from './components/shared/profesores/profesores.component';
+
 
 
 
@@ -65,6 +69,9 @@ import { ProfesoresComponent } from './components/shared/profesores/profesores.c
     PerfilComponent,
     TicketComponent,
     ReservaComponent,
+    BeneficiosSociosComponent,
+    AsociarComponent,
+    DesasociarComponent,
     ProcesarPagoComponent,
     MisReservasComponent,
     ProfesoresComponent

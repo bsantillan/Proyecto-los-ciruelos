@@ -15,7 +15,7 @@ export class HomeComponent {
   constructor(private router: Router) {}
 
   asociarse(): void {
-    this.router.navigate(['/asociarse']); // Cambia '/asociarse' a la ruta de tu página de asociación
+    this.router.navigate(['/beneficios']); // Cambia '/asociarse' a la ruta de tu página de asociación
   }
 
   navigateToLogin(): void {
