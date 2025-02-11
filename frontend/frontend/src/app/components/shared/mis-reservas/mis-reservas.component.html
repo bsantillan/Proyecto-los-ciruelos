@@ -3,26 +3,29 @@
 
     <!-- Filtros -->
     <div class="filtros">
-        <input type="date" [(ngModel)]="filtro.fecha" (change)="filtrarReservas()" placeholder="Selecciona una fecha">
-        <select [(ngModel)]="filtro.cancha" (change)="filtrarReservas()">
-            <option value="">Todas las canchas</option>
-            <option *ngFor="let cancha of canchas" [value]="cancha">{{ cancha }}</option>
-        </select>
+        <input type="date" [(ngModel)]="filtro.fecha" (change)="filtrarReservas()">
+        
+        <!-- Botones de filtro de canchas -->
+        <div class="categorias">
+            <button *ngFor="let cancha of canchas" 
+                [class.active]="filtro.cancha === cancha" 
+                (click)="seleccionarCancha(cancha)">
+                {{ cancha }}
+            </button>
+        </div>
     </div>
 
     <!-- Lista de reservas -->
     <div class="lista-reservas" *ngIf="reservasFiltradas.length > 0; else noReservas">
-        <div *ngFor="let reserva of reservasFiltradas" class="reserva-card">
+        <div class="reserva-card" *ngFor="let reserva of reservasFiltradas">
+            <h2>{{ reserva.cancha }}</h2>
             <p><strong>Fecha:</strong> {{ reserva.fecha }}</p>
             <p><strong>Hora:</strong> {{ reserva.hora }}</p>
-            <p><strong>Cancha:</strong> {{ reserva.cancha }}</p>
             <p><strong>Precio:</strong> ${{ reserva.precio }}</p>
             <p><strong>Pelotas:</strong> {{ reserva.pelotas }}</p>
             <p><strong>Paletas:</strong> {{ reserva.paletas }}</p>
 
-            <button class="boton-cancelar">
-                Cancelar Reserva
-            </button>
+            <button class="boton-cancelar">Cancelar Reserva</button>
         </div>
     </div>
 
