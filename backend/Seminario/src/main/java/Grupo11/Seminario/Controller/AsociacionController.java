@@ -110,52 +110,70 @@ public class AsociacionController {
     
         Integer id_jugador = usuarioService.buscar_usuario(email).get().getId();
 
-            if (asociacion_service.existe_jugador(id_jugador)) {
-                // Se verifica que el jugador no este asociado
-                if (asociacion_service.verificar_asociacion(id_jugador)) {
-                    ResponseEntity<String> response = pago_service.buscar_pago(id_mp);
+        if (asociacion_service.existe_jugador(id_jugador)) {
+            // Se verifica que el jugador no este asociado
+            if (asociacion_service.verificar_asociacion(id_jugador)) {
+                ResponseEntity<String> response = pago_service.buscar_pago(id_mp);
 
-                    // Se valida que este realizado el pago
-                    if (response.getStatusCode() == HttpStatus.OK) {
-                        Jugador jugador = asociacion_service.buscar_jugador(id_jugador);
-                        jugador.setSocio(true);
+                // Se valida que este realizado el pago
+                if (response.getStatusCode() == HttpStatus.OK) {
+                    Jugador jugador = asociacion_service.buscar_jugador(id_jugador);
+                    jugador.setSocio(true);
 
-                        ConfiguracionGeneral configuracion_general = configuracion_general_service.get_configuracion_general();
-                        PagoMercadoPagoDTO pago_mpDTO = pago_service.pagar(response);
+                    ConfiguracionGeneral configuracion_general = configuracion_general_service.get_configuracion_general();
+                    PagoMercadoPagoDTO pago_mpDTO = pago_service.pagar(response);
 
-                        Cuenta cuenta = new Cuenta();
-                        cuenta.setEmail(pago_mpDTO.getEmail_pagador());
-                        cuenta.setApellido(pago_mpDTO.getApellido_pagador());
-                        cuenta.setNombre(pago_mpDTO.getNombre_pagador());
-                        cuenta.setTipo_identificacion(pago_mpDTO.getTipo_identificacion());
-                        cuenta.setNumero_identificacion(pago_mpDTO.getNumero_identificacion());
+                    Cuenta cuenta = new Cuenta();
+                    cuenta.setEmail(pago_mpDTO.getEmail_pagador());
+                    cuenta.setApellido(pago_mpDTO.getApellido_pagador());
+                    cuenta.setNombre(pago_mpDTO.getNombre_pagador());
+                    cuenta.setTipo_identificacion(pago_mpDTO.getTipo_identificacion());
+                    cuenta.setNumero_identificacion(pago_mpDTO.getNumero_identificacion());
 
-                        Pago pago = new Pago();
-                        pago.setFecha(pago_mpDTO.getFecha());
-                        pago.setHora(pago_mpDTO.getHora());
-                        pago.setMetodo(pago_mpDTO.getMetodo_pago());
-                        pago.setMotivo(pago_mpDTO.getMotivo());
-                        pago.setEstado(pago_mpDTO.getEstado());
-                        pago.setCuenta(cuenta);
-                        pago.setMonto(configuracion_general.getMonto_asociacion());
-                        pago.setDescuento(0f);
+                    Pago pago = new Pago();
+                    pago.setFecha(pago_mpDTO.getFecha());
+                    pago.setHora(pago_mpDTO.getHora());
+                    pago.setMetodo(pago_mpDTO.getMetodo_pago());
+                    pago.setMotivo(pago_mpDTO.getMotivo());
+                    pago.setEstado(pago_mpDTO.getEstado());
+                    pago.setCuenta(cuenta);
+                    pago.setMonto(configuracion_general.getMonto_asociacion());
+                    pago.setDescuento(0f);
 
-                        Asociacion asociacion = new Asociacion();
-                        asociacion.setFecha(LocalDate.now());
-                        asociacion.setHora(LocalTime.now());
-                        asociacion.setPrecio(configuracion_general.getMonto_asociacion());
+                    Asociacion asociacion = new Asociacion();
+                    asociacion.setFecha(LocalDate.now());
+                    asociacion.setHora(LocalTime.now());
+                    asociacion.setPrecio(configuracion_general.getMonto_asociacion());
 
-                        asociacion.setJugador(jugador);
-                        asociacion.setDuenio(null);
-                        asociacion.setPago(pago);
+                    asociacion.setJugador(jugador);
+                    asociacion.setDuenio(null);
+                    asociacion.setPago(pago);
 
-                        asociacion_service.guardar_asociacion(asociacion);
-                        return ResponseEntity.ok().body("Asociacion Exitosa");
-                    }   
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el pago");
-                }
-                return ResponseEntity.badRequest().body("El jugador ya es un socio");
+                    asociacion_service.guardar_asociacion(asociacion);
+                    return ResponseEntity.ok().body("Asociacion Exitosa");
+                }   
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el pago");
             }
-            return ResponseEntity.badRequest().body("No existe el jugador");
-        } 
+            return ResponseEntity.badRequest().body("El jugador ya es un socio");
+        }
+        return ResponseEntity.badRequest().body("No existe el jugador");
+    }
+    
+    @PutMapping(path = "/desasociarse")
+    public ResponseEntity<?> desasociarse(@RequestParam String email) {
+        Integer id_jugador = usuarioService.buscar_usuario(email).get().getId();
+
+        if (asociacion_service.existe_jugador(id_jugador)) {
+            // Verificar si el jugador está asociado
+            if (!asociacion_service.verificar_asociacion(id_jugador)) {
+                Jugador jugador = asociacion_service.buscar_jugador(id_jugador);
+                jugador.setSocio(false);
+                asociacion_service.guardar_jugador(jugador);
+                return ResponseEntity.ok().body("Desasociado con éxito");
+            }
+            return ResponseEntity.badRequest().body("El jugador no está asociado");
+        }
+        return ResponseEntity.badRequest().body("No existe el jugador");
+    }
 }
+
