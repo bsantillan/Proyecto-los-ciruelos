@@ -3,11 +3,16 @@
 
     <!-- Filtros -->
     <div class="filtros">
-        <input type="date" [(ngModel)]="filtro.fecha" (change)="filtrarReservas()" placeholder="Selecciona una fecha">
-        <select [(ngModel)]="filtro.cancha" (change)="filtrarReservas()">
-            <option value="">Todas las canchas</option>
-            <option *ngFor="let cancha of canchas" [value]="cancha">{{ cancha }}</option>
-        </select>
+        <input type="date" [(ngModel)]="filtro.fecha" (change)="filtrarReservas()">
+        
+        <!-- Botones de filtro de canchas -->
+        <div class="categorias">
+            <button *ngFor="let cancha of canchas" 
+                [class.active]="filtro.cancha === cancha" 
+                (click)="seleccionarCancha(cancha)">
+                {{ cancha }}
+            </button>
+        </div>
     </div>
 
     <div class="lista-reservas" *ngIf="reservas.length > 0; else noReservas">

@@ -68,4 +68,10 @@ export class MisReservasComponent {
       );
     });
   }
+
+  seleccionarCancha(cancha: string): void {
+    this.filtro.cancha = this.filtro.cancha === cancha ? '' : cancha;
+    this.filtrarReservas();
+  }
+  
 }
