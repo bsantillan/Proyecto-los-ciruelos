@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from '../../../api.service';
 
 @Component({
   selector: 'app-perfil',
@@ -10,12 +11,13 @@ export class PerfilComponent implements OnInit {
   perfilForm!: FormGroup;
   modoEdicion: boolean = false;
   datosOriginales: any = {};
+  maxPhones: number = 3; // Máximo de teléfonos permitidos
 
   nivelesDeJuego: string[] = [
     'Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta', 'Sexta', 'Séptima', 'Principiante'
   ];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private api: ApiService) {}
 
   ngOnInit(): void {
     this.perfilForm = this.fb.group({
@@ -23,20 +25,44 @@ export class PerfilComponent implements OnInit {
       apellido: ['', [Validators.required, Validators.maxLength(30)]],
       email: ['', [
         Validators.required,
-        Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
-      ]],
-      telefono: ['', [
-        Validators.required,
-        Validators.pattern(/^\d{1,10}$/) // Hasta 10 dígitos numéricos
+        Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/)
       ]],
       codigoArea: ['', [
         Validators.required,
         Validators.pattern(/^\d{1,3}$/) // Hasta 3 dígitos numéricos
       ]],
-      nivelJuego: [{ value: '', disabled: true }, [Validators.required]]
+      nivelJuego: [{ value: '', disabled: true }, [Validators.required]],
+      phones: this.fb.array([this.createPhoneControl()]) // Lista de teléfonos
     });
 
     this.cargarDatosIniciales();
+  }
+
+  // Función para crear un control de teléfono
+  createPhoneControl(): any {
+    return this.fb.control('', [
+      Validators.required,
+      Validators.pattern(/^\d{6,15}$/) // Teléfono entre 6 y 15 dígitos
+    ]);
+  }
+
+  // Función para agregar un teléfono
+  addPhone(): void {
+    if (this.phones.length < this.maxPhones) {
+      this.phones.push(this.createPhoneControl());
+    }
+  }
+
+  // Función para eliminar un teléfono
+  removePhone(index: number): void {
+    if (this.phones.length > 1) {
+      this.phones.removeAt(index);
+    }
+  }
+
+  // Función para obtener los teléfonos del formulario
+  get phones(): FormArray {
+    return this.perfilForm.get('phones') as FormArray;
   }
 
   activarEdicion(): void {
@@ -59,16 +85,19 @@ export class PerfilComponent implements OnInit {
   }
 
   cargarDatosIniciales(): void {
-    // Simulación de carga de datos del usuario
-    const datosUsuario = {
-      nombre: 'Juan',
-      apellido: 'Pérez',
-      email: 'juan.perez@example.com',
-      telefono: '123456789',
-      codigoArea: '11',
-      nivelJuego: 'Segunda'
-    };
-
-    this.perfilForm.patchValue(datosUsuario);
+    this.api.getPerfil().subscribe({
+      next: (datosUsuario) => {
+        this.perfilForm.patchValue({
+          nombre: datosUsuario.nombre,
+          apellido: datosUsuario.apellido,
+          email: datosUsuario.email,
+          telefono: 2214375254,
+          nivelJuego: datosUsuario.categoria
+        });
+      },
+      error: (error) => {
+        console.error('Error al cargar el perfil:', error);
+      }
+    });
   }
 }
