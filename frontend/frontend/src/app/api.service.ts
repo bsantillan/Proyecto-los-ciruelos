@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { AuthService } from './services/auth.service';
-import { catchError, Observable, switchMap, throwError } from 'rxjs';
+import { Observable, switchMap, throwError } from 'rxjs';
 
 export interface Reserva {
   id_cancha: number;
@@ -63,8 +63,40 @@ export class ApiService {
 
     return this.http.get<any[]>(url , { responseType: 'json' });
   }
+
+  getResrvas(): Observable<any[]> {
+    return this.authService.getUserEmail().pipe(
+      switchMap(email => {
+        if (!email) {
+          console.error("Error: No se encontró un email válido.");
+          return throwError(() => new Error("No hay usuario autenticado"));
+        }
+        const url = `${this.apiUrl}public/consultar/reservas?email=${encodeURIComponent(email)}`;
+        return this.http.get<any[]>(url);
+      })
+    );
+  }
+
+  cancelarReserva(reserva_id: number): Observable<string> {
+    return this.authService.getUserEmail().pipe(
+      switchMap(email => {
+        if (!email) {
+          console.error("Error: No se encontró un email válido.");
+          return throwError(() => new Error("No hay usuario autenticado"));
+        }
+
+        // Objeto con los datos a enviar en el cuerpo
+        const requestBody = {
+          email: encodeURIComponent(email),
+          reservaId: reserva_id
+        };
+
+        const url = `${this.apiUrl}public/cancelar/reserva`;
+        return this.http.put<string>(url, requestBody);
+      })
+    );
+  }
   
-  // Método para obtener los turnos
   getTurnos(): Observable<Reserva[]> {
     return this.http.get<Reserva[]>(this.apiUrl+"public/consultar_turnos")
   }
