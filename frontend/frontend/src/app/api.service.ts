@@ -17,6 +17,18 @@ export interface TurnoDTO {
   horario_fin_ocupado: string;
 }
 
+export interface ReservaDTO {
+  cantidad_pelotas: number;
+  cantidad_paletas: number;
+  fecha: string;  // Formato ISO-8601: 'yyyy-MM-dd'
+  horario_inicio: string;  // Formato ISO-8601: 'HH:mm:ss'
+  horario_fin: string;  // Formato ISO-8601: 'HH:mm:ss'
+  numero_cancha: number;
+  id_reservador: number | null;
+  senia: boolean;
+  id_mp: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -38,6 +50,19 @@ export class ApiService {
       })
     );
   }
+
+  getProfesores(email?: string, nombre?: string, apellido?: string): Observable<any[]> {
+    let url = `${this.apiUrl}public/consultar/usuarios/buscar_profesor?`;
+    const params = [];
+
+    if (email) params.push(`email=${email}`);
+    if (nombre) params.push(`nombre=${nombre}`);
+    if (apellido) params.push(`apellido=${apellido}`);
+
+    url += params.join("&");
+
+    return this.http.get<any[]>(url , { responseType: 'json' });
+  }
   
   // Método para obtener los turnos
   getTurnos(): Observable<Reserva[]> {
@@ -49,16 +74,29 @@ export class ApiService {
     return this.http.put<string>(this.apiUrl + 'public/bloquear/turno', turnoDTO);
   }  
 
-  async getProtectedData() {
-    try {
-      const token = await this.authService.getToken();
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`
-      });
-      return await this.http.get(this.apiUrl, { headers }).toPromise();
-    } catch (error) {
-      console.error('Error al obtener datos protegidos:', error);
-      throw error; 
-    }
+  hacerReserva(reservaDTO: ReservaDTO): Observable<any> {
+
+    return this.authService.getUserEmail().pipe(
+      switchMap(email => {
+        if (!email) {
+          console.error("Error: No se encontró un email válido.");
+          return throwError(() => new Error("No hay usuario autenticado"));
+        }
+        const url = `${this.apiUrl}public/reservas/reservar_turno?email=${encodeURIComponent(email)}`;
+        return this.http.post<any>(url, reservaDTO);
+      })
+    );
+  }
+
+  asociarse(id_mp: number): Observable<any> {
+    return this.authService.getUserEmail().pipe(
+      switchMap(email => {
+        if (!email) {
+          console.error("Error: No se encontró un email válido.");
+          return throwError(() => new Error("No hay usuario autenticado"));
+        }
+        const url = `${this.apiUrl}public/asociarse?email=${email}&id_mp=${id_mp}`;
+        return this.http.put<any>(url, null); // Se usa null porque los datos van en la URL, no en el cuerpo
+      }));
   }
 }

@@ -44,13 +44,14 @@ export class AuthService {
 
   // Método para verificar si el usuario está autenticado
   isAuthenticated(): boolean {
-    return this.user !== null; // Si el usuario no es nulo, está autenticado
+    return !!localStorage.getItem('user');  // Verifica si el usuario está en localStorage
   }
 
    // Método para hacer logout
    logout(): Promise<void> {
     return signOut(this.auth)
       .then(() => {
+        localStorage.removeItem('user'); // Elimina el usuario de localStorage al cerrar sesión
         this.router.navigate(['/home'], { queryParams: {}, replaceUrl: true }); // Elimina los queryParams
       })
       .catch((error) => {
@@ -106,6 +107,8 @@ export class AuthService {
           error.code = 'auth/email-not-verified'; // Definir el código de error Firebase
           throw error;
         }
+        localStorage.setItem('user', JSON.stringify(this.user)); // Guarda el usuario en localStorage
+
         this.toastrService.success("Bienvenido de nuevo! Nos alegra verte otra vez.", "Exito");
   
         return userCredential;
@@ -128,6 +131,7 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
   
     try {
+      localStorage.setItem('user', JSON.stringify(this.user)); // Guarda el usuario en localStorage
       return await signInWithPopup(this.auth, provider);
       
     } catch (error: any) {
@@ -164,4 +168,9 @@ export class AuthService {
       map((user) => user?.email || null) // Si el usuario está autenticado, devuelve el email; si no, devuelve null
     );
   }
+
+  getUsuario(): Observable<User | null> {
+    return this.authState$; // Devuelve el estado actual del usuario autenticado
+  }
+  
 }

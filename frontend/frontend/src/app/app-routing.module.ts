@@ -8,12 +8,14 @@ import { HomeComponent } from './components/home/home.component';
 import { PostRegisterComponent } from './components/shared/register/postregister/postregister.component';
 import { ReestablecerContraseniaComponent } from './components/shared/reestablecer_contrasenia/reestalecer_contrasenia.component';
 import { VerificarCorreoComponent } from './components/shared/verificar-correo/verificar-correo.component';
-import { AuthActionComponent } from './handle-action.component';
 import { TicketComponent } from './components/shared/ticket/ticket.component';
 import { ReservaComponent } from './components/shared/reserva/reserva.component';
 import { authGuard } from './auth/auth.guard'; // Importar el guard
 import { noAuthGuard } from './auth/no-auth.guard';
 import { BeneficiosSociosComponent } from './components/beneficios-socios/beneficios-socios.component';
+import { ProcesarPagoComponent } from './components/shared/procesar-pago/procesar-pago.component';
+import { MisReservasComponent } from './components/shared/mis-reservas/mis-reservas.component';import { ProfesoresComponent } from './components/shared/profesores/profesores.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -28,6 +30,9 @@ const routes: Routes = [
   { path: 'ticket', component: TicketComponent, canActivate: [authGuard] },
   { path: 'reserva', component: ReservaComponent, canActivate: [authGuard] },
   { path: 'beneficios', component: BeneficiosSociosComponent },
+  { path: 'procesar-pago', component: ProcesarPagoComponent, canActivate: [authGuard] },
+  { path: 'mis-reservas', component: MisReservasComponent, canActivate: [authGuard]  },
+  { path: 'profesores', component: ProfesoresComponent }, 
   { path: '**', redirectTo: 'home' }
 ];
 

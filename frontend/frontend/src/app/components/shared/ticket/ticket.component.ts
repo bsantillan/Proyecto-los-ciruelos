@@ -78,6 +78,15 @@ export class TicketComponent {
         this.redirectToMercadoPago();
       }
     });
+
+    // Verificar si el usuario está autenticado antes de proceder con el pago
+    if (!this.authService.isAuthenticated()) {
+      // Si el usuario no está autenticado, redirigirlo al login
+      this.router.navigate(['/login']);
+    } else {
+      // Si está autenticado, proceder con la creación de la preferencia
+      this.redirectToMercadoPago();
+    }
   }
 
   goHome(): void {
@@ -98,7 +107,7 @@ export class TicketComponent {
             }
           ],
           back_urls: {
-            success: `http://localhost:4200/procesar-pago?date=${this.date}&horario_inicio_ocupado=${this.horario_inicio_ocupado}&court=${this.court}&price=${this.price}&senia=${this.senia}&horario_fin_ocupado=${this.horario_fin_ocupado}`,
+            success: `http://localhost:4200/procesar-pago?asociacion=true`,
             failure: 'http://localhost:4200/ticket',
             pending: 'http://localhost:4200/ticket'
           },
@@ -138,8 +147,6 @@ export class TicketComponent {
     }
 
   }
-
-
 
   loadMercadoPago(preferenceId: string) {
     const mp = new (window as any).MercadoPago('APP_USR-762225fb-73cd-4033-b1ad-4b16b6f579da', {

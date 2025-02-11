@@ -2,6 +2,8 @@ package Grupo11.Seminario.Controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -106,8 +108,8 @@ public class AsociacionController {
     }
 
     @PutMapping(path = "/asociarse")
-    public ResponseEntity<?> asociarse(@RequestParam String email , @RequestParam Long id_mp) throws JsonMappingException, JsonProcessingException{
-    
+    public ResponseEntity<Map<String, String>> asociarse(@RequestParam String email , @RequestParam Long id_mp) throws JsonMappingException, JsonProcessingException{
+        Map<String, String> response2 = new HashMap<>();
         Integer id_jugador = usuarioService.buscar_usuario(email).get().getId();
 
         if (asociacion_service.existe_jugador(id_jugador)) {
@@ -150,13 +152,17 @@ public class AsociacionController {
                     asociacion.setPago(pago);
 
                     asociacion_service.guardar_asociacion(asociacion);
-                    return ResponseEntity.ok().body("Asociacion Exitosa");
+                    response2.put("message", "Asociacion Exitosa");  // Cambiado para enviar un JSON
+                    return ResponseEntity.ok().body(response2);
                 }   
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el pago");
+                response2.put("message", "No se encontro el pago");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response2);
             }
-            return ResponseEntity.badRequest().body("El jugador ya es un socio");
+            response2.put("message", "El jugador ya es un socio");
+            return ResponseEntity.badRequest().body(response2);
         }
-        return ResponseEntity.badRequest().body("No existe el jugador");
+        response2.put("message", "No existe el jugador");
+        return ResponseEntity.badRequest().body(response2);
     }
     
     @PutMapping(path = "/desasociarse")

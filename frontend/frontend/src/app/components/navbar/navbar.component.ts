@@ -55,4 +55,5 @@ export class NavbarComponent implements OnInit {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
+
 }

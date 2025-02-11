@@ -43,6 +43,9 @@ import { environment } from '../environments/environment';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { TicketComponent } from './components/shared/ticket/ticket.component';
 import { ReservaComponent } from './components/shared/reserva/reserva.component';
+import { ProcesarPagoComponent } from './components/shared/procesar-pago/procesar-pago.component';
+import { MisReservasComponent } from './components/shared/mis-reservas/mis-reservas.component';
+import { ProfesoresComponent } from './components/shared/profesores/profesores.component';
 
 
 
@@ -67,6 +70,9 @@ import { ReservaComponent } from './components/shared/reserva/reserva.component'
     BeneficiosSociosComponent,
     AsociarComponent,
     DesasociarComponent,
+    ProcesarPagoComponent,
+    MisReservasComponent,
+    ProfesoresComponent
 
   ],
   imports: [
