@@ -36,27 +36,11 @@
             </ng-container>
           </mat-error>
         </mat-form-field>
-  
-        <!-- Código de Área y Teléfono -->
-        <div class="form-row">
-          <mat-form-field appearance="outline" class="custom-field">
-            <mat-label>Número de Teléfono</mat-label>
-            <input matInput type="number" formControlName="telefono" [readonly]="!modoEdicion" />
-            <mat-error *ngIf="perfilForm.get('telefono')?.touched">
-              <ng-container *ngIf="perfilForm.get('telefono')?.hasError('required')">
-                Este campo es obligatorio.
-              </ng-container>
-              <ng-container *ngIf="perfilForm.get('telefono')?.hasError('pattern')">
-                Número de teléfono inválido (hasta 10 dígitos).
-              </ng-container>
-            </mat-error>
-          </mat-form-field>
-        </div>
-  
+
         <!-- Nivel de Juego -->
         <mat-form-field appearance="outline" class="custom-field">
           <mat-label>Nivel de Juego</mat-label>
-          <mat-select formControlName="nivelJuego" [disabled]="!modoEdicion">
+          <mat-select formControlName="nivelJuego" [disabled]="modoEdicion">
             <mat-option *ngFor="let nivel of nivelesDeJuego" [value]="nivel">
               {{ nivel }}
             </mat-option>
@@ -65,22 +49,6 @@
             Seleccione un nivel de juego.
           </mat-error>
         </mat-form-field>
-  
-        <!-- Botones Modificar / Guardar -->
-        <div class="button-container">
-          <button mat-raised-button type="button" (click)="activarEdicion()" class="modify-button" *ngIf="!modoEdicion" style="background-color: var(--button-color-primary); color: var(--text);">
-            Modificar Perfil
-          </button>
-          <button mat-raised-button type="submit" class="submit-button" *ngIf="modoEdicion" [disabled]="perfilForm.invalid">
-            Guardar Cambios
-          </button>
-        </div>
-
-        <div class="register-button">
-            <button mat-raised-button type="button" class="cancel-button" *ngIf="modoEdicion" (click)="cancelarEdicion()">
-                Cancelar
-              </button>
-        </div>
         
       </form>
     </div>
