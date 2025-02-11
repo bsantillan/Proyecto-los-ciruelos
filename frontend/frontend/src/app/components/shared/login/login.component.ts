@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService, Credential } from '../../../services/auth.service';
 import { FirebaseErrorService } from '../../../services/firebase-error.service';
 import { ToastrService } from 'ngx-toastr';
@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService,
     private firebaseError: FirebaseErrorService,
     private toastrService: ToastrService
@@ -50,7 +51,8 @@ export class LoginComponent implements OnInit {
       this.authService.loginWithEmailAndPassword(credential)
         .then((user) => {
           //Verificar que el mail este registrado en el Backend sino no lo esta Mandar al PostRegister
-          this.router.navigate(['/home']);
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+          this.router.navigate([returnUrl]);
         })
         .catch((error) => {
           console.error('Código de error de Firebase:', error.code); // Verifica qué código está devolviendo Firebase

@@ -2,6 +2,8 @@ package Grupo11.Seminario.Service;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,14 @@ public class ReservaService {
 
     public void guardar_reserva(Reserva reserva){
         i_reserva_repository.save(reserva);
+    }
+
+    public Optional<Reserva> buscar_reserva(Integer id_reserva){
+        return i_reserva_repository.findById(id_reserva);
+    }
+
+    public List<Reserva> buscar_reservas(Integer jugador_id){
+        return i_reserva_repository.findByJugadorId(jugador_id);
     }
 
     public Cancha buscar_cancha(Integer numero_cancha){
