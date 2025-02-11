@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AuthService, Credential } from '../../../services/auth.service';
 import { FirebaseErrorService } from '../../../services/firebase-error.service';
 import { ToastrService } from 'ngx-toastr';
+import { ApiService, JugadorDTO } from '../../../api.service';
+
 
 @Component({
   selector: 'app-sign-up',
@@ -23,7 +25,7 @@ export class RegisterComponent implements OnInit {
   errorMessages: string[] = [];
   maxPhones: number = 4; // Número máximo de teléfonos
   playerCategories = [
-    'Principiante', 'Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta', 'Sexta', 'Séptima'
+    'Principiante', 'Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta', 'Sexta', 'Septima'
   ];
 
   constructor(
@@ -31,7 +33,8 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private firebaseError: FirebaseErrorService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private apiService: ApiService
   ) {}
 
   ngOnInit(): void {
@@ -71,22 +74,43 @@ export class RegisterComponent implements OnInit {
       this.markAllAsTouched();
       return;
     }
-
-    const { email, password, name, lastName, playerCategory, phones} = this.form.value;
-
+  
+    const { email, password, name, lastName, playerCategory, phones } = this.form.value;
+  
     if (email && password) {
       const credential: Credential = { email, password };
       try {
-        /* Validar que el email no exista en el Backend
-        
-        console.log('¿Email registrado?:');
-        this.form.get('email')?.setErrors({ emailTaken: true });
-        console.log('Se establece el error en el campo email');*/
-
-        this.authService.registerWithEmailAndPassword(credential)
-        // Mandar informacion al Backend para registrar al jugador
-        this.router.navigate(['/login']);
-
+        await this.authService.registerWithEmailAndPassword(credential);
+  
+        // Datos a enviar al backend
+        const jugadorDTO: JugadorDTO = {
+          id: 0,
+          nombre: name,
+          apellido: lastName,
+          email: email,
+          categoria: playerCategory,
+          socio: false,
+          profesor: false,
+          telefonos: phones.map((phones:string)=>{
+            return {
+              codigo: 0,
+              numero: parseInt(phones, 10),
+            }
+          }),
+        };
+  
+        // Llamar al servicio para registrar el usuario en el backend
+        this.apiService.registrarUsuario(jugadorDTO).subscribe({
+          next: () => {
+            this.toastrService.success('Registro exitoso', 'Éxito');
+            this.router.navigate(['/login']);
+          },
+          error: (error) => {
+            console.error('Error al registrar en el backend:', error);
+            this.toastrService.error('Error al registrar en el backend', 'Error');
+          }
+        });
+  
       } catch (error: any) {
         console.error('Error en signUp:', error);
         this.toastrService.error(this.firebaseError.codeError(error.code), "Error");
