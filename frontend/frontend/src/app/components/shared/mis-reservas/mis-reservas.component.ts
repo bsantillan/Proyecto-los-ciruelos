@@ -37,6 +37,7 @@ export class MisReservasComponent {
   }
 
   cancelarReserva(reserva_id:number): void {
+    console.log(reserva_id);
     this.api.cancelarReserva(reserva_id).subscribe((cancelacion) => {
       console.log(cancelacion)
     });

@@ -169,7 +169,7 @@ public class ReservaController {
     public ResponseEntity<Map<String, String>> cancelarReserva(@RequestBody ReservaCancelacionDTO request){
         Integer id_accionar = usuarioService.buscar_usuario(request.getEmail()).get().getId();
         Map<String, String> response = new HashMap<>();
-        if (reserva_service.existe_jugador(id_accionar) | reserva_service.existe_empleado(id_accionar)){
+        if (reserva_service.existe_jugador(id_accionar)){
             Optional<Reserva> optReserva = reserva_service.buscar_reserva(request.getId_reserva());
             if (optReserva.isPresent()) {
                 response.put("message", "Se cancelo la reserva");
