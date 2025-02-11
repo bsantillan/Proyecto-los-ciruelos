@@ -52,7 +52,6 @@ export class ApiService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  // Método para obtener los turnos
   getPerfil(): Observable<any> {
     return this.authService.getUserEmail().pipe(
       switchMap(email => {
@@ -122,7 +121,6 @@ export class ApiService {
   }  
 
   hacerReserva(reservaDTO: ReservaDTO): Observable<any> {
-
     return this.authService.getUserEmail().pipe(
       switchMap(email => {
         if (!email) {

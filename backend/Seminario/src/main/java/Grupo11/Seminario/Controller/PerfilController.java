@@ -54,8 +54,7 @@ public class PerfilController {
     }
 
     @PutMapping(path = "/modificar_perfil")
-    public ResponseEntity<?> modificar_perfil(HttpServletRequest request ,@RequestBody UsuarioDTO usuarioDTO){
-        String email = (String) request.getAttribute("email");
+    public ResponseEntity<?> modificar_perfil(@RequestParam String email, @RequestBody UsuarioDTO usuarioDTO){
     
         Optional<Usuario> usuario = usuario_service.buscar_usuario(email);
         Integer id_usuario=usuario.get().getId();

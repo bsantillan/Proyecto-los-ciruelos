@@ -15,6 +15,7 @@ import { noAuthGuard } from './auth/no-auth.guard';
 import { BeneficiosSociosComponent } from './components/beneficios-socios/beneficios-socios.component';
 import { ProcesarPagoComponent } from './components/shared/procesar-pago/procesar-pago.component';
 import { MisReservasComponent } from './components/shared/mis-reservas/mis-reservas.component';import { ProfesoresComponent } from './components/shared/profesores/profesores.component';
+import { PerfilComponent } from './components/shared/perfil/perfil.component';
 
 
 const routes: Routes = [
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'procesar-pago', component: ProcesarPagoComponent, canActivate: [authGuard] },
   { path: 'mis-reservas', component: MisReservasComponent, canActivate: [authGuard]  },
   { path: 'profesores', component: ProfesoresComponent }, 
+  { path: 'perfil', component: PerfilComponent }, 
   { path: '**', redirectTo: 'home' }
 ];
 
