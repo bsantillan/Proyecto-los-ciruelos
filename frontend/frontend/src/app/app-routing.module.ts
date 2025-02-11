@@ -12,6 +12,7 @@ import { TicketComponent } from './components/shared/ticket/ticket.component';
 import { ReservaComponent } from './components/shared/reserva/reserva.component';
 import { authGuard } from './auth/auth.guard'; // Importar el guard
 import { noAuthGuard } from './auth/no-auth.guard';
+import { BeneficiosSociosComponent } from './components/beneficios-socios/beneficios-socios.component';
 import { ProcesarPagoComponent } from './components/shared/procesar-pago/procesar-pago.component';
 import { MisReservasComponent } from './components/shared/mis-reservas/mis-reservas.component';import { ProfesoresComponent } from './components/shared/profesores/profesores.component';
 
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'mercadopago', component: MercadopagoComponent, canActivate: [authGuard] },
   { path: 'ticket', component: TicketComponent, canActivate: [authGuard] },
   { path: 'reserva', component: ReservaComponent, canActivate: [authGuard] },
+  { path: 'beneficios', component: BeneficiosSociosComponent },
   { path: 'procesar-pago', component: ProcesarPagoComponent, canActivate: [authGuard] },
   { path: 'mis-reservas', component: MisReservasComponent, canActivate: [authGuard]  },
   { path: 'profesores', component: ProfesoresComponent }, 

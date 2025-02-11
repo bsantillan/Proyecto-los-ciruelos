@@ -105,7 +105,6 @@
     .feature:hover {
         transform: translateY(-8px);
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-        background: var(--background); /* Usa la variable para el color de fondo en hover */
     }
 
     .feature.clickable {

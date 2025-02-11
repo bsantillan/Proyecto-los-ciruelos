@@ -119,4 +119,16 @@ export class ApiService {
       })
     );
   }
+
+  asociarse(id_mp: number): Observable<any> {
+    return this.authService.getUserEmail().pipe(
+      switchMap(email => {
+        if (!email) {
+          console.error("Error: No se encontró un email válido.");
+          return throwError(() => new Error("No hay usuario autenticado"));
+        }
+        const url = `${this.apiUrl}public/asociarse?email=${email}&id_mp=${id_mp}`;
+        return this.http.put<any>(url, null); // Se usa null porque los datos van en la URL, no en el cuerpo
+      }));
+  }
 }
