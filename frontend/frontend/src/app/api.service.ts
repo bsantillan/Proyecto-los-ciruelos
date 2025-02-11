@@ -75,7 +75,6 @@ export class ApiService {
   }  
 
   hacerReserva(reservaDTO: ReservaDTO): Observable<any> {
-
     return this.authService.getUserEmail().pipe(
       switchMap(email => {
         if (!email) {
