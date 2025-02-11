@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
-import { MisReservasService } from '../../../services/mis-reservas.service';
+import { ApiService } from '../../../api.service';
 
 @Component({
   selector: 'app-mis-reservas',
@@ -21,23 +21,44 @@ export class MisReservasComponent {
 
   constructor(
     private authService: AuthService,
-    private reservaService: MisReservasService
+    private api: ApiService
   ) {}
 
   ngOnInit(): void {
-    // Obtener el usuario logueado
-    this.authService.getUsuario().subscribe(usuario => {
-      this.usuarioActual = usuario;
+
       this.obtenerReservas();
-    });
   }
 
   obtenerReservas(): void {
-    this.reservaService.obtenerReservasPorUsuario(this.usuarioActual.id).subscribe(reservas => {
+    this.api.getResrvas().subscribe((reservas) => {
       this.reservas = reservas;
-      this.filtrarReservas();
+      console.log(reservas)
     });
   }
+
+  cancelarReserva(reserva_id:number): void {
+    this.api.cancelarReserva(reserva_id).subscribe((cancelacion) => {
+      console.log(cancelacion)
+    });
+  }
+
+  esReservaCanceladaOExpirada(reserva: any): boolean {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0); // Normalizar la fecha de hoy sin horas
+
+    const partesFecha = reserva.turno.fecha.split('-'); // Asegurar formato correcto
+    const fechaReserva = new Date(
+        parseInt(partesFecha[0], 10),  // Año
+        parseInt(partesFecha[1], 10) - 1, // Mes (0-indexed)
+        parseInt(partesFecha[2], 10) // Día
+    );
+
+    return reserva.estado === 'Cancelada' || fechaReserva < hoy;
+  }
+
+  getPrecioTotal(pagos: any[]): number {
+    return pagos.reduce((total, pago) => total + pago.monto, 0);
+  }  
 
   filtrarReservas(): void {
     this.reservasFiltradas = this.reservas.filter(reserva => {

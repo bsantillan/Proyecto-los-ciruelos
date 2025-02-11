@@ -12,12 +12,13 @@ import { ApiService } from '../../../api.service';
   styleUrl: './reserva.component.css'
 })
 export class ReservaComponent {
-  form!: FormGroup;
   errorMessages: string[] = [];
   pago: 'seña' | 'total' = 'seña'; // Estado del pago
   precio: number = 0; 
-  precioPelota = 500;
-  precioPaleta = 1500; 
+  precioPelota = 0;
+  precioPaleta = 0; 
+  paletas = 0;
+  pelotas = 0;
 
   date!: string;
   court!: string;
@@ -41,17 +42,12 @@ export class ReservaComponent {
     this.api.getPerfil().subscribe((perfil) => {
       console.log(perfil.socio);
       this.isSocio = perfil?.socio ?? false; // Si el campo "socio" es true, se guarda en isSocio
-      
-      this.obtenerConfiguracion();
     });
   }
 
   ngOnInit(): void {
 
-    this.form = this.formBuilder.group({
-      pelotas: [0, [Validators.required, Validators.min(0)]], 
-      paletas: [0, [Validators.required, Validators.min(0)]],
-    });
+    this.obtenerConfiguracion();
 
     this.route.queryParams.subscribe(params => {
       this.date = params['fecha'];
@@ -60,11 +56,10 @@ export class ReservaComponent {
       this.horario_fin_ocupado=params['horario_fin_ocupado'];
     });
 
-    // Escuchar cambios en el formulario para actualizar el precio
-    this.form.valueChanges.subscribe(() => {
+    // 💡 Ejecutar calcularPrecio() después de cargar la configuración
+    setTimeout(() => {
       this.calcularPrecio();
-    });
-
+    }, 100);
   }
 
   obtenerConfiguracion(): void {
@@ -79,10 +74,7 @@ export class ReservaComponent {
         this.precioPelota = this.configuracion.monto_pelotas;
   
         // Ahora que tenemos la configuración, calculamos el precio inicial
-        this.calcularPrecio();
       });
-    } else {
-      this.calcularPrecio();
     }
   }
 
@@ -92,10 +84,9 @@ export class ReservaComponent {
   }
 
   calcularPrecio(): void {
+    console.log("Actualizando")
     if (this.configuracion) {
-      const pelotas = this.form.get('pelotas')?.value || 0;
-      const paletas = this.form.get('paletas')?.value || 0;
-      let precioBase = (pelotas * this.precioPelota) + (paletas * this.precioPaleta) + this.configuracion?.monto_reserva;
+      let precioBase = (this.pelotas * this.precioPelota) + (this.paletas * this.precioPaleta) + this.configuracion?.monto_reserva;
   
       if (this.pago === "seña") {
         this.precio = precioBase * this.configuracion.porcentaje_seña;
@@ -107,19 +98,12 @@ export class ReservaComponent {
         this.precio -= this.configuracion.monto_reserva*this.configuracion.descuento_socio;
       }
   
-      this.precio = Math.max(this.precio, 0);
     }
   }  
 
   async next() {
-    if (this.form.invalid) {
-      this.toastrService.error('Por favor, complete los campos correctamente.');
-      return;
-    }
-
-    const formValues = this.form.value;
-    console.log("Pelotas:", formValues.pelotas);
-    console.log("Paletas:", formValues.paletas);
+    console.log("Pelotas:", this.pelotas);
+    console.log("Paletas:", this.paletas);
     console.log("Pago:", this.pago);
     console.log("Precio total:", this.precio);
 
@@ -131,6 +115,8 @@ export class ReservaComponent {
         horario_fin_ocupado: this.horario_fin_ocupado,
         precio: this.precio,
         senia: this.pago,
+        cantidad_pelotas: this.pelotas,
+        cantidad_paletas: this.paletas
       }
     });  
   }

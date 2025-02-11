@@ -1,25 +1,16 @@
 <div class="form">
     <div class="form__container">
-      <h1>Reserva</h1>
-  
-      <form [formGroup]="form" (ngSubmit)="next()" novalidate>
-  
+      <h1>Reserva</h1>  
         <!-- Paletas y Pelotas -->
         <div class="form-row">
           <mat-form-field appearance="outline" class="custom-field">
             <mat-label>Paletas</mat-label>
-            <input matInput formControlName="paletas" type="number" aria-label="Paletas" />
-            <mat-error *ngIf="form.get('paletas')?.touched && form.get('paletas')?.hasError('required')">
-              Este campo es obligatorio.
-            </mat-error>
+            <input matInput [(ngModel)]="paletas" type="number" aria-label="Paletas" (input)="calcularPrecio()"/>
           </mat-form-field>
   
           <mat-form-field appearance="outline" class="custom-field">
             <mat-label>Pelotas</mat-label>
-            <input matInput formControlName="pelotas" type="number" aria-label="Pelotas" />
-            <mat-error *ngIf="form.get('pelotas')?.touched && form.get('pelotas')?.hasError('required')">
-              Este campo es obligatorio.
-            </mat-error>
+            <input matInput [(ngModel)]="pelotas" type="number" aria-label="Pelotas" (input)="calcularPrecio()"/>
           </mat-form-field>
         </div>
         <!-- Botones de pago -->
@@ -42,7 +33,7 @@
         
         <!-- Botón de registro -->
         <div class="register-button">
-            <button mat-raised-button type="submit" class="submit-button">
+            <button mat-raised-button type="submit" class="submit-button" onclick="next()">
             Siguiente
             </button>
         </div>
@@ -52,7 +43,6 @@
             <div>{{ error }}</div>
           </ng-container>
         </div>
-      </form>
     </div>
 </div>
   
