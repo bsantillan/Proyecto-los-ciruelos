@@ -7,30 +7,68 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
-  perfilForm: FormGroup;
-  modoEdicion: boolean = false; // Variable para activar/desactivar edición
+  perfilForm!: FormGroup;
+  modoEdicion: boolean = false;
+  datosOriginales: any = {};
 
-  constructor(private fb: FormBuilder) {
+  nivelesDeJuego: string[] = [
+    'Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta', 'Sexta', 'Séptima', 'Principiante'
+  ];
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
     this.perfilForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(25)]],
       apellido: ['', [Validators.required, Validators.maxLength(30)]],
-      email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
-      telefono: ['', Validators.required],
-      codigoArea: ['', Validators.required],
-      nivelJuego: ['', [Validators.required, Validators.pattern('^(Primera|Segunda|Tercera|Cuarta|Quinta|Sexta|Séptima|Principiante)$')]]
+      email: ['', [
+        Validators.required,
+        Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+      ]],
+      telefono: ['', [
+        Validators.required,
+        Validators.pattern(/^\d{1,10}$/) // Hasta 10 dígitos numéricos
+      ]],
+      codigoArea: ['', [
+        Validators.required,
+        Validators.pattern(/^\d{1,3}$/) // Hasta 3 dígitos numéricos
+      ]],
+      nivelJuego: [{ value: '', disabled: true }, [Validators.required]]
     });
+
+    this.cargarDatosIniciales();
   }
 
-  ngOnInit(): void {
-    // Aquí podrías cargar los datos del usuario desde el backend
-    
+  activarEdicion(): void {
+    this.modoEdicion = true;
+    this.datosOriginales = { ...this.perfilForm.value }; // Guardamos los datos originales
   }
 
-  toggleEdicion(): void {
-    if (this.modoEdicion) {
-      // Aquí podrías enviar los datos actualizados al backend
-      console.log('Datos actualizados:', this.perfilForm.value);
+  guardarPerfil(): void {
+    if (this.perfilForm.valid) {
+      console.log('Perfil actualizado con éxito:', this.perfilForm.value);
+      this.modoEdicion = false;
+    } else {
+      this.perfilForm.markAllAsTouched();
     }
-    this.modoEdicion = !this.modoEdicion;
+  }
+
+  cancelarEdicion(): void {
+    this.perfilForm.patchValue(this.datosOriginales); // Restauramos los valores originales
+    this.modoEdicion = false;
+  }
+
+  cargarDatosIniciales(): void {
+    // Simulación de carga de datos del usuario
+    const datosUsuario = {
+      nombre: 'Juan',
+      apellido: 'Pérez',
+      email: 'juan.perez@example.com',
+      telefono: '123456789',
+      codigoArea: '11',
+      nivelJuego: 'Segunda'
+    };
+
+    this.perfilForm.patchValue(datosUsuario);
   }
 }

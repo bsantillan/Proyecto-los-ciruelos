@@ -1,71 +1,112 @@
+/* Contenedor principal */
 .perfil-container {
-    max-width: 450px;
-    margin: 60px auto;
-    padding: 25px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px var(--title-shadow);
-    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 40px auto;
 }
 
-h1 {
-    font-size: 24px;
-    color: var(--text);
-    font-weight: bold;
+/* Fila de formulario para agrupar elementos */
+.form-row {
+    display: flex;
+    gap: 20px;
+    /* Espaciado entre los campos */
+    justify-content: space-between;
+}
+
+.form-row .custom-field {
+    flex: 1;
+    /* Hace que los campos sean del mismo tamaño */
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+        /* En móviles, los campos estarán en columna */
+    }
+}
+
+/* Estilo para los campos de entrada */
+mat-form-field {
+    width: 100%;
     margin-bottom: 20px;
 }
 
-label {
-    display: block;
-    margin-top: 12px;
-    font-weight: 600;
-    color: var(--text);
-    text-align: left;
-}
-
-input {
+/* Botón de guardar cambios o modificar */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid var(--pass-time);
-    border-radius: 8px;
-    font-size: 14px;
-    background: var(--white-text);
-    color: var(--dark-text);
-    transition: all 0.3s ease-in-out;
+    margin-top: 15px;
+    gap: 15p
 }
 
-input:focus {
-    border-color: var(--button-color-primary);
-    outline: none;
-    box-shadow: 0 0 5px var(--green);
-}
-
-input[readonly] {
-    background: var(--background-muted);
-    cursor: not-allowed;
-}
-
-/* Botón mejorado con variables */
-button {
-    margin-top: 20px;
-    padding: 12px;
-    width: 100%;
-    border: none;
+.modify-button {
     background-color: var(--button-color-primary);
     color: var(--text);
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
+  }
+
+button {
+    background-color: var(--button-color-primary);
+    color: var(--text);
+    border: none;
+    padding: 10px 20px;
     border-radius: 30px;
-    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
 }
 
-button:hover {
-    background-color: var(--button-hover-color);
-    transform: scale(1.05);
+
+  /* Botón de guardar cambios */
+.submit-button {
+    background-color: var(--button-color-primary);
+    color: var(--text);
+  }
+
+  .cancel-button {
+    background: none;
+    color: #000;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Contenedor del botón cancelar */
+  .register-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px; /* Espacio adicional entre "Guardar Cambios" y "Cancelar" */
+  }
+
+/* Estilo para el selector de nivel de juego */
+mat-select {
+    width: 100%;
 }
 
-button:active {
-    transform: scale(1);
+/* Estilo para los inputs de teléfono y código de área */
+.phone-container {
+    display: flex;
+    gap: 20px;
+}
+
+@media (max-width: 600px) {
+    .phone-container {
+        flex-direction: column;
+    }
+}
+
+/* Validación de errores */
+mat-error {
+    font-size: 14px;
+    color: #f44336;
+}
+
+/* Espaciado entre elementos */
+.form-group {
+    margin-bottom: 15px;
 }
