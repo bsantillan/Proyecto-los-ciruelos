@@ -22,22 +22,21 @@ export class BeneficiosSociosComponent implements OnInit{
     });
   }
   ngOnInit(): void {
-    this.authService.authState$.subscribe(user => {
-      this.isLoggedIn = !!user; // true si hay usuario, false si no
-    });
+    
   }
 
   iniciarAsociacion(): void {
-    const formattedDate = new Date().toLocaleDateString('es-AR');
-
-this.router.navigate(['/ticket'], { 
-  queryParams: { 
-    asociacion: true, 
-  } 
-});
-
-
+    if (this.isLoggedIn) {
+      this.router.navigate(['/ticket'], { 
+        queryParams: { 
+          asociacion: true 
+        } 
+      });
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
+  
 
   testimonials = [
     { name: 'Ana M.', text: 'Los beneficios son increíbles, especialmente los descuentos.' },

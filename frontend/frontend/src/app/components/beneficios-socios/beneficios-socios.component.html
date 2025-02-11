@@ -15,14 +15,9 @@
                 <li>Estadísticas sobre tu rendimiento y uso de las canchas.</li>
             </ul>
             <!-- Botón de asociarse -->
-            <button (click)="iniciarAsociacion()" class="btn-asociarse" [disabled]="!isLoggedIn" [ngClass]="{'disabled': !isLoggedIn}" >
+            <button (click)="iniciarAsociacion()" class="btn-asociarse" >
                 Deseo Asociarme
             </button>
-
-            <!-- Mensaje de advertencia si el usuario no ha iniciado sesión -->
-            <p *ngIf="!isLoggedIn" class="mensaje-advertencia">
-                *Debes iniciar sesión para asociarte.
-            </p>
 
 
 
