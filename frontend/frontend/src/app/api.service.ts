@@ -29,6 +29,21 @@ export interface ReservaDTO {
   id_mp: number;
 }
 
+export interface JugadorDTO {
+  id: number;
+  email: string;
+  nombre: string;
+  apellido: string;
+  categoria: string;
+  socio: boolean;
+  profesor: boolean;
+  telefonos: {
+    codigo: number;
+    numero: number;
+  }[];
+}
+
+
 @Injectable({
   providedIn: 'root',
 })
@@ -87,4 +102,9 @@ export class ApiService {
       })
     );
   }
+
+  registrarUsuario(jugadorDTO: JugadorDTO): Observable<any> {
+    const url = `${this.apiUrl}public/registro/jugador`;
+      return this.http.post<any>(url, jugadorDTO);
+    }
 }
