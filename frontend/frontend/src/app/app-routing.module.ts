@@ -16,7 +16,9 @@ import { BeneficiosSociosComponent } from './components/beneficios-socios/benefi
 import { ProcesarPagoComponent } from './components/shared/procesar-pago/procesar-pago.component';
 import { MisReservasComponent } from './components/shared/mis-reservas/mis-reservas.component';import { ProfesoresComponent } from './components/shared/profesores/profesores.component';
 import { PerfilComponent } from './components/shared/perfil/perfil.component';
-
+import { ConsultarReservasComponent } from './components/shared/consultar_reservas/consultar_reservas.component';
+import { ConsultarUsuariosComponent } from './components/shared/consultar_usuarios/consultar_usuarios.component';
+import { ModificarValoresComponent } from './components/shared/modificar_valores/modificar_valores.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -35,6 +37,9 @@ const routes: Routes = [
   { path: 'mis-reservas', component: MisReservasComponent, canActivate: [authGuard]  },
   { path: 'profesores', component: ProfesoresComponent }, 
   { path: 'perfil', component: PerfilComponent }, 
+  { path: 'consultar_reservas', component: ConsultarReservasComponent, canActivate: [authGuard]  },
+  { path: 'consultar_usuarios', component: ConsultarUsuariosComponent, canActivate: [authGuard]  },
+  { path: 'modificar_valores', component: ModificarValoresComponent, canActivate: [authGuard]  },
   { path: '**', redirectTo: 'home' }
 ];
 

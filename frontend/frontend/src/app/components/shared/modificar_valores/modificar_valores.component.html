@@ -1,0 +1,94 @@
+<div class="form__container">
+    <h1 class="form__title">Configurar Precios y Stock</h1>
+  
+    <form [formGroup]="form" (ngSubmit)="guardarConfiguracion()">
+      <div class="form-row">
+        <div class="custom-field">
+          <mat-form-field appearance="fill">
+            <mat-label>Precio Cancha 1</mat-label>
+            <input matInput formControlName="precioCancha1" type="number" min="0" />
+            <mat-error *ngIf="form.get('precioCancha1')?.hasError('required')">Este campo es obligatorio.</mat-error>
+            <mat-error *ngIf="form.get('precioCancha1')?.hasError('min')">El precio debe ser mayor que 0.</mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="custom-field">
+          <mat-form-field appearance="fill">
+            <mat-label>Precio Cancha 2</mat-label>
+            <input matInput formControlName="precioCancha2" type="number" min="0" />
+            <mat-error *ngIf="form.get('precioCancha2')?.hasError('required')">Este campo es obligatorio.</mat-error>
+            <mat-error *ngIf="form.get('precioCancha2')?.hasError('min')">El precio debe ser mayor que 0.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <div class="form-row">
+        <div class="custom-field">
+          <mat-form-field appearance="fill">
+            <mat-label>Precio Cancha 3</mat-label>
+            <input matInput formControlName="precioCancha3" type="number" min="0" />
+            <mat-error *ngIf="form.get('precioCancha3')?.hasError('required')">Este campo es obligatorio.</mat-error>
+            <mat-error *ngIf="form.get('precioCancha3')?.hasError('min')">El precio debe ser mayor que 0.</mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="custom-field">
+          <mat-form-field appearance="fill">
+            <mat-label>Precio Cancha 4</mat-label>
+            <input matInput formControlName="precioCancha4" type="number" min="0" />
+            <mat-error *ngIf="form.get('precioCancha4')?.hasError('required')">Este campo es obligatorio.</mat-error>
+            <mat-error *ngIf="form.get('precioCancha4')?.hasError('min')">El precio debe ser mayor que 0.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <div class="form-row">
+        <div class="custom-field">
+          <mat-form-field appearance="fill">
+            <mat-label>Precio Pelota</mat-label>
+            <input matInput formControlName="precioPelota" type="number" min="0" />
+            <mat-error *ngIf="form.get('precioPelota')?.hasError('required')">Este campo es obligatorio.</mat-error>
+            <mat-error *ngIf="form.get('precioPelota')?.hasError('min')">El precio debe ser mayor que 0.</mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="custom-field">
+          <mat-form-field appearance="fill">
+            <mat-label>Precio Paleta</mat-label>
+            <input matInput formControlName="precioPaleta" type="number" min="0" />
+            <mat-error *ngIf="form.get('precioPaleta')?.hasError('required')">Este campo es obligatorio.</mat-error>
+            <mat-error *ngIf="form.get('precioPaleta')?.hasError('min')">El precio debe ser mayor que 0.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <div class="form-row">
+        <div class="custom-field">
+          <mat-form-field appearance="fill">
+            <mat-label>Stock de Pelotas</mat-label>
+            <input matInput formControlName="stockPelotas" type="number" min="0" />
+            <mat-error *ngIf="form.get('stockPelotas')?.hasError('required')">Este campo es obligatorio.</mat-error>
+            <mat-error *ngIf="form.get('stockPelotas')?.hasError('min')">El stock debe ser mayor que 0.</mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="custom-field">
+          <mat-form-field appearance="fill">
+            <mat-label>Stock de Paletas</mat-label>
+            <input matInput formControlName="stockPaletas" type="number" min="0" />
+            <mat-error *ngIf="form.get('stockPaletas')?.hasError('required')">Este campo es obligatorio.</mat-error>
+            <mat-error *ngIf="form.get('stockPaletas')?.hasError('min')">El stock debe ser mayor que 0.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <div class="form-row">
+        <div class="register-button">
+          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+            Guardar Configuración
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  

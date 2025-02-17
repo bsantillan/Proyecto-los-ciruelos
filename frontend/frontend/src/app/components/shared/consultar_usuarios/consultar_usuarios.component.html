@@ -1,0 +1,68 @@
+<div class="contenedor">
+    <h1 class="titulo">Consultar Usuarios</h1>
+  
+    <!-- Filtros -->
+    <div class="filtros">
+      <!-- Filtro por Email -->
+      <div>
+        <label for="email">Email:</label>
+        <input
+          type="text"
+          id="email"
+          placeholder="Buscar por email"
+          [(ngModel)]="filtro.email"
+          (input)="filtrarUsuarios()">
+      </div>
+  
+      <!-- Filtro por Nombre -->
+      <div>
+        <label for="nombre">Nombre:</label>
+        <input
+          type="text"
+          id="nombre"
+          placeholder="Buscar por nombre"
+          [(ngModel)]="filtro.nombre"
+          (input)="filtrarUsuarios()">
+      </div>
+  
+      <!-- Filtro por Apellido -->
+      <div>
+        <label for="apellido">Apellido:</label>
+        <input
+          type="text"
+          id="apellido"
+          placeholder="Buscar por apellido"
+          [(ngModel)]="filtro.apellido"
+          (input)="filtrarUsuarios()">
+      </div>
+  
+      <!-- Filtro por Categoría -->
+      <div class="categorias">
+        <button
+          *ngFor="let categoria of categorias"
+          [class.active]="filtro.categoria === categoria"
+          (click)="seleccionarCategoria(categoria)">
+          {{ categoria }}
+        </button>
+      </div>
+    </div>
+  
+    <!-- Lista de Usuarios -->
+    <div class="lista-usuarios" *ngIf="usuariosFiltrados.length > 0; else noUsuarios">
+      <div *ngFor="let usuario of usuariosFiltrados" class="usuario-card">
+        <p><strong>Nombre:</strong> {{ usuario.nombre }} {{ usuario.apellido }}</p>
+        <p><strong>Email:</strong> {{ usuario.email }}</p>
+        <p><strong>Categoría:</strong> {{ usuario.categoria }}</p>
+        
+        <button class="boton-eliminar" (click)="eliminarUsuario(usuario.id)">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  
+    <!-- Mensaje cuando no hay usuarios -->
+    <ng-template #noUsuarios>
+      <p class="mensaje-vacio">No se encontraron usuarios que coincidan con los filtros aplicados.</p>
+    </ng-template>
+  </div>
+  

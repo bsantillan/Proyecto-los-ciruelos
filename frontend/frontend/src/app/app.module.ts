@@ -47,9 +47,9 @@ import { ReservaComponent } from './components/shared/reserva/reserva.component'
 import { ProcesarPagoComponent } from './components/shared/procesar-pago/procesar-pago.component';
 import { MisReservasComponent } from './components/shared/mis-reservas/mis-reservas.component';
 import { ProfesoresComponent } from './components/shared/profesores/profesores.component';
-
-
-
+import { ConsultarReservasComponent } from './components/shared/consultar_reservas/consultar_reservas.component';
+import { ConsultarUsuariosComponent } from './components/shared/consultar_usuarios/consultar_usuarios.component';
+import { ModificarValoresComponent } from './components/shared/modificar_valores/modificar_valores.component';
 
 
 @NgModule({
@@ -74,7 +74,10 @@ import { ProfesoresComponent } from './components/shared/profesores/profesores.c
     DesasociarComponent,
     ProcesarPagoComponent,
     MisReservasComponent,
-    ProfesoresComponent
+    ProfesoresComponent,
+    ConsultarReservasComponent,
+    ConsultarUsuariosComponent,
+    ModificarValoresComponent
 
   ],
   imports: [
