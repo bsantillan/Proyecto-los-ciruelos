@@ -149,4 +149,20 @@ export class ApiService {
         return this.http.put<any>(url, null); // Se usa null porque los datos van en la URL, no en el cuerpo
       }));
   }
+  
+  getUsuarios(): Observable<any[]> {
+    const url = `${this.apiUrl}public/consultar/usuarios`;
+    return this.http.get<any[]>(url);
+  }
+
+  eliminarUsuario(usuarioId: number): Observable<any> {
+    const url = `${this.apiUrl}public/eliminar/usuario/${usuarioId}`;
+    return this.http.delete<any>(url);
+  }
+  
+  updateConfiguracion(nuevaConfiguracion: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}public/configuracion/actualizar`, nuevaConfiguracion);
+  }
+
+  
 }

@@ -15,12 +15,12 @@ import {
   sendEmailVerification,
   fetchSignInMethodsForEmail,
 } from '@angular/fire/auth';
-import { map, Observable } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { applyActionCode, getAuth, getRedirectResult, onAuthStateChanged, signInWithRedirect, signOut } from 'firebase/auth';
-
+import { HttpClient } from '@angular/common/http';  // Importamos HttpClient para las solicitudes HTTP
 
 export interface Credential {
   email: string;
@@ -35,6 +35,7 @@ export class AuthService {
   private router: Router = inject(Router);
   private user: User | null = null;
   readonly authState$: Observable<User | null> = authState(this.auth);
+  private http: HttpClient = inject(HttpClient); // Inyectamos HttpClient
 
   constructor(private fb: FormBuilder, private toastrService: ToastrService) {
     onAuthStateChanged(this.auth, (user) => {
@@ -165,12 +166,26 @@ export class AuthService {
 
   getUserEmail(): Observable<string | null> {
     return this.authState$.pipe(
-      map((user) => user?.email || null) // Si el usuario está autenticado, devuelve el email; si no, devuelve null
+      map((user) => user?.email || null) 
     );
   }
 
   getUsuario(): Observable<User | null> {
-    return this.authState$; // Devuelve el estado actual del usuario autenticado
+    return this.authState$; 
   }
   
+
+   getUserRole(): Observable<string | null> {
+    return this.authState$.pipe(
+      switchMap((user) => {
+        if (!user) {
+          return [null]; 
+        }
+
+        return this.http.get<{ role: string }>(`/api/user-role/${user.uid}`).pipe(
+          map((response) => response.role)
+        );
+      })
+    );
+  }
 }
