@@ -175,17 +175,19 @@ export class AuthService {
   }
   
 
-   getUserRole(): Observable<string | null> {
+  getUserRole(): Observable<string | null> {
     return this.authState$.pipe(
       switchMap((user) => {
         if (!user) {
-          return [null]; 
+          return [null]; // Si no hay usuario, retornamos null
         }
 
-        return this.http.get<{ role: string }>(`/api/user-role/${user.uid}`).pipe(
-          map((response) => response.role)
+        // Llamamos al backend para verificar el rol (empleado o duenio)
+        return this.http.get<{ role: string }>(`/public/verificar/empleado?email=${user.email}`).pipe(
+          map((response) => response.role === 'duenio' ? 'admin' : 'empleado') // "duenio" lo convertimos en "admin"
         );
       })
     );
   }
+  
 }

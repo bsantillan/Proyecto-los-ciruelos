@@ -29,6 +29,11 @@ export interface ReservaDTO {
   id_mp: number;
 }
 
+export interface Telefono {
+  codigo: number;
+  numero: number;
+}
+
 export interface JugadorDTO {
   id: number;
   email: string;
@@ -43,6 +48,13 @@ export interface JugadorDTO {
   }[];
 }
 
+export interface UsuarioDTO {
+  email: string;
+  nombre: string;
+  apellido: string;
+  telefonos: Telefono[];
+  categoria: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -150,10 +162,20 @@ export class ApiService {
       }));
   }
   
-  getUsuarios(): Observable<any[]> {
-    const url = `${this.apiUrl}public/consultar/usuarios`;
-    return this.http.get<any[]>(url);
+  getUsuarios(): Observable<UsuarioDTO[]> {
+    return this.authService.getUserRole().pipe(
+      switchMap(role => {
+        if (role !== 'admin') {
+          console.error("Acceso denegado: Solo el administrador puede ver los usuarios.");
+          return throwError(() => new Error("No autorizado"));
+        }
+
+        const url = `${this.apiUrl}private/usuarios`; 
+        return this.http.get<UsuarioDTO[]>(url);
+      })
+    );
   }
+  
 
   eliminarUsuario(usuarioId: number): Observable<any> {
     const url = `${this.apiUrl}public/eliminar/usuario/${usuarioId}`;

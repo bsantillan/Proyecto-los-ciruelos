@@ -10,22 +10,22 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
+
 export class NavbarComponent implements OnInit {
   currentUrl: string = '';
   isLoggedIn: boolean = false;
-  isAdmin: boolean = false;  // Variable para controlar el rol del usuario
+  isAdmin: boolean = false;  // Controlar el acceso de administrador
 
   constructor(private router: Router, private authService: AuthService, private toastrService: ToastrService) {
-    // Verificamos si el usuario está logueado
     this.authService.authState$.subscribe(user => {
       this.isLoggedIn = !!user; // Si hay un usuario, isLoggedIn es true
       if (user) {
         // Si está logueado, obtenemos el rol
         this.authService.getUserRole().subscribe(role => {
-          this.isAdmin = role === 'admin';  // Si el rol es admin, se asigna true
+          this.isAdmin = role === 'admin';  // Si el rol es "admin", tiene permisos de dueño
         });
       } else {
-        this.isAdmin = false;  // Si no está logueado, no es admin
+        this.isAdmin = false; // Si no hay usuario, no es admin
       }
     });
   }

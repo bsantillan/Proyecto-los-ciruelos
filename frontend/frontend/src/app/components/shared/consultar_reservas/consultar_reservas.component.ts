@@ -33,7 +33,7 @@ export class ConsultarReservasComponent {
   obtenerReservas(): void {
     this.api.getResrvas().subscribe((reservas) => {
       this.reservas = reservas;
-      console.log(reservas)
+      console.log(reservas);
       this.reservasFiltradas = reservas; 
     });
   }
@@ -50,7 +50,7 @@ export class ConsultarReservasComponent {
     this.reservasFiltradas = this.reservas.filter(reserva => {
       return (
         (!this.filtro.fecha || reserva.turno.fecha === this.filtro.fecha) &&
-        (!this.filtro.cancha || reserva.cancha === this.filtro.cancha) &&
+        (!this.filtro.cancha || reserva.turno.cancha.numero === this.filtro.cancha) &&
         (!this.filtro.estado || reserva.estado === this.filtro.estado)
       );
     });
